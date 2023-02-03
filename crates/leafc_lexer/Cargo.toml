@@ -1,0 +1,45 @@
+[package]
+name = "leafc_lexer"
+version = "0.1.0"
+description = "Leafc Lexer. A pushdown automaton based lexer with idiomatic data structures."
+keywords = ["leafc", "lexer", "compiler"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
+
+[features]
+# default = ["buffer_pool", "replacer", "lru_k_replacer"]
+# all = ["buffer_pool", "replacer", "lru_replacer", "lru_k_replacer", "serde"]
+# serde = ["dep:serde"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+atomic = { workspace = true }
+clap = { workspace = true }
+derivative = { workspace = true }
+derive_builder = { workspace = true }
+log = { workspace = true }
+logos = { workspace = true }
+logos-derive = { workspace = true }
+miette = { workspace = true }
+num_cpus = { workspace = true }
+parking_lot = { workspace = true }
+pretty_assertions_sorted = { workspace = true }
+smartstring = { workspace = true }
+smol_str = { workspace = true }
+wax = { workspace = true }
+
+# [dev-dependencies]
+# turbo-malloc = { path = "../turbo-malloc" }
+# turbo-tasks-memory = { path = "../turbo-tasks-memory" }
+
+# [build-dependencies]
+# turbo-tasks-build = { path = "../turbo-tasks-build" }

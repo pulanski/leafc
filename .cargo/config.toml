@@ -1,0 +1,30 @@
+[alias] # command aliases
+b = "build"
+c = "check"
+cl = "clean"
+t = "test"
+r = "run"
+rr = "run --release"
+d = "doc --open"
+
+[build]
+rustc-wrapper = '/Users/jkersey/.cargo/bin/sccache'
+
+[profile.dev]
+opt-level = 0
+debug = 2
+incremental = true
+codegen-units = 512
+
+[profile.release]
+opt-level = 3
+debug = 0
+incremental = false
+codegen-units = 256
+strip = "symbols"   # strip debug symbols
+
+[term]
+color = "always"
+
+[env]
+CARGO_WORKSPACE_DIR = { value = "", relative = true }

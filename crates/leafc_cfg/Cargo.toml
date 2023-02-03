@@ -1,0 +1,39 @@
+[package]
+name = "leafc_cfg"
+version = "0.1.0"
+description = "Configuration for Leafc (e.g. \"emit-llvm\",\"emit-asm\", O-level, etc.)"
+keywords = ["leafc", "configuration"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
+
+[features]
+# default = ["buffer_pool", "replacer", "lru_k_replacer"]
+# all = ["buffer_pool", "replacer", "lru_replacer", "lru_k_replacer", "serde"]
+# serde = ["dep:serde"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# leafc_log = { path = "../leafc_log" }
+
+atomic = { workspace = true }
+clap = { workspace = true }
+derivative = { workspace = true }
+derive_builder = { workspace = true }
+log = { workspace = true }
+miette = { workspace = true }
+num_cpus = { workspace = true }
+parking_lot = { workspace = true }
+semver = { workspace = true }
+smartstring = { workspace = true }
+smol_str = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }

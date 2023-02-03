@@ -1,0 +1,98 @@
+[workspace]
+
+members = [
+    # "crates/*",
+    # "examples/",
+    # "benches/",
+    "crates/leafc",
+    "crates/leafc_cfg",
+    "crates/leafc_cli",
+    # "crates/leafc_codegen",
+    "crates/leafc_driver",
+    "crates/leafc_errors",
+    "crates/leafc_lexer",
+    "crates/leafc_log",
+    # "crates/leafc_macros",
+    # "crates/leafc_parser",
+
+
+    # "crates/turbo-malloc",
+    # "crates/turbo-tasks-build",
+    # "crates/turbo-tasks-env",
+    # "crates/turbo-tasks-fs",
+    # "crates/turbo-tasks-hash",
+    # "crates/turbo-tasks-macros",
+    # "crates/turbo-tasks-macros-shared",
+    # "crates/turbo-tasks-memory",
+    # "crates/turbo-tasks-testing",
+    # "crates/turbo-tasks",
+
+]
+
+[workspace.package]
+version = "0.1.0"
+description = "A Rust implementation of **Bustub**, an educational database system out of CMU 15-445/645."
+authors = ["<iopulanski@gmail.com>"]
+repository = "https://github.com/pulanski/rustub"
+license-file = "LICENSE"
+license = "MIT"
+readme = "README.md"
+rust-version = "1.68.0"
+edition = "2021"
+documentation = "https://docs.rs/rustub"
+homepage = "https://rustub.dev"
+keywords = ["database", "bustub", "rust", "rustub", "storage", "sql"]
+categories = ["database"]
+exclude = ["**/tests/**", "**/benches/**"]
+include = ["**/README.md", "**/LICENSE", "**/Cargo.toml", "**/Cargo.lock"]
+
+[workspace.dependencies]
+anyhow = "1.0.68"
+atomic = "0.5"
+bincode = "1.3"
+bytes = "1.3.0"
+chrono = "0.4"
+clap = { version = "4.1.4", features = ["derive"] }
+derivative = "2.2.0"
+derive_builder = "0.12.0"
+dirs-next = "2.0.0"
+fern = "0.6.1"
+indexmap = "1.9.2"
+indoc = "2.0.0"
+lazy_static = "1.4.0"
+# figment = { version = "0.10.8", features = ["toml", "env", "json", "yaml"] }
+llvm-sys = "160.0.0"
+llvm-ir = "0.8.2"
+log = "0.4.17"
+logos = "0.12.1"
+logos-derive = "0.12.1"
+miette = { version = "5.5.0", features = ["fancy"] }
+mime = "0.3.16"
+num_cpus = "1.15.0"
+nu-ansi-term = "0.46.0"
+once_cell = "1.17.0"
+owo-colors = "3.5.0"
+parking_lot = { version = "0.12.1", features = ["serde"] }
+pretty_assertions_sorted = "1.2.1"
+rayon = "1.6.1"
+reedline = "0.15.0"
+regex = "1.7.1"
+rstest = "0.16.0"
+rug = "1.19.0"
+salsa = "0.16.1"
+semver = "1.0.16"
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_bytes = "0.11.8"
+serde_json = "1.0.91"
+serde_repr = "0.1.10"
+smartstring = "1.0.1"
+smol_str = "0.1.23"
+strum = { version = "0.24", features = ["derive"] }
+strum_macros = "0.24"
+test-context = "0.1.4"
+text-size = "1.1.0"
+thiserror = "1.0.38"
+threadpool = "1.8"
+tokio = { version = "1.25.0", features = ["full"] }
+wax = "0.5.0"
+whoami = "1.3.0"
