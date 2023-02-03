@@ -1,44 +1,6 @@
-pub mod target_triple;
-pub mod version;
-// pub mod emit;
-// pub mod log;
-// pub mod opt;
-
-use derivative::Derivative;
 use strum_macros::Display;
 
 use clap::ValueEnum;
-
-use target_triple::TargetTriple;
-
-/// The **settings** for the compiler.
-/// These are used to control the **behavior** of the compiler at runtime (e.g. the **optimization level**,
-/// **verbosity level**, etc.). These are either **parsed** from the command-line arguments passed to the compiler
-/// or defined in a user-defined **configuration file**.
-// #[derive(Debug, Clone, PartialEq, Eq, Derivative)]
-#[derive(Debug, Clone, PartialEq, Eq)]
-// #[derivative(Default)]
-pub struct Settings {
-    /// The compiler's **version**.
-    // #[derivative(Default(value = "crate_version()"))]
-    pub version: String, // Semver object or git commit hash
-
-    /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
-    /// defaults to `vec![]`
-    pub emit_kinds: Vec<EmitKind>,
-
-    /// The **optimization level** to use when compiling the input file.
-    /// defaults to `OptLevel::None`
-    pub opt_level: OptLevel,
-
-    /// The **verbosity level** of the compiler (e.g. `LogLevel::Info`, `LogLevel::Warn`, etc.).
-    /// defaults to `LogLevel::Info`
-    pub verbosity: LogLevel,
-
-    /// The **target triple** to use when compiling the input file.
-    /// defaults to `TargetTriple::Native`
-    pub target_triple: TargetTriple,
-}
 
 /// The **verbosity level** of the compiler. This is used to control the **amount of logging** emitted by the
 /// compiler.
@@ -112,6 +74,10 @@ pub enum LogTopic {
     CodeGen,
 }
 
+/// For converting a [`LogLevel`] into a [`log::Level`].
+/// This is used to convert the [`LogLevel`] into a [`log::Level`] so that it can be used by the `log` crate.
+/// meaning that the [`LogLevel`] can be used to control the **amount of logging** emitted by the compiler.
+/// TODO: This is a **temporary** solution until the `leafc_log` crate is enhanced to support the `info!`, `warn!`, etc. macros
 impl From<LogLevel> for log::Level {
     fn from(level: LogLevel) -> Self {
         match level {
@@ -123,58 +89,4 @@ impl From<LogLevel> for log::Level {
             LogLevel::Fatal => log::Level::Error,
         }
     }
-}
-
-/// The **kind of output** to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum EmitKind {
-    /// Emit the corresponding **`AST`** for the input file.
-    Ast,
-
-    /// Emit the corresponding **`LLVM IR`** for the input file.
-    LlvmIr,
-
-    /// Emit the corresponding **`object file`** for the input file.
-    ObjectFile,
-
-    /// Emit the corresponding **`LLVM bitcode`** for the input file.
-    Bitcode,
-}
-
-/// The **optimization level** to use when compiling the input file.
-/// defaults to `OptLevel::None`
-///
-/// In general, there is an unavoidable tradeoff between compiler optimization and compile times. In
-/// order to produce the most well-optimized executable, we pay the cost of higher compilation times.
-/// However, this is not always desirable. For example, during development, we may want to compile our
-/// code as quickly as possible, and we are not concerned with the performance of the executable. In
-/// this case, we can use the [`OptLevel::None`] optimization level.
-///
-/// # Examples
-///
-/// ```rust
-/// use leafc_cfg::settings::OptLevel;
-///
-/// // The default optimization level is `OptLevel::None` (i.e. no optimizations).
-/// // The higher the optimization level, the more optimizations are performed.
-/// assert!(OptLevel::None < OptLevel::O1);
-/// assert!(OptLevel::O1 < OptLevel::O2);
-/// assert!(OptLevel::O2 < OptLevel::O3);
-/// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, Hash)]
-pub enum OptLevel {
-    /// **No optimizations** are performed. This is the default optimization level.
-    /// Useful for **debugging purposes** during development.
-    None,
-
-    /// **Basic optimizations passes** are performed.
-    O1,
-
-    /// More advanced optimizations are performed in combination to those performed in [`OptLevel::O1`].
-    O2,
-
-    /// The most advanced optimizations are performed in combination to those performed in [`OptLevel::O2`].
-    /// This is the **most optimized** level.
-    /// Useful for **production**.
-    O3,
 }

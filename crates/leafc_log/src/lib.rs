@@ -1,7 +1,7 @@
 pub mod macros;
 
 use fern::{log_file, Dispatch};
-use leafc_cfg::settings::LogLevel;
+use leafc_cfg::settings::log::LogLevel;
 use leafc_errors::log::LogError;
 use miette::IntoDiagnostic;
 

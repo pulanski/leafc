@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use clap::Parser;
-use leafc_cfg::settings::LogLevel;
+use leafc_cfg::settings::log::LogLevel;
 
 /// # **Leafc**, an Experimental Compiler
 #[derive(Parser, Default, Debug)]
