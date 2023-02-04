@@ -1,10 +1,25 @@
 pub use self::{log::LogLevel, opt::OptLevel, target_triple::TargetTriple};
 
-pub mod metadata;
+pub mod meta;
 
 pub mod log;
 pub mod opt;
 pub mod target_triple;
+
+// TODO: singular settings struct (can be represented as a struct of structs via a toml file)
+// contains batch compiler settings (e.g. optimization level), repl settings (i.e. theme, etc.), etc.
+// settings can be passed via a local config file, or via the cli, or a user-level config file
+// (e.g. ~/.leafc/config.toml). By default, the settings are set to the default values, and the
+// precedence is as follows: cli > local config file > user-level config file > default values.
+// The settings can be used to configure the behavior of the compiler. For example, the settings
+// can be used to configure the compiler to emit LLVM IR, or to emit assembly code, or to emit
+// object files, etc.
+
+// when emit is turned on in the repl, the repl will emit the corresponding output for the input
+// (e.g. the repl will emit the corresponding AST for the input, or the repl will emit the corresponding
+// LLVM IR for the input, etc.). This can also be used to log the corresponding output for the input
+// (e.g. the repl will log the corresponding AST for the input, or the repl will log the corresponding
+// LLVM IR for the input, etc.) to a local log file.
 
 /// The **settings** for the compiler.
 /// These are used to control the **behavior** of the compiler at runtime (e.g. the **optimization level**,

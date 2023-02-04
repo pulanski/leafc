@@ -50,17 +50,17 @@
 )]
 #![feature(rustdoc_missing_doc_code_examples)]
 
-use std::process::ExitCode;
+use std::{fs::File, process::ExitCode};
 
 use clap::Parser;
 use derivative::Derivative;
 use derive_builder::Builder;
 use leafc_cfg::settings::EmitKind;
 use leafc_errors::cli::CliError;
-use log::{log, Level};
+// use leafc_repl::LeafcRepl;
+// use log::{log, Level};
 use miette::{IntoDiagnostic, Result};
 use smol_str::SmolStr;
-use tokio::fs::File;
 
 // use leafc_cfg::settings::LogLevel;
 use leafc_cli::LeafcCli;
@@ -105,12 +105,13 @@ impl LeafcDriver {
     /// The driver's version.
     pub const VERSION: &'static str = "0.1.0";
 
-    /// Runs the **leafc driver** and returns an exit code indicating whether
+    /// Runs the **top level driver** for **leafc** and returns an exit code indicating whether
     /// the compilation was successful or not.
     ///
     /// This function is the primary entry point for the compiler. It is
-    /// responsible for parsing the command line arguments, and then calling the
-    /// appropriate functions in the other crates to perform the compilation.
+    /// responsible for parsing the command line arguments, and then starting
+    /// the appropriate pipeline to perform the compilation based on whether the
+    /// compiler is running in **repl mode** or not.
     ///
     /// The driver is also responsible for setting up the compiler's logging
     /// system, and for handling the output of the compiler.
@@ -140,25 +141,153 @@ impl LeafcDriver {
     /// propagate these errors up to the caller via the `Result` type containing
     /// the corresponding `ExitCode` indicating the reason for the failure for
     /// the particular error.
-    pub async fn run() -> Result<ExitCode> {
+    pub fn run() -> Result<ExitCode> {
+        // parse the command line arguments
         let cli = LeafcCli::parse();
 
         // initialize the logging system
         leafc_log::init(cli.verbosity)?;
 
+        // log the driver's version
+        // leafc_log::utils::version();
+
+        // run the driver (either the repl or the batch compiler)
+        if cli.sources.is_empty() {
+            // run the repl
+            Self::repl_run(&cli)
+        } else {
+            // run the batch compiler
+            Self::batch_run(&cli)
+        }
+    }
+
+    /// Runs the **leafc driver** with the given command line arguments in **batch
+    /// compilation mode** and returns an exit code indicating whether the compilation
+    /// was successful.
+    ///
+    /// This function is the primary entry point for the compiler when compiling
+    /// source files in the typical batch processing model. It takes the command
+    /// line arguments and then calls the appropriate functions in the other crates
+    /// to perform the standard **batch compilation pipeline** (similar to running
+    /// `rustc`, or `gcc`).
+    ///
+    /// // TODO: abstract this out into settings instead of passing in the cli
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use leafc_driver::LeafcDriver;
+    ///
+    /// // Execute the compilation pipeline on the user's input files.
+    /// LeafcDriver::batch_run(LeafcCli::parse());
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error if the driver fails to run. This
+    /// could be due to a number of reasons, including:
+    ///
+    /// - The driver failed to **parse the command line arguments**.
+    /// - The driver failed to **parse the input file**.
+    /// - The driver failed to **perform type checking**, or **perform
+    /// name resolution**.
+    ///
+    /// In general, the various subsystems within the compiler will return
+    /// errors if they fail to perform their tasks. The driver will then
+    /// propagate these errors up to the caller via the `Result` type containing
+    /// the corresponding `Error` indicating the reason for the failure for
+    /// the particular error. These errors can be found in the `leafc_errors`
+    /// crate.
+    pub fn batch_run(cli: &LeafcCli) -> Result<ExitCode> {
         // iterate over the files to compile
-        for file in cli.sources {
+        for file in &cli.sources {
             let _f = File::open(file.clone())
-                .await
                 .into_diagnostic()
                 .map_err(|error| CliError::FileNotFound(format!("{file:?}: {error}").into()))?;
+            // leafc_log!(LogLevel::Info, "Compiling {} ...", file); // TODO: add this with spinners
+            // TODO: abstract the api to look like this
+            // leafc_log::utils::compiling_file(file);
             eprintln!("Compiling file: {file:?} ...");
         }
 
-        // log!(LogLevel::Info.into(), "leafc driver version: {}", Self::VERSION);
-        log!(Level::Info, "leafc driver version: {}", Self::VERSION);
-        // leafc_log!(LogLevel::Info, "leafc driver version: {}", Self::VERSION);
+        Ok(ExitCode::SUCCESS)
+    }
+
+    /// Runs the **leafc driver** with the given command line arguments
+    /// in **repl mode** and returns an exit code indicating whether the
+    /// creation of the repl was successful.
+    ///
+    /// This function is the primary entry point for the compiler when running
+    /// in **repl mode**. It takes the command line arguments and then calls
+    /// the appropriate functions in the other crates to perform the standard
+    /// **repl compilation pipeline** (similar to using the `swift` repl or
+    /// the `julia` repl).
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use leafc_driver::LeafcDriver;
+    ///
+    /// // Execute the compilation pipeline in repl mode.
+    /// LeafcDriver::repl_run(LeafcCli::parse());
+    /// LeafcDriver::repl_run(LeafcCli::new());
+    ///
+    /// // TODO change api to new method for things that rely on the Cli,
+    /// the new method encapsulates the parse method
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error if the driver fails to run. This
+    /// is caused by the repl failing to initialize.
+    ///
+    /// In general, the repl will return errors if it fails to perform its
+    /// tasks. The driver will then propagate these errors up to the caller
+    /// via the `Result` type containing the corresponding `Error` indicating
+    /// the reason for the failure for the particular error. These errors can
+    /// be found in the `leafc_errors` crate.
+    #[allow(clippy::needless_pass_by_value)] // TODO: for now
+    pub fn repl_run(cli: &LeafcCli) -> Result<ExitCode> {
+        // let _repl = LeafcRepl::new(cli);
+        eprintln!("CLI: {cli:?}");
+        // TODO: add repl
+        // run the repl
+        // repl.run(LeafcRepl::new(cli))?;
+
+        leafc_repl::run();
+
+        // settings is from the settings crate
+        // cli is used to update global LeafcSettings struct
+        // and we can use From<LeafcSettings> for just the ReplSettings
+        // leafc_repl::LeafcRepl::run(settings)?; // TODO change to something along the lines of this api
 
         Ok(ExitCode::SUCCESS)
     }
 }
+
+/// The interface required to run the driver.
+/// This is used to abstract away the driver's implementation details.
+/// It takes the settings for the driver and runs the driver. These settings
+/// are typically provided by the command line arguments, but can also be
+/// provided by other means (config files, etc.).
+///
+/// The settings are used to configure the behavior of the compiler. For
+/// example, the settings can be used to configure the compiler to emit
+/// LLVM IR, or to emit assembly code, or to emit object files, etc.
+/// The settings can also be used to configure the compiler to emit
+/// diagnostics to the console, or to emit diagnostics to a file, etc.
+/// One last use case for the settings is to configure the compiler to emit
+/// debug information, or to emit debug information in a specific format,
+/// etc.
+trait Runnable {
+    // /// Runs the driver and returns an exit code indicating whether the
+    // /// compilation was successful.
+    // ///
+    // /// This can be used to run the driver in a custom way, for example
+    // /// in a REPL vs. a batch compiler.
+    // fn run(&self, settings: &LeafcSettings) -> Result<ExitCode>;
+    // fn run(&self) -> Result<ExitCode>;
+}
+
+// TODO: create a From<LeafcSettings> for ReplSettings
+// impl From<LeafcSettings> for ReplSettings {

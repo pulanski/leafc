@@ -1,4 +1,4 @@
-use salsa::interned::InternedId;
+// use salsa::interned::InternedId;
 use serde::{Deserialize, Serialize};
 
 /// Defines the **build metadata** of the compiler This is used for **incremental compilation**.

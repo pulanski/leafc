@@ -1,4 +1,5 @@
 pub mod macros;
+pub mod utils;
 
 use fern::{log_file, Dispatch};
 use leafc_cfg::settings::log::LogLevel;
@@ -48,8 +49,6 @@ pub fn init(verbosity: LogLevel) -> Result<(), LogError> {
         .apply()
         .into_diagnostic()
         .map_err(|_| LogError::LogSystemInitialization(verbosity.to_string().into()))?;
-
-    eprintln!("{verbosity:?}");
 
     Ok(())
 }

@@ -17,7 +17,7 @@ use leafc_cfg::settings::log::LogLevel;
 pub struct LeafcCli {
     /// Name of the **source files** to compile. This is the only
     /// required argument. (e.g. `foo.leaf`).
-    #[clap(required = true)]
+    // #[clap(required = true)]
     pub sources: Vec<PathBuf>,
 
     /// Emit tokens/words scanned from the lexing phase of the compiler along with their spans and

@@ -1,5 +1,5 @@
 [package]
-name = "leafc_database"
+name = "leafc_db"
 version = "0.1.0"
 edition = "2021"
 

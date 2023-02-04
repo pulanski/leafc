@@ -26,6 +26,7 @@ leafc_cli = { path = "../leafc_cli" }
 leafc_cfg = { path = "../leafc_cfg" }
 leafc_errors = { path = "../leafc_errors" }
 leafc_log = { path = "../leafc_log" }
+leafc_repl = { path = "../leafc_repl" }
 
 atomic = { workspace = true }
 clap = { workspace = true }

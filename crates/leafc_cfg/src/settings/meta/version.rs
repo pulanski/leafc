@@ -1,11 +1,22 @@
 use derivative::Derivative;
 use derive_builder::Builder;
-use derive_more::{Display, FromStr};
-use derive_new::new;
+use derive_more::Display;
 use smartstring::alias::String;
 use std::fmt::Display;
 
 use semver::Version as Semver;
+
+pub const LEAFC_VERSION: &str = concat!(
+    "leafc v",
+    env!("CARGO_PKG_VERSION"),
+    " (",
+    env!("LEAFC_COMMIT_HASH"),
+    " ",
+    env!("LEAFC_BUILD_DATE"),
+    ")",
+);
+
+pub const LEAFC_TARGET: &str = env!("LEAFC_TARGET_TRIPLE");
 
 // TODO derive more traits for `Version` enum
 #[derive(Debug, Clone, PartialEq, Eq)]

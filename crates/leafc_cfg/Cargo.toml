@@ -25,6 +25,7 @@ doctest = true
 # leafc_log = { path = "../leafc_log" }
 
 atomic = { workspace = true }
+
 clap = { workspace = true }
 derivative = { workspace = true }
 derive_builder = { workspace = true }
@@ -44,3 +45,7 @@ smartstring = { workspace = true }
 smol_str = { workspace = true }
 strum = { workspace = true }
 strum_macros = { workspace = true }
+owo-colors = { workspace = true }
+
+[build-dependencies]
+chrono = { workspace = true }

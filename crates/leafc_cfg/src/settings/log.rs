@@ -72,6 +72,8 @@ pub enum LogTopic {
     TypeCheck,
     /// A log message that is associated with **`CodeGen`**.
     CodeGen,
+    /// A log message that is associated performance **metrics**.
+    Performance,
 }
 
 /// For converting a [`LogLevel`] into a [`log::Level`].

@@ -5,6 +5,7 @@ members = [
     # "examples/",
     # "benches/",
     "crates/leafc",
+    "crates/leafc_build",
     "crates/leafc_cfg",
     "crates/leafc_cli",
     # "crates/leafc_codegen",
@@ -12,6 +13,7 @@ members = [
     "crates/leafc_errors",
     "crates/leafc_lexer",
     "crates/leafc_log",
+    "crates/leafc_repl",
     # "crates/leafc_macros",
     # "crates/leafc_parser",
 
@@ -59,6 +61,7 @@ derive_more = "0.99.17"
 derive-new = "0.5.9"
 dirs-next = "2.0.0"
 fern = "0.6.1"
+getset = "0.1.2"
 humantime = "2.1.0"
 indexmap = "1.9.2"
 indoc = "2.0.0"
