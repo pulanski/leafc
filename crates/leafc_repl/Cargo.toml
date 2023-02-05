@@ -8,11 +8,21 @@ edition = "2021"
 [dependencies]
 leafc_cli = { path = "../leafc_cli" }
 leafc_cfg = { path = "../leafc_cfg" }
+leafc_driver = { path = "../leafc_driver" }
+leafc_errors = { path = "../leafc_errors" }
+leafc_log = { path = "../leafc_log" }
+leafc_utils = { path = "../leafc_utils" }
 
+chrono = { workspace = true }
+crossterm = { workspace = true }
 derive_builder = { workspace = true }
 derive-new = { workspace = true }
 derivative = { workspace = true }
 getset = { workspace = true }
+miette = { workspace = true }
+nu-ansi-term = { workspace = true }
+owo-colors = { workspace = true }
 reedline = { workspace = true }
+rusqlite = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 smartstring = { workspace = true }

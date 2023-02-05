@@ -1,5 +1,5 @@
 [alias] # command aliases
-b = "build"
+b = "build --timings"
 c = "check"
 cl = "clean"
 t = "test"
@@ -19,7 +19,7 @@ codegen-units = 512
 [profile.release]
 opt-level = 3
 debug = 0
-incremental = false
+incremental = true
 codegen-units = 256
 strip = "symbols"   # strip debug symbols
 

@@ -1,20 +1,7 @@
 #![allow(non_snake_case)]
-
-use owo_colors::colors::*;
 use owo_colors::OwoColorize;
 
-//                _
-//    _       _ _(_)_     |  Documentation: https://docs.julialang.org
-//   (_)     | (_) (_)    |
-//    _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
-//   | | | | | | |/ _` |  |
-//   | | |_| | | | (_| |  |  Version 1.8.3 (2022-11-14)
-//  _/ |\__'_|_|_|\__'_|  |  Built by Homebrew (v1.8.3_1)
-// |__/                   |
-
 use smartstring::alias::String;
-
-use crate::defs::LEAFC_DOCS_URL;
 
 use super::version::LEAFC_TARGET;
 use super::version::LEAFC_VERSION;
@@ -23,29 +10,7 @@ use super::version::LEAFC_VERSION;
 /// This is the **logo** that is **displayed** when the **compiler** is **run** in **REPL** mode
 /// or when the **compiler** is **run** with the `--interactive` flag during **batch** mode.
 pub fn LOGO() -> String {
-    String::from(
-        r#"
-    _       _ _(_)_     |  Documentation: "#,
-    ) + LEAFC_DOCS_URL
-        + r#"
-   (_)     | (_) (_)    |
-    _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
-   | | | | | | |/ _` |  |
-   | | |_| | | | (_| |  |  Version "#
-        + LEAFC_VERSION
-        + r#"
-    _/ |\__'_|_|_|\__'_|  |  Built by Homebrew (v1.8.3_1)
-    |__/                   |
-
-Version "#
-        + LEAFC_VERSION
-        + "\n\n"
-        + tree_logo()
-        + "\n\n"
-}
-
-pub fn tree_logo() -> String {
-    String::from("              &&\n".green().to_string())
+    String::from("\n\n              &&\n".green().to_string())
         + "            &&&&&\n".green().to_string()
         + "          &&&".green().to_string()
         + "\\/".bright_red().to_string()
@@ -98,6 +63,7 @@ pub fn tree_logo() -> String {
         + ".\n".black().italic().to_string()
         + "\n\n                      Version".bright_blue().to_string()
         + ": ".black().to_string()
+        + " leafc ".italic().to_string()
         + LEAFC_VERSION.italic().to_string()
         + "\n                             Target".bright_blue().to_string()
         + ": ".black().to_string()

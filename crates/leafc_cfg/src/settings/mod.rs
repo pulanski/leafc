@@ -1,9 +1,27 @@
-pub use self::{log::LogLevel, opt::OptLevel, target_triple::TargetTriple};
+use config::{Config, Environment, File};
+use miette::Result;
+use serde::Deserialize;
 
+use self::{emit::EmitKinds, target_triple::TargetTripleData};
+pub use self::{log::LogLevel, opt::OptLevel, target_triple::TargetTriple};
+pub use emit::EmitKind;
+
+/// Defines the **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
+pub mod emit;
+
+/// Defines the **meta** information for the compiler (e.g. the **version**, **logo**, etc.).
 pub mod meta;
 
+/// Defines the **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
 pub mod log;
+
+/// Defines the **optimization level** to use when compiling the input file.
 pub mod opt;
+
+/// Defines the vaious **settings** for the **REPL** (e.g. the **theme**, **syntax highlighting**, etc.).
+pub mod repl;
+
+/// Defines the **target triple** to use when compiling the input file.
 pub mod target_triple;
 
 // TODO: singular settings struct (can be represented as a struct of structs via a toml file)
@@ -28,14 +46,14 @@ pub mod target_triple;
 // #[derive(Debug, Clone, PartialEq, Eq, Derivative)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 // #[derivative(Default)]
-pub struct Settings {
+pub struct LeafcSettings {
     /// The compiler's **version**.
     // #[derivative(Default(value = "crate_version()"))]
     pub version: String, // Semver object or git commit hash
 
     /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
     /// defaults to `vec![]`
-    pub emit_kinds: Vec<EmitKind>,
+    pub emit_kinds: EmitKinds,
 
     /// The **optimization level** to use when compiling the input file.
     /// defaults to `OptLevel::None`
@@ -50,18 +68,43 @@ pub struct Settings {
     pub target_triple: TargetTriple,
 }
 
-/// The **kind of output** to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum EmitKind {
-    /// Emit the corresponding **`AST`** for the input file.
-    Ast,
+impl LeafcSettings {
+    pub fn new() -> Result<LeafcSettings> {
+        Ok(LeafcSettings {
+            version: "0.1.0".to_string(),
+            emit_kinds: vec![],
+            opt_level: OptLevel::None,
+            verbosity: LogLevel::Info,
+            target_triple: TargetTriple::Native(TargetTripleData::new()),
+        })
+    }
+    //     let run_mode = env::var("RUN_MODE").unwrap_or_else(|_| "development".into());
 
-    /// Emit the corresponding **`LLVM IR`** for the input file.
-    LlvmIr,
+    //     let s = Config::builder()
+    //         // Start off by merging in the "default" configuration file
+    //         .add_source(File::with_name("examples/hierarchical-env/config/default"))
+    //         // Add in the current environment file
+    //         // Default to 'development' env
+    //         // Note that this file is _optional_
+    //         .add_source(
+    //             File::with_name(&format!("examples/hierarchical-env/config/{}", run_mode))
+    //                 .required(false),
+    //         )
+    //         // Add in a local configuration file
+    //         // This file shouldn't be checked in to git
+    //         .add_source(File::with_name("examples/hierarchical-env/config/local").required(false))
+    //         // Add in settings from the environment (with a prefix of APP)
+    //         // Eg.. `APP_DEBUG=1 ./target/app` would set the `debug` key
+    //         .add_source(Environment::with_prefix("app"))
+    //         // You may also programmatically change settings
+    //         .set_override("database.url", "postgres://")?
+    //         .build()?;
 
-    /// Emit the corresponding **`object file`** for the input file.
-    ObjectFile,
+    //     // Now that we're done, let's access our configuration
+    //     println!("debug: {:?}", s.get_bool("debug"));
+    //     println!("database: {:?}", s.get::<String>("database.url"));
 
-    /// Emit the corresponding **`LLVM bitcode`** for the input file.
-    Bitcode,
+    //     // You can deserialize (and thus freeze) the entire configuration as
+    //     s.try_deserialize()
+    // }
 }

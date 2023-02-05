@@ -6,6 +6,8 @@ use leafc_cfg::settings::log::LogLevel;
 use leafc_errors::log::LogError;
 use miette::IntoDiagnostic;
 
+pub use utils::{compiling_file, logo, version};
+
 pub fn init(verbosity: LogLevel) -> Result<(), LogError> {
     let log_file_name = "leafc.log";
 

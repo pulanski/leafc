@@ -1,13 +1,12 @@
 use derivative::Derivative;
 use derive_builder::Builder;
 use derive_more::Display;
+use semver::Version as Semver;
 use smartstring::alias::String;
 use std::fmt::Display;
 
-use semver::Version as Semver;
-
 pub const LEAFC_VERSION: &str = concat!(
-    "leafc v",
+    "v",
     env!("CARGO_PKG_VERSION"),
     " (",
     env!("LEAFC_COMMIT_HASH"),
@@ -32,13 +31,15 @@ pub const LEAFC_TARGET: &str = env!("LEAFC_TARGET_TRIPLE");
 /// # Examples
 ///
 /// ```rust
-/// use leafc_cfg::settings::Version;
+/// use leafc_cfg::settings::meta::version::Version;
+/// use leafc_cfg::settings::meta::version::CommitHash;
+/// use semver::Version as Semver;
 ///
 /// let version = Version::Semver(Semver::new(0, 1, 0));
 /// assert_eq!(version.to_string(), "0.1.0");
 ///
 /// let version = Version::CommitHash(CommitHash::new("a1b2c3d4"));
-/// assert_eq!(version.to_string(), "commit hash");
+/// assert_eq!(version.to_string(), "a1b2c3d4");
 /// ```
 // ANCHOR: input
 // #[salsa::input]
@@ -78,15 +79,7 @@ impl Display for Version {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Semver(semver) => write!(f, "{semver}"),
-            Self::CommitHash(_) => Ok({
-                // let str = String::from("commit hash").to_owned().as_str();
-
-                // write!(f, "{str}")
-                let commit_hash = match self {
-                    Self::CommitHash(commit_hash) => commit_hash,
-                    _ => unreachable!(),
-                };
-            }),
+            Self::CommitHash(commit_hash) => write!(f, "{commit_hash}"),
         }
     }
 }

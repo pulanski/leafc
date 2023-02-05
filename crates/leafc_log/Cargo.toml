@@ -14,4 +14,5 @@ dirs-next = { workspace = true }
 fern = { workspace = true }
 log = { workspace = true }
 miette = { workspace = true }
+owo-colors = { workspace = true }
 whoami = { workspace = true }

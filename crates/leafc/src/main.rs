@@ -1,9 +1,15 @@
+/// The main entry point for the leafc compiler (i.e. the `leafc` binary).
+///
+/// Handles the command line arguments and then runs the driver or repl as
+/// appropriate.
+mod entry;
+
+use entry::LeafcEntry;
+
 use miette::Result;
 use std::process::ExitCode;
 
-use leafc_driver::LeafcDriver;
-
 fn main() -> Result<ExitCode> {
-    // Run the driver.
-    LeafcDriver::run()
+    // Run the entry point for the compiler.
+    LeafcEntry::run()
 }

@@ -1,11 +1,17 @@
+pub mod cfg;
 pub mod cli;
+pub mod driver;
 pub mod lexer;
 pub mod log;
+pub mod repl;
 // pub mod parser;
 
+use cfg::CfgError;
 use cli::CliError;
+use driver::DriverError;
 use lexer::LexicalError;
 use log::LogError;
+use repl::ReplError;
 
 /// The various **kinds of errors** that can occur within the compiler. These
 /// include errors that occur while **parsing the command line arguments** ([`CliError`]),
@@ -18,6 +24,9 @@ use log::LogError;
 /// allows for the errors to be converted into a **human-readable diagnostic
 /// message**.
 ///
+/// // TODO: refactor the lexical error and parser error types to a single
+/// // syntax error type (more relevant to the user).
+///
 /// ## Error variants include:
 ///
 /// [`CliError`]
@@ -25,9 +34,19 @@ use log::LogError;
 /// [`LexicalError`]
 ///
 /// [`LogError`]
+///
+/// [`ParserError`]
+///
+/// [`TypeCheckError`]
+///
+/// [`CodegenError`]
+///
+/// [`ReplError`]
 pub enum LeafcError {
     /// An error that occurred while **parsing the command line arguments**.
     CliError(CliError),
+    /// An error that occurred while **running the driver**.
+    DriverError(DriverError),
     /// An error that occurred while **lexing** the source code.
     LexicalError(LexicalError),
     /// An error that occurred within the **logging system**.
@@ -38,4 +57,6 @@ pub enum LeafcError {
     // TypeCheckError(TypeCheckError),
     // /// An error that occurred while generating the output.
     // CodegenError(CodegenError),
+    /// An error that occurred while **running the repl**.
+    ReplError(ReplError),
 }

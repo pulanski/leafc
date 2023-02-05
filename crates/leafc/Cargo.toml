@@ -20,9 +20,13 @@ repository.workspace = true
 
 [dependencies]
 leafc_cli = { path = "../leafc_cli" }
+leafc_cfg = { path = "../leafc_cfg" }
 leafc_driver = { path = "../leafc_driver" }
+leafc_log = { path = "../leafc_log" }
+leafc_repl = { path = "../leafc_repl" }
 
 atomic = { workspace = true }
+clap = { workspace = true }
 derivative = { workspace = true }
 derive_builder = { workspace = true }
 log = { workspace = true }

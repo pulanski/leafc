@@ -29,34 +29,48 @@ use clap::ValueEnum;
 /// ```
 #[derive(Debug, Default, Display, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, ValueEnum)]
 pub enum LogLevel {
-    /// The **most fine-grained** level for logging. This is the **most verbose** level, and is useful for
-    /// annotating the compiler's internal state at each step in the compilation process (e.g. the `AST`, `LLVM IR`,
-    /// etc.). This can be used to better understand **where performance bottlenecks are occurring**.
+    /// The most fine-grained level for logging.
+    //
+    // The **most fine-grained** level for logging. This is the **most verbose** level, and is useful for
+    // annotating the compiler's internal state at each step in the compilation process (e.g. the `AST`,
+    // `LLVM IR`, tc.). This can be used to better understand **where performance bottlenecks are
+    // occurring**.
     Trace,
 
-    /// The **second most fine-grained** level for logging. This is less granular than [`LogLevel::Trace`], but is
-    /// still useful for annotating the compiler's internal state at each step in the compilation process. This can
-    /// be useful for **incrementally debugging** the compiler state as a whole.
+    /// The second most fine-grained level for logging (e.g. less granular than [`LogLevel::Trace`]).
+    //
+    // but is still useful for annotating the compiler's internal state at each step in the compilation process.
+    // This can be useful for **incrementally debugging** the compiler state as a whole.
     Debug,
 
-    /// The **default** level for logging. This is **less granular** than [`LogLevel::Debug`], but is still useful
-    /// for annotating the compiler's internal state at each step in the compilation process and is used to present
-    /// **high-level information** about the compiler's progress to the user.
+    /// Displays default information about the compiler's progress.
+    //
+    // The **default** level for logging.
+    //
+    // This is **less granular** than [`LogLevel::Debug`], but is still useful
+    // for annotating the compiler's internal state at each step in the compilation process
+    // and is used to present **high-level information** about the compiler's progress to the user.
     #[default]
     Info,
 
-    /// The level for displaying **warnings**. This is a **higher-level** of logging than [`LogLevel::Info`], and is
-    /// used for annotating unexpected behavior in the compiler (e.g. a bug in the compiler, or a bug in the user's
-    /// code).
+    /// Display warnings that may occur.
+    //
+    // The level for displaying **warnings**. This is a **higher-level** of logging than [`LogLevel::Info`], and is
+    // used for annotating unexpected behavior in the compiler (e.g. a bug in the compiler, or a bug in the user's
+    // code).
     Warn,
 
-    /// The level for displaying **errors**. This is a **higher-level** of logging than [`LogLevel::Warn`], and is
-    /// used for annotating unexpected behavior within a subsystem of the compiler. This is also used to annotate a
-    /// _blast radius_ for **errors** that occur during the compilation process
+    /// Display errors that may occur.
+    //
+    // The level for displaying **errors**. This is a **higher-level** of logging than [`LogLevel::Warn`], and is
+    // used for annotating unexpected behavior within a subsystem of the compiler. This is also used to annotate a
+    // _blast radius_ for **errors** that occur during the compilation process
     Error,
 
-    /// The level for displaying **fatal errors**. This is a **higher-level** of logging than [`LogLevel::Error`],
-    /// and is used for annotating **fatal behavior** that **prevents the compiler from continuing**.
+    /// Display fatal errors that prevent the compiler from continuing.
+    //
+    // This is a **higher-level** of logging than [`LogLevel::Error`],
+    // and is used for annotating **fatal behavior** that **prevents the compiler from continuing**.
     Fatal,
 }
 

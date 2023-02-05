@@ -70,3 +70,5 @@ pub struct CommitHash {
 }
 
 ```
+
+[ ] - need to change repl config file to use `dirs` crate or something else to find config

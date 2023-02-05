@@ -17,7 +17,7 @@ pub const LOG_ERROR_PREFIX: &str = "Logging System Error";
 /// use strum::EnumCount;
 ///
 /// // There are x variants of the `LexicalError` enum.
-/// assert_eq!(1, LogError::COUNT);
+/// assert_eq!(3, LogError::COUNT);
 /// ```
 #[derive(Debug, Error, EnumCountMacro, Diagnostic)]
 pub enum LogError {
@@ -27,7 +27,7 @@ pub enum LogError {
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_errors::lexer::LogError;
+    /// use leafc_errors::log::LogError;
     ///
     /// // The error is returned when
     /// let error = LogError::LogFileInitialization("".into());
