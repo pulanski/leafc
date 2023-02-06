@@ -27,6 +27,7 @@ leafc_utils = { path = "../leafc_utils" }
 atomic = { workspace = true }
 clap = { workspace = true }
 derivative = { workspace = true }
+derive_more = { workspace = true }
 derive_builder = { workspace = true }
 log = { workspace = true }
 logos = { workspace = true }
@@ -34,7 +35,10 @@ logos-derive = { workspace = true }
 miette = { workspace = true }
 num_cpus = { workspace = true }
 parking_lot = { workspace = true }
-pretty_assertions_sorted = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
 wax = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }
+rstest = { workspace = true }

@@ -37,7 +37,6 @@ pub struct TokenStream {
 
 impl fmt::Display for TokenStream {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // loop through the tokens and print them
         for token in &self.tokens[..self.tokens.len() - 1] {
             writeln!(f, "{token}")?;
         }
@@ -47,10 +46,33 @@ impl fmt::Display for TokenStream {
     }
 }
 
+/// ## [**`Token`**][Token]
+///
+/// A **token** is a **lexical unit** of the source code. It is a **minimal
+/// unit** of the language that has **meaning**. Tokens are **generated** by
+/// the **lexer** and are **consumed** by the **parser**.
+///
+/// Tokens are **immutable** and **non-owning**. They are **copied** by the
+/// parser and **moved** by the compiler.
+///
+/// # Example:
+///
+/// ```rust
+/// // TODO: add example
+/// // `use` is a keyword,
+/// // `std` is an identifier,
+/// // and `;` is punctuation.
+/// use std::fmt;
+/// ```
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Token {
+    /// The **kind** of the token (i.e. the **type** of the token)
     kind: TokenKind,
+
+    /// The **lexeme** of the token (i.e. the **text** that the token represents)
     lexeme: SmolStr,
+
+    /// The **span** of the token (i.e. the **location** of the token in the input string)
     span: Span,
 }
 

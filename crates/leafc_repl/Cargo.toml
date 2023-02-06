@@ -26,3 +26,6 @@ reedline = { workspace = true }
 rusqlite = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 smartstring = { workspace = true }
+smol_str = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }

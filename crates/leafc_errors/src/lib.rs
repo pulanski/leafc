@@ -6,7 +6,6 @@ pub mod log;
 pub mod repl;
 // pub mod parser;
 
-use cfg::CfgError;
 use cli::CliError;
 use driver::DriverError;
 use lexer::LexicalError;

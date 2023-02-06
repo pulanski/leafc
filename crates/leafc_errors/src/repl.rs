@@ -55,4 +55,22 @@ pub enum ReplError {
         help("The history file could not be opened. Please try again (and report this issue if it persists).")
     )]
     HistoryFileOpen(SmolStr),
+
+    /// This error is returned when an **invalid update** was attempted on the
+    /// REPL's **settings**.
+    /// This error is typically returned during the **execution** of the REPL.
+    #[error(
+        "{} {} {}{} {}",
+        REPL_ERROR_PREFIX.blue(),
+        "-".black(),
+        "Invalid update to REPL settings".red(),
+        ":".black(),
+        .0.yellow().italic()
+    )]
+    #[diagnostic(
+        code(leafc::repl::invalid_settings_update),
+        url(docsrs),
+        help("The REPL settings could not be updated. Please try again (and report this issue if it persists).")
+    )]
+    InvalidSettingsUpdate(SmolStr),
 }

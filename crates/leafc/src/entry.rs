@@ -1,11 +1,9 @@
 use std::process::ExitCode;
 
 use clap::Parser;
-use leafc_cfg::{cli::CommandLineConfig, leafc_settings};
-use leafc_cli::LeafcCli;
-use leafc_driver::LeafcDriver;
-use leafc_repl::LeafcRepl;
 use miette::Result;
+
+use leafc_cli::LeafcCli;
 
 pub struct LeafcEntry;
 
@@ -47,21 +45,27 @@ impl LeafcEntry {
     /// the corresponding `ExitCode` indicating the reason for the failure for
     /// the particular error.
     pub fn run() -> Result<ExitCode> {
+        // TODO: this may be moved to the driver
+        // initialize the compiler's settings
+        // let settings = LeafcSettings::new(&cli); // this api or
+        // let settings = leafc_cfg::init_settings();
+        // this in turn calls:
+
+        // mutate the settings based on config files
+        // leafc_cfg::update_settings_via_config_files(&mut settings);
+
         // parse the command line arguments
         let cli = LeafcCli::parse();
 
-        // initialize the compiler settings
-        // leafc_settings::init(
+        // mutate the settings based on the command line arguments
 
-        // let emit_kinds = cli.emit_kinds.clone();
-
-        // CommandLineConfig::new(
+        // leafc_cfg::update_settings_via_cli(&mut settings, &cli);
 
         // initialize the logging system
         leafc_log::init(cli.verbosity)?;
 
         // run the driver or repl as appropriate
-        if cli.sources.is_empty() {
+        if cli.sources().is_empty() {
             leafc_repl::entry(&cli)?;
         } else {
             leafc_driver::batch_run(&cli)?;

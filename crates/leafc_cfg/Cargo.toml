@@ -23,6 +23,7 @@ doctest = true
 
 [dependencies]
 leafc_errors = { path = "../leafc_errors" }
+leafc_utils = { path = "../leafc_utils" }
 
 atomic = { workspace = true }
 clap = { workspace = true }

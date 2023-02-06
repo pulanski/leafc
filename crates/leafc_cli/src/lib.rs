@@ -1,10 +1,11 @@
 use std::path::PathBuf;
 
 use clap::Parser;
+use getset::Getters;
 use leafc_cfg::settings::{log::LogLevel, meta::version::LEAFC_VERSION};
 
 /// # **Leafc**, an Experimental Compiler
-#[derive(Parser, Default, Debug)]
+#[derive(Parser, Default, Debug, Getters, PartialEq, Eq, Hash)]
 #[clap(name = "leafc")]
 #[clap(
     about = "Leafc, an experimental compiler",
@@ -13,6 +14,7 @@ use leafc_cfg::settings::{log::LogLevel, meta::version::LEAFC_VERSION};
     author = "Josh Kersey <iopulanski@gmail.com>"
 )]
 #[clap(bin_name = "leafc")]
+#[getset(get = "pub")]
 pub struct LeafcCli {
     /// Names of the source files to compile.
     pub sources: Vec<PathBuf>,

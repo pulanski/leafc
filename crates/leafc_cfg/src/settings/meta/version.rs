@@ -117,7 +117,7 @@ mod version_test_suite {
 
         // CommitHash
 
-        let commit_hash = CommitHash::new("a1b2c3d4");
+        // let commit_hash = CommitHash::new("a1b2c3d4");
         let commit_hash = CommitHashBuilder::default()
             .hash("a1b2c3d4".into())
             .timestamp("2021-01-01 00:00:00".into())

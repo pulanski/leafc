@@ -4,7 +4,7 @@
 /// The target triple is used to specify the **target architecture** and **operating system** that the
 /// executable will be compiled for. This is used to **generate** the **correct** **machine code** for the
 /// target architecture and operating system.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TargetTriple {
     /// The **native target triple** for the current machine.
     Native(TargetTripleData),
@@ -12,6 +12,12 @@ pub enum TargetTriple {
     /// A **custom target triple**.
     /// Useful for **cross-compiling**.
     Custom(TargetTripleData),
+}
+
+impl Default for TargetTriple {
+    fn default() -> TargetTriple {
+        TargetTriple::Native(TargetTripleData::default())
+    }
 }
 
 /// The **underlying data** for a [`TargetTriple`].
@@ -36,7 +42,7 @@ pub enum TargetTriple {
 /// // assert_eq!(TargetOs::Native, TargetOs::default());
 /// // assert_eq!(TargetEnv::Native, TargetEnv::default());
 /// ```
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Default)]
 pub struct TargetTripleData {
     /// The **target architecture** to use when compiling the input file.
     pub arch: TargetArch,

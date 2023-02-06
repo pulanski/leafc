@@ -27,7 +27,7 @@ use clap::ValueEnum;
 /// assert!(LogLevel::Warn < LogLevel::Error);
 /// assert!(LogLevel::Error < LogLevel::Fatal);
 /// ```
-#[derive(Debug, Default, Display, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, ValueEnum)]
+#[derive(Debug, Default, Display, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, ValueEnum, Hash)]
 pub enum LogLevel {
     /// The most fine-grained level for logging.
     //

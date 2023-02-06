@@ -1,3 +1,5 @@
+
+
 /// The **optimization level** to use when compiling the input file.
 /// defaults to `OptLevel::None`
 ///
@@ -18,10 +20,11 @@
 /// assert!(OptLevel::O1 < OptLevel::O2);
 /// assert!(OptLevel::O2 < OptLevel::O3);
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, Hash, Default)]
 pub enum OptLevel {
     /// **No optimizations** are performed. This is the default optimization level.
     /// Useful for **debugging purposes** during development.
+    #[default]
     None,
 
     /// **Basic optimizations passes** are performed.

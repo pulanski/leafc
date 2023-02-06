@@ -54,8 +54,12 @@ use std::{path::PathBuf, process::ExitCode, time::Duration};
 
 use derivative::Derivative;
 use derive_builder::Builder;
+use getset::{Getters, MutGetters, Setters};
 use indicatif::{ProgressBar, ProgressStyle};
-use leafc_cfg::settings::{emit::EmitKinds, EmitKind};
+use leafc_cfg::{
+    cli::CommandLineConfig,
+    settings::{emit::EmitKinds, EmitKind},
+};
 use leafc_cli::LeafcCli;
 use leafc_errors::{cli::CliError, driver::DriverError};
 use leafc_lexer::lexer::TokenStream;
@@ -82,20 +86,23 @@ use smol_str::SmolStr;
 /// ```rust,no_run
 /// use leafc_driver::LeafcDriver;
 ///
+/// // TODO: add an example of how to use the driver
 /// // Run a new driver with the default configuration.
-/// LeafcDriver::run();
+/// // LeafcDriver::compile();
 /// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Derivative, Builder)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Derivative, Builder, Getters, Setters, MutGetters)]
 #[derivative(Default(new = "true"))]
 pub struct LeafcDriver {
     /// The driver's version.
     #[derivative(Default(value = "\"0.1.0\".into()"))]
+    #[getset(get = "pub")]
     version: SmolStr,
 
     /// The kinds of output to emit.
     // #[derivative(Default(value = "vec![EmitKind::Ast]"))]
     // have this default to the default defined in settings.rs within the leafc_cfg crate
     #[derivative(Default(value = "vec![]"))]
+    #[getset(get = "pub", get_mut = "pub")]
     emit_kinds: EmitKinds,
 }
 
@@ -112,11 +119,17 @@ impl LeafcDriver {
         let tokens = TokenStream::new(text_source, lossless);
 
         // if we are emitting the tokens, then log them
-        if self.emit_kinds.contains(&EmitKind::TokenStream) {
+        if self.emit_kinds().contains(&EmitKind::TokenStream) {
             log::info!("{tokens}");
         }
 
         Ok(())
+    }
+
+    /// TODO: document
+    pub fn apply_repl_settings(&mut self, settings: &CommandLineConfig) {
+        self.emit_kinds_mut().clear();
+        self.emit_kinds_mut().extend(settings.emit_kinds.clone());
     }
 }
 
@@ -140,7 +153,7 @@ impl LeafcDriver {
 /// use clap::Parser;
 ///
 /// // Execute the compilation pipeline on the user's input files.
-/// LeafcDriver::batch_run(&LeafcCli::parse());
+/// leafc_driver::batch_run(&LeafcCli::parse());
 /// ```
 ///
 /// # Errors

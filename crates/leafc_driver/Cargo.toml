@@ -32,6 +32,7 @@ atomic = { workspace = true }
 clap = { workspace = true }
 derivative = { workspace = true }
 derive_builder = { workspace = true }
+getset = { workspace = true }
 indicatif = { workspace = true }
 log = { workspace = true }
 miette = { workspace = true }

@@ -33,5 +33,3 @@ pub mod cli;
 pub mod settings;
 
 pub mod defs;
-
-pub mod leafc_settings;

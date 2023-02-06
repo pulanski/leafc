@@ -1,6 +1,6 @@
-use config::{Config, Environment, File};
-use miette::Result;
-use serde::Deserialize;
+// use config::{Config, Environment, File};
+// use miette::Result;
+// use serde::Deserialize;
 
 use self::{emit::EmitKinds, target_triple::TargetTripleData};
 pub use self::{log::LogLevel, opt::OptLevel, target_triple::TargetTriple};
@@ -14,6 +14,10 @@ pub mod meta;
 
 /// Defines the **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
 pub mod log;
+
+/// Defines the **settings** used to **tune** the compiler's behavior (e.g. the **log level**, **log topic**,
+/// **optimization level**, etc.) which can be set from the command line (e.g. `leafc --log-level=debug`).
+pub mod command_line;
 
 /// Defines the **optimization level** to use when compiling the input file.
 pub mod opt;
@@ -68,15 +72,27 @@ pub struct LeafcSettings {
     pub target_triple: TargetTriple,
 }
 
+impl Default for LeafcSettings {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LeafcSettings {
-    pub fn new() -> Result<LeafcSettings> {
-        Ok(LeafcSettings {
+    /// Initializes the **settings** for the compiler with the **default** values
+    /// specified by the developers.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the **settings** for the compiler.
+    pub fn new() -> LeafcSettings {
+        LeafcSettings {
             version: "0.1.0".to_string(),
             emit_kinds: vec![],
             opt_level: OptLevel::None,
             verbosity: LogLevel::Info,
             target_triple: TargetTriple::Native(TargetTripleData::new()),
-        })
+        }
     }
     //     let run_mode = env::var("RUN_MODE").unwrap_or_else(|_| "development".into());
 
@@ -108,3 +124,22 @@ impl LeafcSettings {
     //     s.try_deserialize()
     // }
 }
+
+// settings can be constructed from config files, cli args, or a combination of both
+// in general, the precedence is as follows: cli > config file > default values
+// to tackle this, we can have a `LeafcSettings` struct that contains all the settings
+// and then we can have a `LeafcSettingsBuilder` struct that contains all the settings
+
+// Mutates the compiler's **settings** from the command-line arguments passed to the compiler.
+// This occurs after the **configuration file** has been parsed and the **settings** have been
+// initialized to the **default values**.
+//
+//    mut again               mutate              init
+//  command-line     <-     config file   <-    default values
+
+// struct settings;
+
+// pub fn with_cli_config(cli_config: &CommandLineConfig,&mut settings: LeafcSettings) -> Result<LeafcSettings> {
+// pub fn (cli_config: &CommandLineConfig, LeafcSettings) -> Result<LeafcSettings> {
+//     todo!()
+// }

@@ -1,13 +1,24 @@
 use derivative::Derivative;
 use derive_builder::Builder;
 use getset::{CopyGetters, Getters, MutGetters, Setters};
+use leafc_errors::repl::ReplError;
+use miette::{IntoDiagnostic, Result};
 use smartstring::alias::String;
+
+use crate::cli::{CommandLineConfig, CommandLineConfigBuilder};
 
 use super::emit::{EmitKind, EmitKinds};
 
 pub const DEFAULT_HISTORY_FILE: &str = "~/.leafc_history";
 pub const DEFAULT_LOG_FILE: &str = "~/.leafc/repl.log";
 pub const DEFAULT_HISTORY_SIZE: usize = 100;
+
+pub const TOK_EXTENSION: &str = ".tok";
+pub const AST_EXTENSION: &str = ".ast";
+pub const HIR_EXTENSION: &str = ".hir";
+pub const MIR_EXTENSION: &str = ".mir";
+pub const LLVM_IR_EXTENSION: &str = ".ll";
+pub const ASM_EXTENSION: &str = ".asm";
 
 #[derive(Debug, Derivative, PartialEq, Eq, Builder, Getters, MutGetters, CopyGetters, Setters)]
 #[derivative(Default(new = "true"))]
@@ -17,7 +28,7 @@ pub struct ReplSettings {
     #[derivative(Default(value = "vec![]"))]
     #[builder(default = "vec![]")]
     #[getset(set = "pub")]
-    emit_kinds: Vec<EmitKind>,
+    pub emit_kinds: Vec<EmitKind>,
 
     /// The **history file** to use for the repl.
     /// defaults to `~/.leafc/history`
@@ -65,6 +76,83 @@ impl ReplSettings {
 
     pub fn set_log_file(&mut self, log_file: impl Into<String>) {
         self.repl_log_file = log_file.into();
+    }
+
+    pub fn add_emit_kind(&mut self, emit_kind: EmitKind) {
+        self.emit_kinds.push(emit_kind);
+    }
+
+    pub fn remove_emit_kind(&mut self, emit_kind: EmitKind) {
+        self.emit_kinds.retain(|ek| ek != &emit_kind);
+    }
+
+    pub fn update_from_source_text(
+        &mut self,
+        source_text: &mut String,
+    ) -> Result<(bool, CommandLineConfig)> {
+        let mut updated = false;
+        let source_tmp = source_text.clone();
+        let mut lines = source_tmp.lines();
+
+        if let Some(line) = lines.next() {
+            let mut emit_kinds = vec![];
+
+            // check if the line contains an emit kind (e.g. .tok, .ast, .hir, .mir, .ll, .asm)
+            // if so, remove it from the line and add it to the settings
+            for word in line.split_whitespace() {
+                if word.starts_with("//") {
+                    continue;
+                }
+
+                if !updated
+                    && (word.contains(TOK_EXTENSION)
+                        || word.contains(AST_EXTENSION)
+                        || word.contains(HIR_EXTENSION)
+                        || word.contains(MIR_EXTENSION)
+                        || word.contains(LLVM_IR_EXTENSION)
+                        || word.contains(ASM_EXTENSION))
+                {
+                    updated = true;
+                }
+
+                match word {
+                    TOK_EXTENSION => {
+                        emit_kinds.push(EmitKind::TokenStream);
+                        leafc_utils::string::remove_substr(source_text, word);
+                    }
+                    AST_EXTENSION => {
+                        emit_kinds.push(EmitKind::Ast);
+                        leafc_utils::string::remove_substr(source_text, word);
+                    }
+                    // "hir" => emit_kinds.push(EmitKind::Hir),
+                    // "mir" => emit_kinds.push(EmitKind::Mir),
+                    LLVM_IR_EXTENSION => {
+                        emit_kinds.push(EmitKind::LlvmIr);
+                        // leafc_log::info!("added emit kind: LlvmIr");
+                        leafc_utils::string::remove_substr(source_text, word);
+                    }
+                    ASM_EXTENSION => {
+                        emit_kinds.push(EmitKind::Asm);
+                        // leafc_log::info!("added emit kind: Asm");
+                        leafc_utils::string::remove_substr(source_text, word);
+                    }
+                    _ => {}
+                }
+            }
+
+            self.set_emit_kinds(emit_kinds);
+        }
+
+        // use builder pattern to create a new CommandLineConfig
+        let config = CommandLineConfigBuilder::default()
+            .emit_kinds(self.emit_kinds())
+            .build()
+            .into_diagnostic()
+            .map_err(|e| {
+                ReplError::InvalidSettingsUpdate(format!("Couldn't update settings: {e}").into())
+            })?;
+
+        Ok((updated, config))
     }
 }
 

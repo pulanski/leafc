@@ -1,34 +1,40 @@
 #![allow(dead_code, unused)]
-use std::{fs::File, process::ExitCode};
+mod history;
+mod prompt;
+mod syntax_highlighter;
 
-use leafc_cli::LeafcCli;
-use leafc_driver::LeafcDriver;
-use leafc_errors::repl::ReplError;
-use miette::{IntoDiagnostic, Result};
-use smartstring::alias::String;
+use std::{fs::File, process::ExitCode};
 
 use derivative::Derivative;
 use derive_builder::Builder;
 use derive_new::new;
 use getset::{CopyGetters, Getters, MutGetters, Setters};
 use leafc_cfg::settings::{
-    repl::{ReplSettings, DEFAULT_HISTORY_FILE, DEFAULT_HISTORY_SIZE},
+    repl::{
+        ReplSettings, ASM_EXTENSION, AST_EXTENSION, DEFAULT_HISTORY_FILE, DEFAULT_HISTORY_SIZE,
+        LLVM_IR_EXTENSION, TOK_EXTENSION,
+    },
     EmitKind,
 };
+use miette::{IntoDiagnostic, Result};
 use reedline::{
     ExampleHighlighter, FileBackedHistory, Highlighter, Reedline, Signal, SqliteBackedHistory,
 };
+use smartstring::alias::String;
+
+use leafc_cli::LeafcCli;
+use leafc_driver::LeafcDriver;
+use leafc_errors::repl::ReplError;
+use smol_str::SmolStr;
+use strum::IntoEnumIterator;
 
 use crate::prompt::LeafcPrompt;
 
-mod history;
-mod prompt;
-mod syntax_highlighter;
-
-#[derive(Debug, new)] // getters, setters, and builders
+#[derive(Debug, new, MutGetters, Getters, Setters)] // getters, setters, and builders
 pub struct LeafcRepl {
     /// The repl's **settings**.
     #[new(default)]
+    #[getset(get = "pub", get_mut = "pub", set = "pub")]
     settings: ReplSettings,
 }
 
@@ -38,12 +44,15 @@ impl LeafcRepl {
         let mut line_editor = self.setup_line_editor()?;
         let mut prompt = self.setup_prompt()?;
 
-        let driver = LeafcDriver::new();
+        let mut driver = LeafcDriver::new();
 
         loop {
             let sig = line_editor.read_line(&prompt);
             match sig {
                 Ok(Signal::Success(buffer)) => {
+                    // convert the buffer to an optimized string
+                    let mut buffer: String = buffer.into();
+
                     // check if the line is empty and the user entered backspace
                     // if so, flash the prompt gray and continue
                     // if buffer.is_empty() {
@@ -51,8 +60,29 @@ impl LeafcRepl {
                     //     continue;
                     // }
 
+                    // if the line is empty and the user entered enter, flash the prompt red
+                    // and continue
+                    // if buffer.is_empty() {
+                    //     line_editor.flash_prompt_red(); // pseudo code
+                    //     continue;
+                    // }
+
+                    // update the repl's settings if the user entered a setting
+                    let (updated, updated_config) =
+                        self.settings_mut().update_from_source_text(&mut buffer)?;
+
+                    // if the settings were updated, apply them to the driver
+                    if updated {
+                        driver.apply_repl_settings(&updated_config);
+                    }
+
+                    // if empty, no need to compile
+                    if buffer.is_empty() {
+                        continue;
+                    }
+
                     // Run a compilation pass on the line
-                    driver.compile(&buffer, false)?;
+                    driver.compile(&buffer, true)?;
 
                     prompt.increment_line_count();
                 }
@@ -115,6 +145,7 @@ pub fn entry(cli: &LeafcCli) -> Result<ExitCode> {
     leafc_log::logo();
     leafc_utils::vertical_padding(1);
 
+    // TODO: refactor this to be LeafcRepl::run(settings: ReplSettings);
     let mut repl = LeafcRepl::new();
     repl.run()
 }
