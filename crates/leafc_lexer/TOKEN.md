@@ -10,20 +10,18 @@ Additionally, if you are unfamiliar with some of the commonly
 used **lexical-analyzer generators** used within the construction
 of compilers, you can read about them [here](https://en.wikipedia.org/wiki/Comparison_of_parser_generators).
 
-Source input can be broken down into the following kinds of tokens:
-
-<!-- * [Keywords] -->
-* **Keywords**
-* **Identifiers**
-* **Literals**
-* **Lifetimes**
-* **Punctuation**
-* **Delimiters**
-<!-- * [Identifiers][identifier]
-* [Literals](#literals)
-* [Lifetimes](#lifetimes-and-loop-labels)
-* [Punctuation](#punctuation)
-* [Delimiters](#delimiters) -->
-
 You can find the full list of tokens and more relevant documentation
 at the [Leafc documentation](https://leaf-lang.github.io/leafc/leafc_lexer/enum.Token.html).
+
+## Tokens
+
+| Token | Description | Example |
+| --- | --- | --- |
+| `Comment` | A comment in the source code. | `// This is a comment` |
+| `Whitespace` | Whitespace in the source code. | ` ` |
+| `Newline` | A newline in the source code. | `\n` |
+| `Identifier` | An identifier in the source code. | `foo` |
+| `Integer` | An integer in the source code. | `42` |
+| `Float` | A float in the source code. | `3.14` |
+| `String` | A string in the source code. | `"Hello, world!"` |
+| `Char` | A character in the source code. | `'a'` |

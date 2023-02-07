@@ -37,6 +37,8 @@ num_cpus = { workspace = true }
 parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }
 wax = { workspace = true }
 
 [dev-dependencies]
