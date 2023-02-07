@@ -140,7 +140,13 @@ impl ReplSettings {
                 }
             }
 
-            self.set_emit_kinds(emit_kinds);
+            for emit_kind in emit_kinds {
+                if self.emit_kinds.contains(&emit_kind) {
+                    self.remove_emit_kind(emit_kind);
+                } else {
+                    self.add_emit_kind(emit_kind);
+                }
+            }
         }
 
         // use builder pattern to create a new CommandLineConfig

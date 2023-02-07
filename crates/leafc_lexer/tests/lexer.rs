@@ -1,3 +1,5 @@
+mod tokens;
+
 #[test]
 fn lex_test_suite() {
     // Iterate over all files in the `test_data/` directory
