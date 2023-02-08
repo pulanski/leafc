@@ -5,6 +5,7 @@ use std::fmt;
 use crate::token::TokenKind;
 use leafc_utils::location::Span;
 use logos::Logos;
+use owo_colors::OwoColorize;
 use smol_str::SmolStr;
 
 // fn lex(input: &str) -> Vec<TokenKind> {
@@ -78,7 +79,16 @@ pub struct Token {
 
 impl fmt::Display for Token {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} @ ({}) {}", self.kind, self.span, self.lexeme)
+        write!(
+            f,
+            "{} {} {}{}{} {}",
+            self.kind.cyan(),
+            "@".black().italic(),
+            "[".red().bold(),
+            self.span,
+            "]".red().bold(),
+            self.lexeme,
+        )
     }
 }
 

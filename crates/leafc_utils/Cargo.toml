@@ -8,5 +8,7 @@ edition = "2021"
 [dependencies]
 chrono = { workspace = true }
 derive_more = { workspace = true }
+getset = { workspace = true }
+owo-colors = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 smartstring = { workspace = true }

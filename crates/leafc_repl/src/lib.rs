@@ -46,6 +46,9 @@ impl LeafcRepl {
 
         let mut driver = LeafcDriver::new();
 
+        // TODO: string to hold the current source text,
+        // needed for multi-line input
+
         loop {
             let sig = line_editor.read_line(&prompt);
             match sig {
@@ -80,6 +83,8 @@ impl LeafcRepl {
                     if buffer.is_empty() {
                         continue;
                     }
+
+                    // if the line ends in `{`, add a newline and a `}` to the buffer
 
                     // Run a compilation pass on the line
                     driver.compile(&buffer, true)?;

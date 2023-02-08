@@ -9,15 +9,22 @@ use logos::Logos;
 #[allow(non_camel_case_types)]
 #[derive(Debug, Logos, PartialEq, Eq, Clone, Copy, Hash, PartialOrd, Ord, Display)]
 pub enum TokenKind {
+    /// A **lexical error** is a sequence of characters that cannot be interpreted as a valid token.
+    /// The lexer will report an error for each lexical error encountered.
     #[error]
     // #[regex(r"[ \t\f]+", logos::skip)]
     ERROR,
 
+    /// A **whitespace** is a sequence of one or more **space**, **tab**, or **newline characters**.
+    /// Depending on whether or not a lossless syntax tree is desired, whitespace is ignored by the lexer.
     #[regex(r"[ \t\f\n]+")]
     WHITESPACE,
 
-    #[regex(r"[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}]*")]
-    IDENT,
+    /// An **identifier** is a sequence of one or more **Unicode letters** or **digits** or **underscores**
+    /// or **emoji**. The first character of an identifier must be a **Unicode letter** or **underscore**
+    /// or **emoji** (e.g. `a`, `_`, `本`, `🦀`).
+    #[regex(r"_?[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}]*")]
+    IDENTIFIER,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Comments
@@ -73,8 +80,6 @@ pub enum TokenKind {
     /// and `0b` or `0B` for binary. An optional suffix sets the type of the number: `f32` or `f64`.
     /// The default type is `f64`.
     /// The exponent is a decimal integer optionally preceded by a sign.
-    #[regex("[+-]?(inf|Inf|INF)(16|32)?")] // infinity
-    #[regex("[+-]?(nan|NaN|NAN)(16|32)?")] // NaN (a value that is not `==` to any float including itself)
     #[regex(
         r#"[+-]?([0-9][0-9_]*)?\.([0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?(f32|f64)?"#,
         priority = 2
@@ -94,11 +99,176 @@ pub enum TokenKind {
     #[regex(r#"'[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}]*"#)]
     LIFETIME,
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Superscript literals
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// A **superscript integer** is a sequence of one or more decimal digits representing a non-negative
+    /// integer value. An **optional prefix** sets the base of the integer: `0o` for octal, `0x` or
+    /// `0X` for hexadecimal, and `0b` or `0B` for binary.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := 2¹²
+    /// assert_eq!(foo, 4096)
+    /// ```
+    #[regex("[⁺⁻]?[⁰¹²³⁴⁵⁶⁷⁸⁹][⁰¹²³⁴⁵⁶⁷⁸⁹_]*")] // decimal
+    #[regex("[⁺⁻]?⁰ᵇ[⁰¹][⁰¹_]*")] // binary
+    #[regex("[⁺⁻]?ᵒ⁰[⁰¹²³⁴⁵⁶⁷][⁰¹²³⁴⁵⁶⁷_]*")] // octal
+    #[regex("[⁺⁻]?⁰ˣ[⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ][⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ_]*")] // hexadecimal
+    INTEGER_SUP,
+
+    /// A **superscript floating point number** is a sequence of decimal digits representing a floating
+    /// point value. An **optional prefix** sets the base of the number: `0o` for octal, `0x` or `0X`
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := 2¹²·⁵
+    /// assert_eq!(foo, 5792.61875148)
+    /// ```
+    #[regex("[⁺⁻]?[⁰¹²³⁴⁵⁶⁷⁸⁹][⁰¹²³⁴⁵⁶⁷⁸⁹_]*·([⁰¹²³⁴⁵⁶⁷⁸⁹][⁰¹²³⁴⁵⁶⁷⁸⁹_]*)?")] // decimal
+    #[regex("[⁺⁻]?⁰ᵇ[⁰¹][⁰¹_]*·[⁰¹][⁰¹_]*")] // binary
+    #[regex("[⁺⁻]?ᵒ⁰[⁰¹²³⁴⁵⁶⁷][⁰¹²³⁴⁵⁶⁷_]*·[⁰¹²³⁴⁵⁶⁷][⁰¹²³⁴⁵⁶⁷_]*")] // octal
+    #[regex(
+        "[⁺⁻]?⁰ˣ[⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ][⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ_]*·[⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ][⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ_]*"
+    )] // hexadecimal
+    FLOAT_SUP,
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Mathematical constants, functions, and operators
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// The **mathematical constant** _pi_, `π`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := π
+    /// assert_eq!(foo, 3.141592653589793)
+    /// ```
+    #[token("pi")]
+    #[token("π")]
+    #[token("𝜋")]
+    #[token("𝛑")]
+    #[token("𝝅")]
+    #[token("𝞹")]
+    PI,
+
+    /// The **mathematical constant** _e_, "𝑒`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := e
+    /// assert_eq!(foo, 2.718281828459045)
+    /// ```
+    #[token("𝑒")]
+    #[token("euler")]
+    EULER,
+
+    /// The **mathematical constant** _phi_, `φ`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := φ
+    /// assert_eq!(foo, 1.618033988749895)
+    /// ```
+    #[token("phi")]
+    #[token("φ")]
+    #[token("𝜙")]
+    #[token("𝛗")]
+    #[token("𝝓")]
+    PHI,
+
+    /// The **mathematical constant** _tau_, `τ`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := τ
+    /// assert_eq!(foo, 6.283185307179586)
+    /// ```
+    #[token("tau")]
+    #[token("τ")]
+    #[token("𝜏")]
+    #[token("𝛕")]
+    #[token("𝝉")]
+    TAU,
+
+    /// The **mathematical constant** _catalan_, `catalan`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := catalan
+    /// assert_eq!(foo, 0.915965594177219)
+    /// ```
+    #[token("catalan")]
+    CATALAN,
+
+    /// The **mathematical constant** _gamma_, `γ`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := γ
+    /// assert_eq!(foo, 0.5772156649015329)
+    /// ```
+    #[token("γ")]
+    #[token("𝛾")]
+    #[token("eulergamma")]
+    #[token("eulermascheroni")]
+    EULERGAMMA,
+
+    /// The mathematical constant _infinity_, `∞`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := ∞
+    /// assert_eq!(foo, f64::INFINITY)
+    /// ```
+    #[regex("[+-]?∞(16|32)?", priority = 10)]
+    // #[token("[+-]?∞(16|32)?", priority = 10)]
+    #[regex("[+-]?(inf|Inf|INF)(16|32)?", priority = 10)] // infinity
+    INF,
+
+    /// The mathematical constant _not a number_, `NaN`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// foo := NaN
+    /// assert!(foo.is_nan())
+    /// ```
+    #[regex("[+-]?(nan|NaN|NAN)(16|32)?")]
+    // NaN (a value that is not `==` to any float including itself)
+    NAN,
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Reserved keywords (e.g. `export`, `final`, `throw`, etc.) are not allowed
     // as identifiers.
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// The **reseved keyword** `abstract`.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// // reserved keyword (not allowed as identifier, however, it is not used)
+    /// abstract
+    /// abstracto
+    /// abstrait
+    /// abstrakt
+    /// abstrato
+    /// astratto
+    /// abstrakti
+    /// абстрактный
+    /// 抽象
+    /// 抽象的
+    /// 추상
+    /// dhahania
+    /// ```
     #[token("abstract")] // English, Dutch
     #[token("abstracto")] // Spanish
     #[token("abstrait")] // French
@@ -173,6 +343,7 @@ pub enum TokenKind {
     #[token("mwisho")] // Swahili
     FINAL_KW,
 
+    /// The **reserved keyword** `is`.
     #[token("is")]
     IS_KW,
 
@@ -488,6 +659,25 @@ pub enum TokenKind {
     #[token("mechi")] // Swahili
     MATCH_KW,
 
+    /// The **keyword** `missing`.
+    #[regex("missing|Missing")] // English
+    #[regex("faltante|Faltante")] // Spanish
+    #[regex("manquant|Manquant")] // French
+    #[regex("missend|Missend")] // Dutch
+    #[regex("fehlen|Fehlen")] // German
+    #[regex("saknas|Saknas")] // Swedish
+    #[regex("mangler|Mangler")] // Danish
+    #[regex("savnet|Savnet")] // Norwegian
+    #[regex("mancante|Mancante")] // Italian
+    #[regex("ausente|Ausente")] // Portuguese
+    #[regex("puuttuu|Puuttuu")] // Finnish
+    #[regex("отсутствует|Отсутствует")] // Russian
+    #[token("欠けている")] // Japanese
+    #[token("缺失")] // Chinese
+    #[token("누락")] // Korean
+    #[regex("hakuna|Hakuna")] // Swahili
+    MISSING_KW,
+
     /// The **keyword** `mod`.
     #[token("mod")] // English
     #[token("module")] // French
@@ -536,6 +726,25 @@ pub enum TokenKind {
     #[token("mabadiliko")] // Swahili
     MUT_KW,
 
+    /// The **keyword** `not`.
+    #[token("not")] // English
+    #[token("no")] // Spanish
+    #[token("ne")] // French
+    #[token("niet")] // Dutch
+    #[token("nicht")] // German
+    #[token("inte")] // Swedish
+    #[token("ikke")] // Danish, Norwegian
+    #[token("non")] // Italian
+    #[token("não")] // Portuguese
+    #[token("ei")] // Finnish
+    #[token("не")] // Russian
+    #[token("ない")] // Japanese
+    #[token("不")] // Chinese
+    #[token("아니")] // Korean
+    #[token("sivyo")] // Swahili
+    NOT_KW,
+
+    /// The **keyword** `or`.
     #[token("or")] // English
     #[token("ou")] // French, Portuguese
     #[token("oder")] // German
@@ -809,101 +1018,462 @@ pub enum TokenKind {
     #[token("kupato")] // Swahili
     YIELD_KW,
 
-    #[token("=")]
-    Equal,
-    #[token("+=")]
-    AddAssign,
-    #[token("-=")]
-    SubAssign,
-    #[token("*=")]
-    MultAssign,
-    #[token("/=")]
-    DivAssign,
-    #[token("%=")]
-    ModAssign,
-    #[token("**=")]
-    PowAssign,
-    #[token("<<=")]
-    ShlAssign,
-    #[token(">>=")]
-    ShrAssign,
-    #[token("|=")]
-    OrAssign,
-    #[token("&=")]
-    AndAssign,
-    #[token("^=")]
-    XorAssign,
-
-    #[token("==")]
-    IsEqual,
-    #[token("!=")]
-    IsNotEqual,
-    #[token(">=")]
-    GreaterThanEqual,
-    #[token("<=")]
-    LessThanEqual,
-    #[token("<")]
-    LeftCaret,
-    #[token(">")]
-    RightCaret,
-
-    #[token("!")]
-    Bang,
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Punctuation
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// A **plus sign** `+`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Addition**,
+    /// * **Trait Bounds**,
+    /// * _potentially_ **Macro Kleene Matcher**.
     #[token("+")]
-    Plus,
+    PLUS,
+
+    /// A **minus sign** `-`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Subtraction**,
+    /// * **Negation**.
     #[token("-")]
-    Minus,
-    #[token("/")]
-    Divide,
+    MINUS,
+
+    /// A **star** `*`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Multiplication**,
+    /// * **Dereference**,
+    /// * _potentially_ **Macro Kleene Matcher**,
+    /// * **Use wildcards**.
     #[token("*")]
-    Star,
+    STAR,
+
+    /// A **forward slash** `/`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Division**.
+    #[token("/")]
+    SLASH,
+
+    /// A **percent sign** `%`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Remainder**.
     #[token("%")]
-    Modulo,
-    #[token("**")]
-    DoubleStar,
-    #[token("<<")]
-    Shl,
-    #[token(">>")]
-    Shr,
-    #[token("|")]
-    Pipe,
-    #[token("&")]
-    Ampersand,
+    PERCENT,
+
+    /// A **caret** `^`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise and Logical XOR**.
     #[token("^")]
-    Caret,
+    CARET,
 
-    #[token("[")]
-    LeftBrace,
-    #[token("]")]
-    RightBrace,
-    #[token("(")]
-    L_PAREN,
-    #[token(")")]
-    R_PAREN,
-    #[token("{")]
-    L_BRACE,
-    #[token("}")]
-    R_BRACE,
-    #[token("->")]
-    THIN_ARROW,
-    #[token("<-")]
-    LeftArrow,
-    #[token("=>")]
-    RightRocket,
+    /// A **bang** `!`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise and Logical NOT**,
+    /// * **Macro Call**.
+    /// * _potentially_ **Inner Attributes**,
+    /// * _potentially_ **Never Type**,
+    /// * _potentially_  **Negative impls**
+    #[token("!")]
+    BANG,
 
+    /// An **ampersand** `&`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise and Logical AND**,
+    /// * **Reference**,
+    /// * **Borrow**,
+    /// * **Reference Patterns**.
+    #[token("&")]
+    AMPERSAND,
+
+    /// A **pipe** `|`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise and Logical OR**,
+    /// * **Union**.
+    /// * **Patterns in match, if let, and while let**.
+    /// * _potentially_ **closures**.
+    #[token("|")]
+    PIPE,
+
+    /// A **double ampersand** `&&`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Lazy AND**.
+    /// * **Borrow**.
+    /// * **References**.
+    /// * **Reference patterns**.
+    #[token("&&")]
+    DOUBLE_AMPERSAND,
+
+    /// A **double pipe** `||`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Lazy OR**.
+    /// * _potentially_ **closures**.
+    #[token("||")]
+    DOUBLE_PIPE,
+
+    /// A **shift left** `<<`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise Shift Left**.
+    /// * **Nested Generics**.
+    #[token("<<")]
+    SHL,
+
+    /// A **shift right** `>>`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise Shift Right**.
+    /// * **Nested Generics**.
+    #[token(">>")]
+    SHR,
+
+    /// A **plus equals** `+=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Addition Assignment**.
+    #[token("+=")]
+    PLUS_EQ,
+
+    /// A **minus equals** `-=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Subtraction Assignment**.
+    #[token("-=")]
+    MINUS_EQ,
+
+    /// A **star equals** `*=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Multiplication Assignment**.
+    #[token("*=")]
+    STAR_EQ,
+
+    /// A **forward slash equals** `/=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Division Assignment**.
+    #[token("/=")]
+    SLASH_EQ,
+
+    /// A **percent equals** `%=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Remainder Assignment**.
+    #[token("%=")]
+    PERCENT_EQ,
+
+    /// A **caret equals** `^=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise XOR Assignment**.
+    #[token("^=")]
+    CARET_EQ,
+
+    /// A **ampersand equals** `&=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise AND Assignment**.
+    #[token("&=")]
+    AMPERSAND_EQ,
+
+    /// A **pipe equals** `|=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise OR Assignment**.
+    #[token("|=")]
+    PIPE_EQ,
+
+    /// A **shift left equals** `<<=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise Shift Left Assignment**.
+    #[token("<<=")]
+    SHL_EQ,
+
+    /// A **shift right equals** `>>=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Bitwise Shift Right Assignment**.
+    #[token(">>=")]
+    SHR_EQ,
+
+    /// An **equal sign** `=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Assignment**.
+    /// * **Attributes**.
+    #[token("=")]
+    EQ,
+
+    /// A **double equal sign** `==`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Equality**.
+    #[token("==")]
+    EQEQ,
+
+    /// A **not equal sign** `!=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Inequality**.
+    #[token("!=")]
+    NE,
+
+    /// A **greater than sign** `>`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Greater than**.
+    /// * **Generics**.
+    /// * **Paths**.
+    #[token(">")]
+    GT,
+
+    /// A **less than sign** `<`.
+    ///
+    /// **Usage**:
+    /// * **Less than**.
+    /// * **Generics**.
+    /// * **Paths**.
+    #[token("<")]
+    LT,
+
+    /// A **greater than or equal to sign** `>=`.
+    ///
+    /// **Usage**:
+    /// * **Greater than or equal to**.
+    /// * **Generics**.
+    #[token(">=")]
+    GE,
+
+    /// A **less than or equal to sign** `<=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Less than or equal to**.
+    #[token("<=")]
+    LE,
+
+    /// An **at sign** `@`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Subpattern binding**.
     #[token("@")]
-    AtSign,
+    AT,
+
+    /// An **underscore** `_`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Wildcard patterns**.
+    /// * **Inferred types**.
+    /// * **Unnamed items in constants**.
+    /// * **extern packages**.
+    /// * **use declarations**.
+    /// * **destructuring assignment**.
+    #[token("_")]
+    UNDERSCORE,
+
+    /// A **dot** `.`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Field access**.
+    /// * **Tuple index**.
+    #[token(".", priority = 1)]
+    DOT,
+
+    /// A **dot dot** `..`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Range**.
+    /// * **Struct expressions**.
+    /// * **Patterns**.
+    /// * **Range Patterns**.
+    #[token("..")]
+    DOTDOT,
+
+    /// A **dot dot equals** `..=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Inclusive Range**.
+    /// * **Range Patterns**.
+    #[token("..=")]
+    DOTDOTEQ,
+
+    /// A **comma** `,`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Separators**.
     #[token(",")]
-    Comma,
+    COMMA,
+
+    /// A **semicolon** `;`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Terminator for various items and statements**.
+    /// * **Array types**.
     #[token(";")]
     SEMICOLON,
+
+    /// A **colon** `:`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Various separators**.
     #[token(":")]
-    Colon,
-    #[token(".", priority = 1)]
-    Dot,
-    #[token("..")]
-    DoubleDot,
+    COLON,
+
+    /// A **path separator** `::`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Path separator**.
+    #[token("::")]
+    PATHSEP,
+
+    /// A **right arrow** `->`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Function return type**.
+    /// * **Closure return type**.
+    /// * **Function pointer type**.
+    #[token("->")]
+    RARROW,
+
+    /// A **fat arrow** `=>`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Match arms**.
+    /// * **Macros**.
+    #[token("=>")]
+    FATARROW,
+
+    /// A **hash** `#`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Attributes**.
+    #[token("#")]
+    HASH,
+
+    /// A **dollar** `$`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Macros**.
+    #[token("$")]
+    DOLLAR,
+
+    /// A **question mark** `?`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Question mark operator**.
+    /// * **Questionably sized**.
+    /// * **Macro Kleene Matcher**.
+    #[token("?")]
+    QMARK,
+
+    /// A **tilde** `~`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Reserved for future use**.
+    #[token("~")]
+    TILDE,
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Delimiters
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// A **left bracket** `[`.
+    #[token("[")]
+    L_BRACKET,
+
+    /// A **right bracket** `]`.
+    #[token("]")]
+    R_BRACKET,
+
+    /// A **left parenthesis** `(`.
+    #[token("(")]
+    L_PAREN,
+
+    /// A **right parenthesis** `)`.
+    #[token(")")]
+    R_PAREN,
+
+    /// A **left brace** `{`.
+    #[token("{")]
+    L_BRACE,
+
+    /// A **right brace** `}`.
+    #[token("}")]
+    R_BRACE,
+
+    /// A **superscript left parenthesis** `⁽`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Superscript Expressions**.
+    #[token("⁽")]
+    L_PAREN_SUPERSCRIPT,
+
+    /// A **superscript right parenthesis** `⁾`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Superscript Expressions**.
+    #[token("⁾")]
+    R_PAREN_SUPERSCRIPT,
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Reserved tokens (Experimental)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #[token("<-")]
+    L_ARROW,
+
+    #[token("**")]
+    DOUBLE_STAR,
 }
 
 impl TokenKind {

@@ -34,6 +34,7 @@ logos = { workspace = true }
 logos-derive = { workspace = true }
 miette = { workspace = true }
 num_cpus = { workspace = true }
+owo-colors = { workspace = true }
 parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }

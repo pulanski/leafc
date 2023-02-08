@@ -25,6 +25,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::AND_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     // Test all keywords
@@ -46,6 +47,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::ABSTRACT_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -67,6 +69,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::ASYNC_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -91,6 +94,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::AWAIT_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -110,6 +114,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::AS_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -133,6 +138,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::BREAK_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -150,6 +156,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::CONST_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -171,6 +178,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::CONTINUE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -194,6 +202,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::DO_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -213,6 +222,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::DYN_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -235,6 +245,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::ELSE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -254,6 +265,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::ENUM_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -272,6 +284,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::EXTERN_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -299,6 +312,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::FALSE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -314,6 +328,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::FINAL_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -335,6 +350,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::FN_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -352,6 +368,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::FOR_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -370,6 +387,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::IF_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -406,6 +424,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::TRUE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -427,6 +446,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::IMPL_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -447,6 +467,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::IMPORT_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -462,6 +483,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::IN_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -484,6 +506,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::LET_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -506,6 +529,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::LOOP_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -527,6 +551,44 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::MATCH_KW));
+        assert_eq!(token.slice(), raw_token);
+    }
+
+    #[rstest]
+    #[case("missing")] // English
+    #[case("Missing")] // English
+    #[case("faltante")] // Spanish
+    #[case("Faltante")] // Spanish
+    #[case("manquant")] // French
+    #[case("Manquant")] // French
+    #[case("missend")] // Dutch
+    #[case("Missend")] // Dutch
+    #[case("fehlen")] // German
+    #[case("Fehlen")] // German
+    #[case("saknas")] // Swedish
+    #[case("Saknas")] // Swedish
+    #[case("mangler")] // Danish
+    #[case("Mangler")] // Danish
+    #[case("savnet")] // Norwegian
+    #[case("Savnet")] // Norwegian
+    #[case("mancante")] // Italian
+    #[case("Mancante")] // Italian
+    #[case("ausente")] // Portuguese
+    #[case("Ausente")] // Portuguese
+    #[case("puuttuu")] // Finnish
+    #[case("Puuttuu")] // Finnish
+    #[case("отсутствует")] // Russian
+    #[case("Отсутствует")] // Russian
+    #[case("欠けている")] // Japanese
+    #[case("缺失")] // Chinese
+    #[case("누락")] // Korean
+    #[case("hakuna")] // Swahili
+    #[case("Hakuna")] // Swahili
+    fn test_missing_keyword(#[case] raw_token: &str) {
+        let mut token = TokenKind::lexer(raw_token);
+
+        assert_eq!(token.next(), Some(TokenKind::MISSING_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -546,6 +608,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::MOD_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -566,6 +629,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::MOVE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -587,6 +651,30 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::MUT_KW));
+        assert_eq!(token.slice(), raw_token);
+    }
+
+    #[rstest]
+    #[case("not")] // English
+    #[case("no")] // Spanish
+    #[case("ne")] // French
+    #[case("niet")] // Dutch
+    #[case("nicht")] // German
+    #[case("inte")] // Swedish
+    #[case("ikke")] // Danish, Norwegian
+    #[case("non")] // Italian
+    #[case("não")] // Portuguese
+    #[case("ei")] // Finnish
+    #[case("не")] // Russian
+    #[case("ない")] // Japanese
+    #[case("不")] // Chinese
+    #[case("아니")] // Korean
+    #[case("sivyo")] // Swahili
+    fn test_not_keyword(#[case] raw_token: &str) {
+        let mut token = TokenKind::lexer(raw_token);
+
+        assert_eq!(token.next(), Some(TokenKind::NOT_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -606,6 +694,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::OR_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -626,6 +715,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::PACKAGE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -645,6 +735,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::PUB_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -665,6 +756,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::RETURN_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -686,6 +778,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::SELF_VALUE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -707,6 +800,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::SELF_TYPE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -726,6 +820,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::STATIC_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -746,6 +841,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::STRUCT_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -764,6 +860,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::SUPER_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -783,6 +880,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::TRAIT_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -800,6 +898,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::TYPE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -821,6 +920,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::UNSAFE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -843,6 +943,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::USE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -865,6 +966,7 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::WHERE_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 
     #[rstest]
@@ -885,5 +987,6 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::YIELD_KW));
+        assert_eq!(token.slice(), raw_token);
     }
 }

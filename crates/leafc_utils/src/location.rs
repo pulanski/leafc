@@ -1,7 +1,10 @@
 #![allow(dead_code)]
 //!
 
+use owo_colors::OwoColorize;
 use std::fmt;
+
+use getset::{Getters, MutGetters, Setters};
 
 /// A **range** of text in the input string (_i.e. a **span**_).
 ///
@@ -27,7 +30,8 @@ use std::fmt;
 /// assert_eq!(tokens[0].span().end().line(), 1);
 /// assert_eq!(tokens[0].span().end().offset(), 3);
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Getters, MutGetters, Setters)]
+#[getset(get = "pub", get_mut = "pub", set = "pub")]
 pub struct Span {
     /// The **start** of the span.
     start: usize,
@@ -37,7 +41,13 @@ pub struct Span {
 
 impl fmt::Display for Span {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}..{}", self.start, self.end)
+        write!(
+            f,
+            "{}{}{}",
+            self.start.magenta().italic(),
+            "..".black().italic(),
+            self.end.magenta().italic()
+        )
     }
 }
 
