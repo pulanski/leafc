@@ -72,3 +72,5 @@ pub struct CommitHash {
 ```
 
 [ ] - need to change repl config file to use `dirs` crate or something else to find config
+
+[ ] - create a `generate_summary` xtask for generating the summary for the `docs`

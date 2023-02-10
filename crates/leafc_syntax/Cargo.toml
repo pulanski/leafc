@@ -1,0 +1,18 @@
+[package]
+name = "leafc_syntax"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+leafc_lexer = { path = "../leafc_lexer" }
+
+itertools = { workspace = true }
+num-derive = { workspace = true }
+num-traits = { workspace = true }
+proc-macro2 = { workspace = true }
+quote = { workspace = true }
+rowan = { workspace = true }
+ungrammar = { workspace = true }
+xshell = { workspace = true }

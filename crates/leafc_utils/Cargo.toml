@@ -12,3 +12,7 @@ getset = { workspace = true }
 owo-colors = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 smartstring = { workspace = true }
+
+rand_regex = { workspace = true }
+regex_generate = "0.2.1"
+rand = "0.8.5"

@@ -3,34 +3,94 @@ use std::fmt;
 
 // TOOD: remove this
 use crate::token::TokenKind;
+use getset::Getters;
 use leafc_utils::location::Span;
 use logos::Logos;
 use owo_colors::OwoColorize;
 use smol_str::SmolStr;
 
-// fn lex(input: &str) -> Vec<TokenKind> {
-//     let mut lex = TokenKind::lexer(input);
+/// Performs a **lossy** lexing of the input string (i.e. a **minimal
+/// representation** of the input text source).
+///
+/// # Example:
+///
+/// ```rust
+/// use leafc_lexer::lossy_lex;
+///
+/// let tokens = lossy_lex("fn main() { println!(\"Hello, world!\"); }");
+///
+/// assert_eq!(tokens.to_string(), r#"FN_KW @ [0..2] fn
+/// WHITESPACE @ [2..3]
+/// IDENTIFIER @ [3..7] main
+/// L_PAREN @ [7..8] (
+/// R_PAREN @ [8..9] )
+/// WHITESPACE @ [9..10]
+/// L_BRACE @ [10..11] {
+/// WHITESPACE @ [11..12]
+/// IDENTIFIER @ [12..19] println
+/// L_PAREN @ [19..20] (
+/// STRING @ [20..34] "Hello world!"
+/// R_PAREN @ [34..35] )
+/// WHITESPACE @ [35..36]
+/// R_BRACE @ [36..37] }
+/// "#);
+pub fn lossy_lex(input: &str) -> TokenStream {
+    TokenStream::new(input, false)
+}
 
-//     let mut tokens = Vec::new();
+/// Performs a **lossless** lexing of the input string (i.e. a **full fidelity**
+/// representation of the input text source).
+///
+/// # Example:
+///
+/// ```rust
+/// use leafc_lexer::lossless_lex;
+///
+/// let tokens = lossless_lex("fn main() { println!(\"Hello, world!\"); }");
+///
+/// assert_eq!(tokens.to_string(), r#"FN_KW @ [0..2] fn
+/// WHITESPACE @ [2..3]
+/// IDENTIFIER @ [3..7] main
+/// L_PAREN @ [7..8] (
+/// R_PAREN @ [8..9] )
+/// WHITESPACE @ [9..10]
+/// L_BRACE @ [10..11] {
+/// WHITESPACE @ [11..12]
+/// IDENTIFIER @ [12..19] println
+/// L_PAREN @ [19..20] (
+/// STRING @ [20..34] "Hello world!"
+/// R_PAREN @ [34..35] )
+/// WHITESPACE @ [35..36]
+/// R_BRACE @ [36..37] }
+/// "#);
+pub fn lossless_lex(input: &str) -> TokenStream {
+    TokenStream::new(input, true)
+}
 
-//     // while let Some(token) = lex.next() {
-//     //     tokens.push(token);
-//     // }
-// }
-
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash, Getters)]
+#[getset(get = "pub")]
 pub struct TokenStream {
-    /// The **lexer** that will be used to lex the input string.
-    // lexer: Lexer<'a, Token>,
+    /// The **tokens** of the input string.
     tokens: Vec<Token>,
 
     /// The **current line** of the lexer in the input string.
-    /// This is used to provide better error messages.
-    line: usize,
-    /// The **current offset** of the lexer in the input string.
-    offset: usize,
+    ///
+    /// This is used to provide better error messages (e.g. `unexpected token
+    /// on line 3` along with the line of code that caused the error and the span in the source code)
+    ///
+    /// Stores the line where the first error token occurred, if any (calculated from the
+    /// source span during lexing).
+    line: Option<usize>,
 
-    // current: Option<TokenKind>,
+    /// The **current offset** of the lexer in the input string.
+    ///
+    /// This is used to provide better error messages (e.g. `unexpected token
+    /// on line 3 column 17` along with the line of code that caused the error and the span in the source code)
+    ///
+    /// Stores the offset where the first error token occurred, if any (calculated from the
+    /// source span during lexing).
+    offset: Option<usize>,
+
     /// Whether or not the token stream is **lossless** (e.g. a **full fidelity**
     /// representation of the input text source).
     lossless: bool,
@@ -59,15 +119,18 @@ impl fmt::Display for TokenStream {
 /// # Example:
 ///
 /// ```rust
-/// // TODO: add example
-/// // `use` is a keyword,
-/// // `std` is an identifier,
-/// // and `;` is punctuation.
-/// use std::fmt;
+///         use std::fmt;
+/// //       ^  ^  ^ ^  ^
+/// //       |  |  | |  |
+/// //       |  |  | |  +-> `;`   is a  `SEMICOLON` token
+/// //       |  |  | +----> `fmt` is an `IDENTIFIER` token
+/// //       |  |  +------> `::`  is a  `PATH` token
+/// //       |  +---------> `std` is an `IDENTIFIER` token
+/// //       +------------> `use` is a  `USE_KW` token
 /// ```
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Token {
-    /// The **kind** of the token (i.e. the **type** of the token)
+    /// The **kind** of the token (i.e. `WHITESPACE`, `IDENTIFIER`, etc.)
     kind: TokenKind,
 
     /// The **lexeme** of the token (i.e. the **text** that the token represents)
@@ -99,7 +162,7 @@ impl TokenStream {
         let mut tokens = Vec::new();
 
         while let Some(token) = lex.next() {
-            if !lossless && token.is_whitespace() {
+            if !lossless && (token.is_whitespace() || token.is_comment()) {
                 continue;
             }
 
@@ -110,41 +173,8 @@ impl TokenStream {
             });
         }
 
-        Self { tokens, line: 1, offset: 0, lossless }
+        Self { tokens, line: None, offset: None, lossless }
     }
 
-    // fn peek(&self) -> Option<Token> {
-    //     self.lexer.clone().peekable().peek().as_ref().copied().copied()
-    // }
-
-    // fn peek_nth(&self, n: usize) -> Option<Token> {
-    //     debug_assert!(n < 3);
-    //     self.lexer.clone().peekable().nth(n).as_ref().copied()
-    // }
-
-    // fn next(&mut self) -> Option<Token> {
-    //     self.lexer.next()
-    // }
-
-    // fn has_next(&self) -> bool {
-    //     self.lexer.clone().peekable().peek().is_some()
-    // }
-
-    // fn expect(&mut self, token: Token) -> Result<(), ParseError> {
-    //     if self.current == Some(&token) {
-    //         self.advance();
-    //         Ok(())
-    //     } else {
-    //         // Err(ParseError::UnexpectedToken { expected: token, found: self.current })
-    //     }
-    // }
-
-    // fn expect_one_of(&mut self, tokens: &[Token]) -> Result<(), ParseError> {
-    //     if tokens.contains(self.current()) {
-    //         self.advance();
-    //         Ok(())
-    //     } else {
-    //         // Err(ParseError::UnexpectedToken { expected: Token::ERROR, found: self.current })
-    //     }
-    // }
+    // TODO: implement an iterator for token stream
 }

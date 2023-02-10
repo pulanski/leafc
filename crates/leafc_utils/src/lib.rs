@@ -11,4 +11,6 @@ pub mod terminal;
 
 pub mod location;
 
+pub mod regex;
+
 pub use terminal::{horizontal_padding, vertical_padding};

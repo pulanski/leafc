@@ -1,0 +1,44 @@
+// Leaf Un-Grammar.
+//
+// This grammar specifies the structure of Leaf's concrete syntax tree.
+// It does not specify parsing rules (ambiguities, precedence, etc are out of scope).
+// Tokens are processed -- contextual keywords are recognised, compound operators glued.
+//
+// Legend:
+//
+//   //          -- comment
+//   Name =      -- non-terminal definition
+//   'ident'     -- token (terminal)
+//   A B         -- sequence
+//   A | B       -- alternation
+//   A*          -- zero or more repetition
+//   A?          -- zero or one repetition
+//   (A)         -- same as A
+//   label:A     -- suggested name for field of AST node
+
+//*************************//
+// Names, Paths and Macros //
+//*************************//
+
+/// Items
+
+// Visibility =
+//   'pub' ('(' 'in'? Path ')')?
+
+Name =
+  'ident' | 'self'
+
+// NameRef =
+//   'ident' | 'int_number' | 'self' | 'super' | 'crate' | 'Self'
+
+// Lifetime =
+//   'lifetime_ident'
+
+// Path =
+//   (qualifier:Path '::')? segment:PathSegment
+
+// PathSegment =
+//   '::'? NameRef
+// | NameRef GenericArgList?
+// | NameRef ParamList RetType?
+// | '<' PathType ('as' PathType)? '>'
