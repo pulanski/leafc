@@ -57,7 +57,7 @@ use derive_builder::Builder;
 use getset::{Getters, MutGetters, Setters};
 use indicatif::{ProgressBar, ProgressStyle};
 use leafc_cfg::{
-    cli::CommandLineConfig,
+    cli::CommandLineConfiguration,
     settings::{emit::EmitKinds, EmitKind},
 };
 use leafc_cli::LeafcCli;
@@ -127,7 +127,7 @@ impl LeafcDriver {
     }
 
     /// TODO: document
-    pub fn apply_repl_settings(&mut self, settings: &CommandLineConfig) {
+    pub fn apply_repl_settings(&mut self, settings: &CommandLineConfiguration) {
         self.emit_kinds_mut().clear();
         self.emit_kinds_mut().extend(settings.emit_kinds.clone());
     }

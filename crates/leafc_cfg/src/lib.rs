@@ -1,5 +1,7 @@
 pub use salsa;
 
+rust_i18n::i18n!("locales");
+
 #[salsa::jar(db = Db)]
 pub struct Jar(
     // crate::compile::compile,
@@ -33,3 +35,7 @@ pub mod cli;
 pub mod settings;
 
 pub mod defs;
+
+/// Defines the various **language-specific** implementations for various types (e.g. `VariableId`,
+/// `FunctionId`, etc.) as well as generic tokens (e.g. `FN_KW` => `fn`, `función`, etc.).
+pub mod lang;

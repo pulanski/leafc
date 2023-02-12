@@ -5,7 +5,7 @@ use leafc_errors::repl::ReplError;
 use miette::{IntoDiagnostic, Result};
 use smartstring::alias::String;
 
-use crate::cli::{CommandLineConfig, CommandLineConfigBuilder};
+use crate::cli::{CommandLineConfiguration, CommandLineConfigurationBuilder};
 
 use super::emit::{EmitKind, EmitKinds};
 
@@ -89,7 +89,7 @@ impl ReplSettings {
     pub fn update_from_source_text(
         &mut self,
         source_text: &mut String,
-    ) -> Result<(bool, CommandLineConfig)> {
+    ) -> Result<(bool, CommandLineConfiguration)> {
         let mut updated = false;
         let source_tmp = source_text.clone();
         let mut lines = source_tmp.lines();
@@ -150,7 +150,7 @@ impl ReplSettings {
         }
 
         // use builder pattern to create a new CommandLineConfig
-        let config = CommandLineConfigBuilder::default()
+        let config = CommandLineConfigurationBuilder::default()
             .emit_kinds(self.emit_kinds())
             .build()
             .into_diagnostic()

@@ -39,6 +39,7 @@ miette = { workspace = true }
 num_cpus = { workspace = true }
 parking_lot = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
+rust-i18n = { workspace = true }
 rusty_ulid = { workspace = true }
 salsa = { workspace = true, default-features = false }
 semver = { workspace = true }
@@ -47,7 +48,13 @@ smartstring = { workspace = true }
 smol_str = { workspace = true }
 strum = { workspace = true }
 strum_macros = { workspace = true }
+sys-locale = { workspace = true }
+once_cell = { workspace = true }
 owo-colors = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }
+rstest = { workspace = true }
 
 [build-dependencies]
 chrono = { workspace = true }

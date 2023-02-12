@@ -8,11 +8,8 @@ use crate::settings::{emit::EmitKinds, EmitKind, LogLevel, OptLevel, TargetTripl
 ///
 /// This data structure is mostly used as a bridge between the `clap` crate and the rest of the compiler
 /// in regards to configuring the compiler from the command line.
-///
-/// # Examples
-///
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Builder)]
-pub struct CommandLineConfig {
+pub struct CommandLineConfiguration {
     /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
     /// defaults to `vec![]`
     #[builder(default = "vec![]")]
@@ -35,13 +32,13 @@ pub struct CommandLineConfig {
     pub target_triple: TargetTriple,
 }
 
-impl CommandLineConfig {
+impl CommandLineConfiguration {
     pub fn new(
         emit_kinds: Vec<EmitKind>,
         opt_level: OptLevel,
         verbosity: LogLevel,
         target_triple: TargetTriple,
-    ) -> CommandLineConfig {
-        CommandLineConfig { emit_kinds, opt_level, verbosity, target_triple }
+    ) -> CommandLineConfiguration {
+        CommandLineConfiguration { emit_kinds, opt_level, verbosity, target_triple }
     }
 }

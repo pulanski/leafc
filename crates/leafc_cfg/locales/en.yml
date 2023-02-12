@@ -1,0 +1,65 @@
+# Path: crates/leafc_cfg/src/locales/en.yml
+
+leafc_cfg:
+  # General
+  general:
+    # The name of the application
+    name: Leafc
+    # The description of the application
+    description: An incremental compiler for a polyglot language
+    # The version of the application
+    version: 0.1.0
+    # The author of the application
+    author: "The Leafc Team"
+    # The license of the application
+    license: "MIT"
+    # The url of the application
+    url: "docs.rs/leafc"
+    # The url of the repository
+    repository: "https://github.com/pulanski/leafc"
+    # The url of the issue tracker
+    issueTracker: "https://github.com/pulanski/leafc/issues"
+    # The url of the documentation
+    documentation: "https://docs.rs/leafc"
+  lang:
+    en: English
+
+
+# TODO: maybe do this in the future
+# leafc_lexer:
+  # tokens:
+  #   IDENT:
+  #     # The name of the token
+  #     name: "Identifier"
+  #     # The description of the token
+  #     description: "A name"
+  #     # The regex of the token
+  #     regex: "[a-zA-Z_][a-zA-Z0-9_]*"
+  #     # The type of the token
+  #     type: "String"
+  #     # The value of the token
+  #     value: "String"
+  #
+  # and then have other langs follow the same format
+
+leafc_errors:
+  cfg:
+    error_prefix: Configuration Error
+  cli:
+  # lexer:
+  # parser:
+  syntax:
+    error_prefix: Syntax Error
+    ################################################################################
+    # Various Syntax Errors
+    ################################################################################
+    unknown_token:
+      # The name of the error
+      name: Unknown Token
+      # The description of the error
+      description: An unknown token was found
+      # The message of the error
+      message: Unknown token '%{token}'
+  typecheck:
+  codegen:
+  # runtime:

@@ -74,3 +74,8 @@ pub struct CommitHash {
 [ ] - need to change repl config file to use `dirs` crate or something else to find config
 
 [ ] - create a `generate_summary` xtask for generating the summary for the `docs`
+
+
+
+[ ] - auto get the user's language using their ip address, however, user's can specify the
+    language of the compiler in the config file
