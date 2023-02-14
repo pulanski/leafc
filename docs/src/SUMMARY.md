@@ -7,6 +7,6 @@
     - [General Tokens](./chapter_1/lexical_structure/GENERAL_TOKENS.md)
     - [Comments](./chapter_1/lexical_structure/COMMENTS.md)
     - [Literals](./chapter_1/lexical_structure/LITERALS.md)
+    - [Mathematical Symbols](./chapter_1/lexical_structure/MATHEMATICAL_SYMBOLS.md)
     - [Keywords](./chapter_1/lexical_structure/KEYWORDS.md)
     - [Punctuation](./chapter_1/lexical_structure/PUNCTUATION.md)
-    - [Mathematical Symbols](./chapter_1/lexical_structure/MATHEMATICAL_SYMBOLS.md)

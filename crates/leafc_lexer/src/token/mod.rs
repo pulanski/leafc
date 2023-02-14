@@ -50,10 +50,7 @@ pub enum TokenKind {
     #[regex(r#"r#[^#]*#"#)]
     RAW_STRING,
 
-    /// An **integer** is a sequence of one or more decimal digits representing a non-negative integer
-    /// value. An **optional prefix** sets the base of the integer: `0o` for octal, `0x` or `0X` for
-    /// hexadecimal, and `0b` or `0B` for binary. An optional suffix sets the type of the integer:
-    /// `u8`, `i8`, `u16`, `i16`, `u32`, `i32`, `u64`, `i64`, `u128`, `i128`, `usize`, or `isize`.
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/literals/INTEGER.md")]
     #[regex(
         "[+-]?[0-9][0-9_]*(u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize)?",
         priority = 1
@@ -66,11 +63,7 @@ pub enum TokenKind {
     // hexadecimal
     INTEGER,
 
-    /// A **floating point number** is a sequence of decimal digits representing a floating point value.
-    /// An **optional prefix** sets the base of the number: `0o` for octal, `0x` or `0X` for hexadecimal,
-    /// and `0b` or `0B` for binary. An optional suffix sets the type of the number: `f32` or `f64`.
-    /// The default type is `f64`.
-    /// The exponent is a decimal integer optionally preceded by a sign.
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/literals/FLOAT.md")]
     #[regex(
         r#"[+-]?([0-9][0-9_]*)?\.([0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?(f32|f64)?"#,
         priority = 2
@@ -84,9 +77,7 @@ pub enum TokenKind {
     #[regex(r#"[+-]?0o[0-7][0-7_]*\.[0-7][0-7_]*([pP][+-]?[0-9][0-9_]?)?(f32|f64)?"#)] // octal
     FLOAT,
 
-    /// A **lifetime** is a sequence of one or more ASCII letters and underscores, starting with a
-    /// `'` (e.g. `'a`, `'static`, `'foo`, `'🦀` etc.). A lifetime is used to indicate the scope of a
-    /// reference.
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/literals/LIFETIME.md")]
     #[regex(r#"'[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}]*"#)]
     LIFETIME,
 

@@ -1,6 +1,17 @@
 # Lexical Structure
 
-In regards to **lexical structure**, the Leaf language has an interesting feature: **polyglot syntax**. This means that the source language itself can be written in and translated between **multiple spoken languages**. The **default language** is determined based on the system's **locale**. For example, if the system's locale is set to `en_US.UTF-8`, the default language is **English**. If the system's locale is set to `fr_FR.UTF-8`, the default language is **French**. This setting can be overridden via multiple methods (e.g. command line flag, environment variable, configuration file, etc.). The **default language** is used to **determine the syntax** of the source code and parse it accordingly. For example, if the default language is **English**, the following code is valid:
+In regards to **lexical structure**, the Leaf language has an interesting feature:
+**polyglot syntax**. This means that the source language itself can be written
+in and translated between **multiple spoken languages**. The **default language**
+is determined based on the **locale** of the system on which the Leaf compiler,
+`leafc`, is running. For example, if the system's locale is set to `en_US.UTF-8`,
+the default language is **English**. On the other hand, if the system's locale is
+set to `fr_FR.UTF-8`, the default language is **French**. This setting can be
+overridden via a number of different methods including _command line flag_,
+_environment variable_, _configuration file_. The **default language** is used
+to determine both the **legal syntax** of the source code as well as the
+language used within the compiler's **error messages**. For example, if the
+default language is **English**, the following code is valid:
 
 ```rust
 fn main() {
@@ -24,26 +35,79 @@ fn principal() {
 }
 ```
 
+If the default language was **French**, the **inverse** would be **true**.
+
 Within the lexer's purview is Leaf's **lexical structure**. This is the
-**set of rules** that define the **valid** and **invalid** **tokens** that can
+**set of rules** that define the **valid** and **invalid tokens** that can
 be found in the source code. The **lexical structure** is defined as a series
 of **regular expressions** as detailed below. Feel free to skip this section if
 you are not interested in the details of the lexer.
 
 ## Tokens
 
-The following is a list of all the **tokens** that can be found in the source
-code. Each token is a combination of its **token kind** (e.g. `IDENTIFIER`),
-**span** (e.g. `0..19`), and the **raw bytes** (e.g. `🦀ferris_the_crab`). The
-**token kind** is used later in the **syntax** for the **parser's grammar**. For
- example, if the token type is **identifier**, later in the compilation
- lifecycle, that token needs to be looked up in the **symbol table** to
- determine its value. Depending on the context, the output of the lexer is
- either a **lossless** or **lossy representation** of the source code. There are
-  two **distinct use cases** in mind for the lexer:
+Each token created from the lexer is a combination of its **token kind** (e.g. `IDENTIFIER`),
+**span** (e.g. `0..19`), and the **raw bytes** (e.g. `🦀ferris_the_crab`).
 
-### Token Groups
+| Token Kind   | Span    | Raw Bytes          |
+| ------------ | ------- | ------------------ |
+| `IDENTIFIER` | `0..19` | `🦀ferris_the_crab` |
 
-- [General Tokens](./lexical_structure/GENERAL_TOKENS.md)
-- [Comments](./lexical_structure/COMMENTS.md)
-- [Literals](./lexical_structure/LITERALS.md)
+The **token kind** is used later in the **syntax** for the **parser's grammar**.
+For example, if the token type is **identifier**, later in the compilation
+lifecycle, that token needs to be looked up in the **symbol table** to
+determine its value. Depending on the context, the output of the lexer is
+either a **lossless** or **lossy representation** of the source code. There are
+two **distinct use cases** in mind for the lexer:
+
+- Batch compilation of source code
+
+- IDE integration
+
+## Token Groups
+
+Tokens within the **Leaf language** are partitioned into **token groups** as seen
+below. Each token group is defined by a series of **regular expressions**.
+
+<br>
+
+| [General Tokens](./lexical_structure/GENERAL_TOKENS.md) |
+| ------------------------------------------------------- |
+| Whitespace                                              |
+| Identifier                                              |
+| Lexical Error                                           |
+
+<br>
+
+| [Comments](./lexical_structure/COMMENTS.md) |
+| ------------------------------------------- |
+| Comment                                     |
+| Documentation Comment                       |
+<!-- TODO: refactor to this -->
+<!-- | Line Comment                                |
+| Block Comment                               |
+| Documentation Comment                       | -->
+
+<br>
+
+| [Literals](./lexical_structure/LITERALS.md) |
+| ------------------------------------------- |
+| Rune                                        |
+| String                                      |
+| Raw String                                  |
+| Integer                                     |
+| Float                                       |
+| Lifetime                                    |
+
+<br>
+
+| [Mathematical Symbols](./lexical_structure/MATHEMATICAL_SYMBOLS.md) |
+| ------------------------------------------------------------------- |
+| Pi                                                                  |
+
+<!-- <br>
+
+- [Keywords](./lexical_structure/KEYWORDS.md)
+
+<br>
+
+- [Punctuation](./lexical_structure/PUNCTUATION.md) -->
