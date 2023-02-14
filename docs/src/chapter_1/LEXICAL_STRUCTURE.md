@@ -24,10 +24,26 @@ fn principal() {
 }
 ```
 
-Within the lexer's purview is Leaf's **lexical structure**. This is the **set of rules** that define the **valid** and **invalid** **tokens** that can be found in the source code. The **lexical structure** is defined as a series of **regular expressions** as detailed below. Feel free to skip this section if you are not interested in the details of the lexer.
+Within the lexer's purview is Leaf's **lexical structure**. This is the
+**set of rules** that define the **valid** and **invalid** **tokens** that can
+be found in the source code. The **lexical structure** is defined as a series
+of **regular expressions** as detailed below. Feel free to skip this section if
+you are not interested in the details of the lexer.
 
-# Tokens
+## Tokens
 
-The following is a list of all the **tokens** that can be found in the source code. Each token is a combination of its **token kind** (e.g. `IDENTIFIER`), **span** (e.g. `0..19`), and the **actual raw bytes** (e.g. `🦀ferris_the_crab`). The **token kind** is used later in the **syntax** for the **parser's grammar**. For example, if the token type is **identifier**, later in the compilation lifecycle, that token needs to be looked up in the **symbol table** to determine its value. Depending on the context, the output of the lexer is either a **lossless** or **lossy representation** of the source code. There are two **distinct use cases** in mind for the lexer:
+The following is a list of all the **tokens** that can be found in the source
+code. Each token is a combination of its **token kind** (e.g. `IDENTIFIER`),
+**span** (e.g. `0..19`), and the **raw bytes** (e.g. `🦀ferris_the_crab`). The
+**token kind** is used later in the **syntax** for the **parser's grammar**. For
+ example, if the token type is **identifier**, later in the compilation
+ lifecycle, that token needs to be looked up in the **symbol table** to
+ determine its value. Depending on the context, the output of the lexer is
+ either a **lossless** or **lossy representation** of the source code. There are
+  two **distinct use cases** in mind for the lexer:
 
-{{ #include tokens/WHITESPACE.md }}
+### Token Groups
+
+- [General Tokens](./lexical_structure/GENERAL_TOKENS.md)
+- [Comments](./lexical_structure/COMMENTS.md)
+- [Literals](./lexical_structure/LITERALS.md)

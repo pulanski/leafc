@@ -41,4 +41,3 @@ owo-colors = { workspace = true }
 parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
-tokio = { workspace = true }

@@ -9,27 +9,28 @@ use logos::Logos;
 #[allow(non_camel_case_types)]
 #[derive(Debug, Logos, PartialEq, Eq, Clone, Copy, Hash, PartialOrd, Ord, Display)]
 pub enum TokenKind {
-    /// A **lexical error** is a sequence of characters that cannot be interpreted as a valid token.
-    /// The lexer will report an error for each lexical error encountered.
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/general/LEXICAL_ERROR.md")]
     #[error]
     // #[regex(r"[ \t\f]+", logos::skip)]
     ERROR,
 
-    #[doc = include_str!("../../../../docs/src/chapter_1/tokens/WHITESPACE.md")]
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/general/WHITESPACE.md")]
     #[regex(r"[ \t\f\n]+")]
     WHITESPACE,
 
-    #[doc = include_str!("../../../../docs/src/chapter_1/tokens/IDENTIFIER.md")]
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/general/IDENTIFIER.md")]
     #[regex(r"_?[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}]*")]
     IDENTIFIER,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Comments
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/comments/COMMENT.md")]
     #[regex("//[^\r\n]*", priority = 2)]
     #[regex("//[^\n]*", priority = 1)]
     COMMENT,
 
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/comments/DOC_COMMENT.md")]
     #[regex("///[^\r\n]*", priority = 4)]
     #[regex("///[^\n]*", priority = 3)]
     DOC_COMMENT,
@@ -37,22 +38,15 @@ pub enum TokenKind {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Literals
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// A **rune** is a single character enclosed in single quotes. The value of a rune literal is the
-    /// Unicode code point value of the character enclosed in the quotes (e.g. `'本'` is q rune)
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/literals/RUNE.md")]
     #[regex("b?'[^']*'")]
     RUNE,
 
-    /// A **string** is a sequence of zero or more bytes enclosed in double quotes. The value of a
-    /// string literal is the sequence of bytes represented by the string.
-    ///
-    /// The escape sequences are the same as in Go. A string may contain **any valid UTF-8 sequence**,
-    /// except for the NUL byte. A string may **span multiple lines** and can contain **any number of
-    /// consecutive backslashes**, **double quotes**, **newlines**, and **carriage returns**.
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/literals/STRING.md")]
     #[regex(r#"b?"(\\.|[^\\"])*""#)]
     STRING,
 
-    /// A **raw string** is a string literal that may span multiple lines and may contain any character,
-    /// including newlines and double quotes, without escaping.
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/literals/RAW_STRING.md")]
     #[regex(r#"r#[^#]*#"#)]
     RAW_STRING,
 
