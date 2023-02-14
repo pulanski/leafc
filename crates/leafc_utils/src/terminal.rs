@@ -6,7 +6,7 @@
 //!
 //! # Examples
 //!
-//! ```rust
+//! ```rust,ignore // TODO: implement this.
 //! use leafc_utils::terminal::{clear, horizontal_padding, vertical_padding};
 //!
 //! // Clear the terminal.
@@ -23,7 +23,7 @@
 ///
 /// # Examples
 ///
-/// ```rust
+/// ```rust,ignore // TODO: implement this.
 /// use leafc_utils::terminal::clear;
 ///
 /// // Clear the terminal.

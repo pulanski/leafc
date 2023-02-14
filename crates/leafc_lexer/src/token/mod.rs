@@ -108,7 +108,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := 2¹²
     /// assert_eq!(foo, 4096)
     /// ```
@@ -123,7 +123,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := 2¹²·⁵
     /// assert_eq!(foo, 5792.61875148)
     /// ```
@@ -142,7 +142,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := π
     /// assert_eq!(foo, 3.141592653589793)
     /// ```
@@ -158,7 +158,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := e
     /// assert_eq!(foo, 2.718281828459045)
     /// ```
@@ -170,7 +170,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := φ
     /// assert_eq!(foo, 1.618033988749895)
     /// ```
@@ -185,7 +185,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := τ
     /// assert_eq!(foo, 6.283185307179586)
     /// ```
@@ -200,7 +200,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := catalan
     /// assert_eq!(foo, 0.915965594177219)
     /// ```
@@ -211,7 +211,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := γ
     /// assert_eq!(foo, 0.5772156649015329)
     /// ```
@@ -225,7 +225,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := ∞
     /// assert_eq!(foo, f64::INFINITY)
     /// ```
@@ -238,7 +238,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// foo := NaN
     /// assert!(foo.is_nan())
     /// ```
@@ -254,7 +254,7 @@ pub enum TokenKind {
     ///
     /// # Examples
     ///
-    /// ```no_run
+    /// ```ignore
     /// // reserved keyword (not allowed as identifier, however, it is not used)
     /// abstract
     /// abstracto

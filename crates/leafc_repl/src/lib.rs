@@ -3,6 +3,8 @@ mod history;
 mod prompt;
 mod syntax_highlighter;
 
+pub use prompt::LeafcPrompt;
+
 use std::{fs::File, process::ExitCode};
 
 use derivative::Derivative;
@@ -27,8 +29,6 @@ use leafc_driver::LeafcDriver;
 use leafc_errors::repl::ReplError;
 use smol_str::SmolStr;
 use strum::IntoEnumIterator;
-
-use crate::prompt::LeafcPrompt;
 
 #[derive(Debug, new, MutGetters, Getters, Setters)] // getters, setters, and builders
 pub struct LeafcRepl {

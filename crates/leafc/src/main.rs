@@ -11,5 +11,6 @@ use std::process::ExitCode;
 
 fn main() -> Result<ExitCode> {
     // Run the entry point for the compiler.
+    eprintln!("{:?}", dirs_next::home_dir().unwrap_or_default().join(".leafc/repl.log"));
     LeafcEntry::run()
 }

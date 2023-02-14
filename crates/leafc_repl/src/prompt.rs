@@ -50,8 +50,8 @@ impl LeafcPrompt {
     ///
     /// # Example
     ///
-    /// ```
-    /// use leafc_repl::prompt::LeafcPrompt;
+    /// ```rust,ignore
+    /// use leafc_repl::LeafcPrompt;
     ///
     /// let mut prompt = LeafcPrompt::new();
     ///

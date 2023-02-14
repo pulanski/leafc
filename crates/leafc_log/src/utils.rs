@@ -30,5 +30,6 @@ pub fn version() {
 /// **run** with the `--interactive` flag during **batch**
 /// mode.
 pub fn logo() {
-    log!(LogLevel::Info.into(), "{}", LOGO());
+    println!("{}", LOGO());
+    // log!(LogLevel::Info.into(), "{}", LOGO());
 }

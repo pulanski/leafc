@@ -1,5 +1,8 @@
+use std::path::PathBuf;
+
 use derivative::Derivative;
 use derive_builder::Builder;
+use dirs_next::home_dir;
 use getset::{CopyGetters, Getters, MutGetters, Setters};
 use leafc_errors::repl::ReplError;
 use miette::{IntoDiagnostic, Result};
@@ -9,8 +12,8 @@ use crate::cli::{CommandLineConfiguration, CommandLineConfigurationBuilder};
 
 use super::emit::{EmitKind, EmitKinds};
 
-pub const DEFAULT_HISTORY_FILE: &str = "~/.leafc_history";
-pub const DEFAULT_LOG_FILE: &str = "~/.leafc/repl.log";
+pub const DEFAULT_HISTORY_FILE: &str = ".leafc_history";
+pub const DEFAULT_LOG_FILE: &str = ".leafc/repl.log";
 pub const DEFAULT_HISTORY_SIZE: usize = 100;
 
 pub const TOK_EXTENSION: &str = ".tok";
@@ -32,17 +35,17 @@ pub struct ReplSettings {
 
     /// The **history file** to use for the repl.
     /// defaults to `~/.leafc/history`
-    #[derivative(Default(value = "DEFAULT_HISTORY_FILE.into()"))]
-    #[builder(setter(into), default = "DEFAULT_HISTORY_FILE.into()")]
+    #[derivative(Default(value = "home_dir().unwrap_or_default().join(DEFAULT_HISTORY_FILE)"))]
+    #[builder(setter(into), default = "home_dir().unwrap_or_default().join(DEFAULT_HISTORY_FILE)")]
     #[getset(get = "pub")]
-    repl_history_file: smartstring::alias::String,
+    repl_history_file: PathBuf,
 
     /// The **log file** to use for the repl.
     /// defaults to `~/.leafc/repl.log`
-    #[builder(setter(into), default = "DEFAULT_LOG_FILE.into()")]
-    #[derivative(Default(value = "DEFAULT_LOG_FILE.into()"))]
+    #[builder(setter(into), default = "home_dir().unwrap_or_default().join(DEFAULT_LOG_FILE)")]
+    #[derivative(Default(value = "home_dir().unwrap_or_default().join(DEFAULT_LOG_FILE)"))]
     #[getset(get = "pub")]
-    repl_log_file: smartstring::alias::String,
+    repl_log_file: PathBuf,
 
     /// The **theme** to use for the repl.
     /// defaults to `Theme::Default`
@@ -70,12 +73,13 @@ impl ReplSettings {
         self.theme
     }
 
-    pub fn set_history_file(&mut self, history_file: impl Into<String>) {
-        self.repl_history_file = history_file.into();
+    // pub fn set_history_file(&mut self, history_file: impl Into<PathBuf>) {
+    pub fn set_history_file(&mut self, history_file: &str) {
+        self.repl_history_file = PathBuf::from(history_file);
     }
 
-    pub fn set_log_file(&mut self, log_file: impl Into<String>) {
-        self.repl_log_file = log_file.into();
+    pub fn set_log_file(&mut self, log_file: &str) {
+        self.repl_log_file = PathBuf::from(log_file);
     }
 
     pub fn add_emit_kind(&mut self, emit_kind: EmitKind) {
@@ -196,8 +200,17 @@ mod repl_test_suite {
         // or derive_new::new
         let mut settings = ReplSettings::new();
 
-        assert_eq!(settings.repl_log_file(), "~/.leafc/repl.log");
-        assert_eq!(settings.repl_history_file(), "~/.leafc_history");
+        // This is dirty, result of dirs_next api
+        let home_dir = dirs_next::home_dir().unwrap().to_str().unwrap().to_string();
+
+        assert_eq!(
+            settings.repl_log_file().to_str().unwrap(),
+            &format!("{home_dir}/.leafc/repl.log")
+        );
+        assert_eq!(
+            settings.repl_history_file().to_str().unwrap(),
+            &format!("{home_dir}/.leafc_history")
+        );
         assert_eq!(settings.emit_kinds(), vec![]);
         assert_eq!(settings.theme(), ReplTheme::DarkPlus);
 
@@ -207,8 +220,8 @@ mod repl_test_suite {
         settings.set_theme(ReplTheme::DarkPlus);
 
         assert_eq!(settings.emit_kinds(), vec![EmitKind::Ast]);
-        assert_eq!(settings.repl_history_file(), "~/.leafc_history2");
-        assert_eq!(settings.repl_log_file(), "~/.leafc/repl2.log");
+        assert_eq!(settings.repl_history_file().to_str().unwrap(), "~/.leafc_history2");
+        assert_eq!(settings.repl_log_file(), &PathBuf::from("~/.leafc/repl2.log"));
         assert_eq!(settings.theme(), ReplTheme::DarkPlus);
 
         let mut settings = ReplSettingsBuilder::default()
@@ -218,8 +231,14 @@ mod repl_test_suite {
             .unwrap();
 
         assert_eq!(settings.emit_kinds(), vec![EmitKind::Ast]);
-        assert_eq!(settings.repl_history_file(), "~/.leafc_history");
-        assert_eq!(settings.repl_log_file(), "~/.leafc/repl.log");
+        assert_eq!(
+            settings.repl_history_file().to_str().unwrap().to_string().replace(&home_dir, "~"),
+            "~/.leafc_history"
+        );
+        assert_eq!(
+            settings.repl_log_file().to_str().unwrap(),
+            &format!("{home_dir}/.leafc/repl.log")
+        );
         assert_eq!(settings.theme(), ReplTheme::DarkPlus);
 
         settings.set_emit_kinds(vec![EmitKind::Ast]);
@@ -228,8 +247,8 @@ mod repl_test_suite {
         settings.set_theme(ReplTheme::DarkPlus);
 
         assert_eq!(settings.emit_kinds(), vec![EmitKind::Ast]);
-        assert_eq!(settings.repl_history_file(), "~/.leafc_history2");
-        assert_eq!(settings.repl_log_file(), "~/.leafc/repl2.log");
+        assert_eq!(settings.repl_history_file(), &PathBuf::from("~/.leafc_history2"));
+        assert_eq!(settings.repl_log_file(), &PathBuf::from("~/.leafc/repl2.log"));
         assert_eq!(settings.theme(), ReplTheme::DarkPlus);
     }
 }

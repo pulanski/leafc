@@ -1,10 +1,19 @@
 [workspace]
+default-members = ["crates/leafc"]
 
 members = [
-    # "crates/*",
     # "examples/",
     # "benches/",
+
+    ############################
+    # Binaries
+    ############################
     "crates/leafc",
+    "crates/leafcdb",
+
+    ############################
+    # Libraries
+    ############################
     "crates/leafc_build",
     "crates/leafc_cfg",
     "crates/leafc_cli",
@@ -22,7 +31,7 @@ members = [
 
 [workspace.package]
 version = "0.1.0"
-description = "A Rust implementation of **Bustub**, an educational database system out of CMU 15-445/645."
+description = "Leafc is a compiler for the Leaf programming language, a polyglot language built on top of an incremental compiler."
 authors = ["<iopulanski@gmail.com>"]
 repository = "https://github.com/pulanski/rustub"
 license-file = "LICENSE"
@@ -30,10 +39,20 @@ license = "MIT"
 readme = "README.md"
 rust-version = "1.68.0"
 edition = "2021"
-documentation = "https://docs.rs/rustub"
-homepage = "https://rustub.dev"
-keywords = ["database", "bustub", "rust", "rustub", "storage", "sql"]
-categories = ["database"]
+documentation = "https://docs.rs/leafc"
+homepage = "https://docs.rs/leafc"
+keywords = [
+    "compiler",
+    "language",
+    "rust",
+    "llvm",
+    "polyglot",
+    "salsa",
+    "ide",
+    "repl",
+    "debugger",
+]
+categories = ["compiler"]
 exclude = ["**/tests/**", "**/benches/**"]
 include = ["**/README.md", "**/LICENSE", "**/Cargo.toml", "**/Cargo.lock"]
 

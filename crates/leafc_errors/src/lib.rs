@@ -6,11 +6,12 @@ pub mod log;
 pub mod repl;
 // pub mod parser;
 
-use cli::CliError;
-use driver::DriverError;
-use lexer::LexicalError;
-use log::LogError;
-use repl::ReplError;
+pub use cfg::CfgError;
+pub use cli::CliError;
+pub use driver::DriverError;
+pub use lexer::LexicalError;
+pub use log::LogError;
+pub use repl::ReplError;
 
 /// The various **kinds of errors** that can occur within the compiler. These
 /// include errors that occur while **parsing the command line arguments** ([`CliError`]),

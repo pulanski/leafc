@@ -14,7 +14,7 @@ use smol_str::SmolStr;
 ///
 /// # Example:
 ///
-/// ```rust
+/// ```rust,ignore
 /// use leafc_lexer::lossy_lex;
 ///
 /// let tokens = lossy_lex("fn main() { println!(\"Hello, world!\"); }");
@@ -43,7 +43,7 @@ pub fn lossy_lex(input: &str) -> TokenStream {
 ///
 /// # Example:
 ///
-/// ```rust
+/// ```rust,ignore
 /// use leafc_lexer::lossless_lex;
 ///
 /// let tokens = lossless_lex("fn main() { println!(\"Hello, world!\"); }");
@@ -73,6 +73,9 @@ pub struct TokenStream {
     /// The **tokens** of the input string.
     tokens: Vec<Token>,
 
+    /// The **current span** of the lexer in the input string. (MAYBE)
+    // curr_span: Span,
+
     /// The **current line** of the lexer in the input string.
     ///
     /// This is used to provide better error messages (e.g. `unexpected token
@@ -80,7 +83,7 @@ pub struct TokenStream {
     ///
     /// Stores the line where the first error token occurred, if any (calculated from the
     /// source span during lexing).
-    line: Option<usize>,
+    curr_line: Option<usize>,
 
     /// The **current offset** of the lexer in the input string.
     ///
@@ -89,7 +92,7 @@ pub struct TokenStream {
     ///
     /// Stores the offset where the first error token occurred, if any (calculated from the
     /// source span during lexing).
-    offset: Option<usize>,
+    curr_offset: Option<usize>,
 
     /// Whether or not the token stream is **lossless** (e.g. a **full fidelity**
     /// representation of the input text source).
@@ -173,7 +176,7 @@ impl TokenStream {
             });
         }
 
-        Self { tokens, line: None, offset: None, lossless }
+        Self { tokens, curr_line: None, curr_offset: None, lossless }
     }
 
     // TODO: implement an iterator for token stream

@@ -32,6 +32,7 @@ derivative = { workspace = true }
 derive_builder = { workspace = true }
 derive_more = { workspace = true }
 derive-new = { workspace = true }
+dirs-next = { workspace = true }
 getset = { workspace = true }
 humantime = { workspace = true }
 log = { workspace = true }

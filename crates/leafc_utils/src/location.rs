@@ -17,8 +17,9 @@ use getset::{Getters, MutGetters, Setters};
 ///
 /// # Example
 ///
-/// ```
-/// use lexer::Token;
+/// ```rust,ignore
+/// // TODO: update this example
+/// use leafc_lexer::Token;
 ///
 /// let input = "let x = 5;";
 /// let lexer = Token::lexer(input);

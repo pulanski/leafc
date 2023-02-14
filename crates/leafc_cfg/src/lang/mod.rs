@@ -68,11 +68,12 @@ use sys_locale::get_locale;
 /// # Examples
 ///
 /// ```rust
-/// use leafc_cfg::lang::default_language;
+/// use leafc_cfg::lang::{default_language, Language};
 ///
-/// // The default language is retrieved.
+/// // The default language is retrieved (will vary depending on the user's
+/// // system locale and language preferences).
 /// let language: Language = default_language();
-fn default_language() -> Language {
+pub fn default_language() -> Language {
     let lang_code = get_locale().unwrap_or_default();
     Language::from_str(&lang_code).unwrap_or(Language::English)
 }
@@ -93,19 +94,12 @@ pub fn init() -> LanguageConfiguration {
 /// # Example
 ///
 /// ```rust
-/// use leafc_cfg::lang::LanguageConfiguration;
+///  use leafc_cfg::lang::{default_language, Language, LanguageConfiguration};
 ///
 /// let lang_cfg = LanguageConfiguration::new();
 ///
 /// // The default language is retrieved.
-/// let language: Language = lang_cfg.current_language();
-///
-/// // The default language is changed.
-/// lang_cfg.set_current_language(Language::French);
-///
-/// // The default language is retrieved.
-/// let language: Language = lang_cfg.current_language();
-/// assert_eq!(language, Language::French);
+/// let language: &Language = lang_cfg.current_language();
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Getters, MutGetters, Setters, Derivative, Builder)]
 #[derivative(Default(new = "true"))]
@@ -113,7 +107,7 @@ pub struct LanguageConfiguration {
     /// The various **languages** that the project is able to support. This
     /// means that the compiler will be able to **compile** the project using
     /// the specified languages as source code.
-    #[getset(get = "pub", get_mut, set)]
+    #[getset(get_copy = "pub", get_mut, set)]
     #[derivative(Default(value = "vec![default_language()]"))]
     pub supported_languages: Vec<Language>,
 
@@ -127,36 +121,6 @@ pub struct LanguageConfiguration {
 }
 
 impl LanguageConfiguration {
-    /// Changes the **current language** that the project is using. This means that
-    /// the compiler will be use the specified language for emitting diagnostics and
-    /// other messages (e.g. error messages) to the user during both compilation and
-    /// execution.
-    ///
-    /// # Errors
-    ///
-    /// If the language is not supported by the project, then an error is returned.
-    ///
-    /// # Example
-    ///
-    /// ```rust
-    /// use leafc::config::LanguageConfiguration;
-    ///
-    /// let mut lang_cfg = LanguageConfiguration::new();
-    ///
-    /// // Change the current language to Spanish.
-    /// lang_cfg.change_current_language("es").unwrap();
-    /// ```
-    // pub fn change_current_language(&mut self, lang: &str) -> Result<(), String> {
-    //     let lang = Language::from_str(lang).map_err(|_| format!("invalid language: {lang}"))?;
-
-    //     if self.supported_languages.contains(&lang) {
-    //         self.current_language = lang;
-    //         Ok(())
-    //     } else {
-    //         Err(format!("language not supported: {lang}"))
-    //     }
-    // }
-
     /// Adds a **new language** to the **list of languages** that the project is **able to support**
     /// (i.e. the compiler will be able to **compile** the project using the specified language as
     /// source code).
@@ -168,7 +132,7 @@ impl LanguageConfiguration {
     /// # Example
     ///
     /// ```rust
-    /// use leafc::config::LanguageConfiguration;
+    /// use leafc_cfg::lang::LanguageConfiguration;
     ///
     /// let mut lang_cfg = LanguageConfiguration::new();
     ///
@@ -194,7 +158,9 @@ impl LanguageConfiguration {
 /// **NOTE**: This list is not exhaustive. It is only a list of languages that
 /// are currently supported by the compiler and could always be exptended
 /// in the future.
-#[derive(Clone, Debug, Default, Display, Eq, Hash, PartialEq, EnumString, EnumVariantNames)]
+#[derive(
+    Clone, Copy, Debug, Default, Display, Eq, Hash, PartialEq, EnumString, EnumVariantNames,
+)]
 pub enum Language {
     /// The **English** language.
     ///

@@ -5,7 +5,10 @@ use smartstring::alias::String;
 /// # Examples
 ///
 /// ```
-/// let mut s = "hello world".to_string();
+/// use leafc_utils::string::remove_substr;
+/// use smartstring::alias::String;
+///
+/// let mut s = String::from("hello world");
 /// remove_substr(&mut s, "world");
 /// assert_eq!(s, "hello ");
 /// ```

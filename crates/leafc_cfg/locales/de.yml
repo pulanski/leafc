@@ -25,7 +25,7 @@ leafc_cfg:
     en: Englisch
 
 
-# TODO: maybe do this in the future
+# TODO: maybe do this in the future and rewrite lexer off Logos
 # leafc_lexer:
   # tokens:
   #   IDENT:

@@ -79,3 +79,5 @@ pub struct CommitHash {
 
 [ ] - auto get the user's language using their ip address, however, user's can specify the
     language of the compiler in the config file
+
+[ ] - fix repl directory from ~, its getting annoying
