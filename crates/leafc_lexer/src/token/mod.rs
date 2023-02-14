@@ -15,14 +15,11 @@ pub enum TokenKind {
     // #[regex(r"[ \t\f]+", logos::skip)]
     ERROR,
 
-    /// A **whitespace** is a sequence of one or more **space**, **tab**, or **newline characters**.
-    /// Depending on whether or not a lossless syntax tree is desired, whitespace is ignored by the lexer.
+    #[doc = include_str!("../../../../docs/src/chapter_1/tokens/WHITESPACE.md")]
     #[regex(r"[ \t\f\n]+")]
     WHITESPACE,
 
-    /// An **identifier** is a sequence of one or more **Unicode letters** or **digits** or **underscores**
-    /// or **emoji**. The first character of an identifier must be a **Unicode letter** or **underscore**
-    /// or **emoji** (e.g. `a`, `_`, `本`, `🦀`).
+    #[doc = include_str!("../../../../docs/src/chapter_1/tokens/IDENTIFIER.md")]
     #[regex(r"_?[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}]*")]
     IDENTIFIER,
 

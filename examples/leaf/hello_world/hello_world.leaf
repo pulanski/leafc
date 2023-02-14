@@ -1,0 +1,4 @@
+fn main() {
+    🦀ferris_the_crab := "a crab named ferris"
+    println!("Hello, {}!", 🦀ferris_the_crab)
+}

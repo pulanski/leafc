@@ -9,6 +9,7 @@ edition = "2021"
 leafc_lexer = { path = "../leafc_lexer" }
 leafc_utils = { path = "../leafc_utils" }
 
+doc-comment = { workspace = true }
 itertools = { workspace = true }
 num-derive = { workspace = true }
 num-traits = { workspace = true }

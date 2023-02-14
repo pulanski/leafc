@@ -1,6 +1,9 @@
+// // use crate::ast::generated::kinds::SyntaxKind; // TODO: should be this once syntaxgen is finished
+// use crate::syntax_kind_nongen::SyntaxKind; // TODO: remove this once syntaxgen is finished
 use leafc_lexer::TokenKind;
 use num_derive::{FromPrimitive, ToPrimitive};
 use num_traits::{FromPrimitive, ToPrimitive};
+use rowan::{GreenNodeBuilder, Language};
 
 /// The **kind** of a **syntax node** found in the **syntax tree**.
 ///
@@ -14,6 +17,9 @@ use num_traits::{FromPrimitive, ToPrimitive};
 #[derive(Debug, Copy, Clone, PartialEq, FromPrimitive, ToPrimitive, Hash, Eq, PartialOrd, Ord)]
 #[repr(u16)]
 pub enum SyntaxKind {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Tokens
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     WHITESPACE,
     ERROR,
     IDENTIFIER,
@@ -287,25 +293,6 @@ impl From<TokenKind> for SyntaxKind {
     }
 }
 
-pub type SyntaxNode = rowan::SyntaxNode<LeafLanguage>;
-pub type SyntaxElement = rowan::SyntaxElement<LeafLanguage>;
-pub type SyntaxToken = rowan::SyntaxToken<LeafLanguage>;
-
-#[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
-pub enum LeafLanguage {}
-
-impl rowan::Language for LeafLanguage {
-    type Kind = SyntaxKind;
-
-    fn kind_from_raw(raw: rowan::SyntaxKind) -> Self::Kind {
-        Self::Kind::from_u16(raw.0).unwrap()
-    }
-
-    fn kind_to_raw(kind: Self::Kind) -> rowan::SyntaxKind {
-        rowan::SyntaxKind(kind.to_u16().unwrap())
-    }
-}
-
 // impl SyntaxKind {
 //     pub fn is_keyword(self) -> bool {
 //         matches!(
@@ -352,3 +339,77 @@ impl rowan::Language for LeafLanguage {
 //         )
 //     }
 // }
+
+pub type SyntaxNode = rowan::SyntaxNode<LeafLanguage>;
+pub type SyntaxToken = rowan::SyntaxToken<LeafLanguage>;
+pub type SyntaxElement = rowan::SyntaxElement<LeafLanguage>;
+pub type SyntaxNodeChildren = rowan::SyntaxNodeChildren<LeafLanguage>;
+pub type SyntaxElementChildren = rowan::SyntaxElementChildren<LeafLanguage>;
+pub type PreorderWithTokens = rowan::api::PreorderWithTokens<LeafLanguage>;
+
+#[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
+pub enum LeafLanguage {}
+
+impl rowan::Language for LeafLanguage {
+    type Kind = SyntaxKind;
+
+    fn kind_from_raw(raw: rowan::SyntaxKind) -> SyntaxKind {
+        Self::Kind::from_u16(raw.0).unwrap()
+    }
+
+    fn kind_to_raw(kind: SyntaxKind) -> rowan::SyntaxKind {
+        rowan::SyntaxKind(kind.to_u16().unwrap())
+        // TODO: add error handling here via miette
+    }
+}
+
+/// A **builder** for a **concrete syntax tree**.
+/// This is a tree that has been parsed from a source file or general source text. It is **lossless**
+/// in the sense that it preserves all the information from the source text (e.g. whitespace, comments
+/// etc.).
+///
+/// This builder is used to construct a concrete syntax tree from a stream of
+/// tokens. The builder is a **push**-based API, where the caller pushes tokens
+/// into the builder and the builder constructs the tree.
+///
+/// # Example
+///
+/// ```rust,ignore
+/// use leaf_lang::syntax::{SyntaxKind, ConcreteSyntaxTreeBuilder};
+///
+/// let mut builder = ConcreteSyntaxTreeBuilder::default();
+///
+/// builder.start_node(SyntaxKind::ROOT);
+/// builder.token(SyntaxKind::INT, "1");
+/// builder.finish_node();
+///
+/// let tree = builder.finish();
+///
+/// assert_eq!(tree.root().kind(), SyntaxKind::ROOT);
+/// ```
+pub struct ConcreteSyntaxTreeBuilder {
+    builder: GreenNodeBuilder<'static>,
+    // errors: Vec<SyntaxError>, // TODO: add
+}
+
+impl ConcreteSyntaxTreeBuilder {
+    /// Creates a new tree with the given root node.
+    pub fn start_node(&mut self, kind: SyntaxKind) {
+        let kind = LeafLanguage::kind_to_raw(kind);
+
+        self.builder.start_node(kind);
+    }
+
+    /// Adds a **token** to the tree.
+    pub fn token(&mut self, kind: SyntaxKind, text: &str) {
+        let kind = LeafLanguage::kind_to_raw(kind);
+
+        self.builder.token(kind, text);
+    }
+
+    /// Finishes the current node.
+    /// This must be called after a call to `start_node`.
+    pub fn finish_node(&mut self) {
+        self.builder.finish_node();
+    }
+}

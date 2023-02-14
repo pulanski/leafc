@@ -1,3 +1,4 @@
+#![allow(unused)]
 //! Handles the underpinnings for **declaratively defining** the **grammar**
 //! for the various **syntaxes** of the **language** and then **procedurally generating** the
 //! associated **APIs** for the those syntaxes which are used by various **dependent subsystems**
@@ -195,8 +196,6 @@
 //!
 //! ## Approach
 //!
-
-#![allow(unused)] // TODO: remove This
 
 pub mod input;
 
