@@ -8,7 +8,7 @@ mod keywords;
 mod literals;
 
 /// Tests **mathematical constants**.
-mod mathematical_constants;
+mod mathematical_symbols;
 
 /// Tests **punctuation**.
 mod punctuation;

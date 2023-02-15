@@ -65,8 +65,8 @@ two **distinct use cases** in mind for the lexer:
 
 ## Token Groups
 
-Tokens within the **Leaf language** are partitioned into **token groups** as seen
-below. Each token group is defined by a series of **regular expressions**.
+Tokens within the **Leaf language** are grouped into the **following collections** seen
+below. Each token group is defined by a **series of regular expressions**.
 
 <br>
 

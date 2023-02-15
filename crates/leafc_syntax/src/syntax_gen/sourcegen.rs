@@ -378,6 +378,8 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
         .unzip();
 
     let punctuation_values = grammar.punct.iter().map(|(token, _name)| {
+        // TODO: change to this: {}[]()⁽⁾
+        // if "{}[]()".contains(token) {
         if "{}[]()".contains(token) {
             let c = token.chars().next().unwrap();
             quote! { #c }
@@ -420,7 +422,7 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
     let ast = quote! {
         #![allow(bad_style, missing_docs, unreachable_pub)]
         #[allow(clippy::manual_non_exhaustive, non_snake_case, non_camel_case_types)]
-        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug, FromPrimitive, ToPrimitive)]
         #[repr(u16)]
         pub enum SyntaxKind {
             // Technical SyntaxKinds: they appear temporally during parsing,
@@ -447,6 +449,7 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
         }
         use self::SyntaxKind::*;
         use leafc_lexer::TokenKind;
+        use num_derive::{FromPrimitive, ToPrimitive};
 
         impl SyntaxKind {
             pub fn is_keyword(self) -> bool {
@@ -509,6 +512,8 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
 
     utils::add_preamble(utils::reformat(ast.to_string()), GeneratorKind::SyntaxKind)
 }
+
+// TODO: extract various utils (e.g. string, etc.) to the utils crate
 
 fn to_upper_snake_case(s: &str) -> String {
     let mut buf = String::with_capacity(s.len());
@@ -690,7 +695,7 @@ fn lower_rule(acc: &mut Vec<Field>, grammar: &Grammar, label: Option<&String>, r
             assert!(label.is_none());
             let mut name = grammar[*token].name.clone();
             if name != "int_number" && name != "string" {
-                if "[]{}()".contains(&name) {
+                if "[]{}()⁽⁾".contains(&name) {
                     name = format!("'{name}'");
                 }
                 let field = Field::Token(name);

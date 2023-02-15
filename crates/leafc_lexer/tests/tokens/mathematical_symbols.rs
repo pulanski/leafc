@@ -33,6 +33,8 @@ mod mathematical_constants_test_suite {
     }
 
     #[rstest]
+    #[case("phi")]
+    #[case("golden")]
     #[case("φ")]
     #[case("𝜙")]
     #[case("𝛗")]
@@ -59,6 +61,7 @@ mod mathematical_constants_test_suite {
 
     #[rstest]
     #[case("catalan")]
+    #[case("K")]
     fn test_catalan(#[case] input: &str) {
         let mut lexer = TokenKind::lexer(input);
         let token = lexer.next();

@@ -17,3 +17,11 @@ The regex for `π` is:
 ```regex
 pi|π|𝜋|𝛑|𝝅|𝞹
 ```
+
+### Examples
+
+```leaf
+r := 5
+area := π * r²
+circumference := 2π * r
+```

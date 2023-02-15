@@ -7,7 +7,7 @@
 
 #![allow(bad_style, missing_docs, unreachable_pub)]
 #[allow(clippy::manual_non_exhaustive, non_snake_case, non_camel_case_types)]
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug, FromPrimitive, ToPrimitive)]
 #[repr(u16)]
 pub enum SyntaxKind {
     #[doc(hidden)]
@@ -136,6 +136,7 @@ pub enum SyntaxKind {
 }
 use self::SyntaxKind::*;
 use leafc_lexer::TokenKind;
+use num_derive::{FromPrimitive, ToPrimitive};
 impl SyntaxKind {
     pub fn is_keyword(self) -> bool {
         matches!(

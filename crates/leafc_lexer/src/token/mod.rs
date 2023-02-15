@@ -120,14 +120,7 @@ pub enum TokenKind {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Mathematical constants, functions, and operators
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// The **mathematical constant** _pi_, `π`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := π
-    /// assert_eq!(foo, 3.141592653589793)
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/PI.md")]
     #[token("pi")]
     #[token("π")]
     #[token("𝜋")]
@@ -136,41 +129,21 @@ pub enum TokenKind {
     #[token("𝞹")]
     PI,
 
-    /// The **mathematical constant** _e_, "𝑒`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := e
-    /// assert_eq!(foo, 2.718281828459045)
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/EULER.md")]
     #[token("𝑒")]
     #[token("euler")]
     EULER,
 
-    /// The **mathematical constant** _phi_, `φ`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := φ
-    /// assert_eq!(foo, 1.618033988749895)
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/PHI.md")]
     #[token("phi")]
+    #[token("golden")]
     #[token("φ")]
     #[token("𝜙")]
     #[token("𝛗")]
     #[token("𝝓")]
     PHI,
 
-    /// The **mathematical constant** _tau_, `τ`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := τ
-    /// assert_eq!(foo, 6.283185307179586)
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/TAU.md")]
     #[token("tau")]
     #[token("τ")]
     #[token("𝜏")]
@@ -178,54 +151,25 @@ pub enum TokenKind {
     #[token("𝝉")]
     TAU,
 
-    /// The **mathematical constant** _catalan_, `catalan`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := catalan
-    /// assert_eq!(foo, 0.915965594177219)
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/CATALAN.md")]
     #[token("catalan")]
+    #[token("K")]
     CATALAN,
 
-    /// The **mathematical constant** _gamma_, `γ`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := γ
-    /// assert_eq!(foo, 0.5772156649015329)
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/EULERGAMMA.md")]
     #[token("γ")]
     #[token("𝛾")]
     #[token("eulergamma")]
     #[token("eulermascheroni")]
     EULERGAMMA,
 
-    /// The mathematical constant _infinity_, `∞`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := ∞
-    /// assert_eq!(foo, f64::INFINITY)
-    /// ```
-    #[regex("[+-]?∞(16|32)?", priority = 10)]
-    // #[token("[+-]?∞(16|32)?", priority = 10)]
-    #[regex("[+-]?(inf|Inf|INF)(16|32)?", priority = 10)] // infinity
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/INFINITY.md")]
+    #[regex("[+-]?∞(16|32)?", priority = 2)]
+    #[regex("[+-]?(inf|Inf|INF)(16|32)?", priority = 2)] // infinity
     INF,
 
-    /// The mathematical constant _not a number_, `NaN`.
-    ///
-    /// # Examples
-    ///
-    /// ```ignore
-    /// foo := NaN
-    /// assert!(foo.is_nan())
-    /// ```
+    #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/NAN.md")]
     #[regex("[+-]?(nan|NaN|NAN)(16|32)?")]
-    // NaN (a value that is not `==` to any float including itself)
     NAN,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
