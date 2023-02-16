@@ -7,9 +7,6 @@ r = "run"
 rr = "run --release"
 d = "doc --open"
 
-[build]
-rustc-wrapper = '/Users/jkersey/.cargo/bin/sccache'
-
 [profile.dev]
 opt-level = 0
 debug = 2
