@@ -7,8 +7,8 @@
 //! the motivation behind this approach, please refer to the
 //! **motivation** section in the module above (i.e. `leafc_syntax::syntaxgen`).
 //!
-//! **NOTE**: The code this module creates is **procedurally generated**, and is **not**
-//! intended to be **manually edited**.
+//! **NOTE**: The code this module creates is **procedurally generated**, and is
+//! **not** intended to be **manually edited**.
 
 use std::{
     collections::{BTreeSet, HashSet},
@@ -38,22 +38,26 @@ fn create_syntax_kinds() -> (String, PathBuf) {
     (generate_syntax_kinds(KINDS_SRC), utils::project_root().join(SYNTAX_KINDS_FILE))
 }
 
-/// Handles the **generation process** for the `SyntaxKind`, `SyntaxNode`, and `SyntaxToken`
-/// **data structures** which are used to represent the **syntax trees** of the **language**,
-/// based on the **grammar** specified in `leaf.ungram`.
+/// Handles the **generation process** for the `SyntaxKind`, `SyntaxNode`, and
+/// `SyntaxToken` **data structures** which are used to represent the **syntax
+/// trees** of the **language**, based on the **grammar** specified in
+/// `leaf.ungram`.
 ///
-/// TODO: Update this to be a build.rs script. that runs if the file has been changed. e.g.
-/// run a non-cryptographic hash of the the generated files, `kinds.rs`, `nodes.rs`, and `tokens.rs`,
-/// as well as the input files `leaf.ungram` and `input.rs`, and if any of them have changed,
-/// then re-run the generator.
+/// TODO: Update this to be a build.rs script. that runs if the file has been
+/// changed. e.g. run a non-cryptographic hash of the the generated files,
+/// `kinds.rs`, `nodes.rs`, and `tokens.rs`, as well as the input files
+/// `leaf.ungram` and `input.rs`, and if any of them have changed, then re-run
+/// the generator.
 ///
-/// // This generator is **automatically invoked** by the `build.rs` script in the root of the
-/// // project, and is **not** intended to be **manually invoked**.
+/// // This generator is **automatically invoked** by the `build.rs` script in
+/// the root of the // project, and is **not** intended to be **manually
+/// invoked**.
 #[test]
 fn sourcegen_ast() {
     use super::input::KINDS_SRC;
 
-    // const SYNTAX_KINDS_FILE: &str = "crates/leafc_syntax/src/ast/generated/syntax_kind.rs";
+    // const SYNTAX_KINDS_FILE: &str =
+    // "crates/leafc_syntax/src/ast/generated/syntax_kind.rs";
     const TOKENS_FILE: &str = "crates/leafc_syntax/src/ast/generated/tokens.rs";
     const NODES_FILE: &str = "crates/leafc_syntax/src/ast/generated/nodes.rs";
 
@@ -137,7 +141,8 @@ fn generate_nodes(kinds: SyntaxKinds<'_>, grammar: &AstSrc) -> String {
                 let method_name = field.method_name();
                 let ty = field.ty();
 
-                // eprintln!("Generating method: name:{method_name} ty:{ty} for field: {field:?}");
+                // eprintln!("Generating method: name:{method_name} ty:{ty} for field:
+                // {field:?}");
 
                 if field.is_many() {
                     quote! {
@@ -442,7 +447,8 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
 
     let nodes = grammar.nodes.iter().map(|name| format_ident!("{}", name)).collect::<Vec<_>>();
 
-    // eprintln!(include_str!(concat!("../../../../docs/src/chapter_1/tokens/", "WHITESPACE", ".md")));
+    // eprintln!(include_str!(concat!("../../../../docs/src/chapter_1/tokens/",
+    // "WHITESPACE", ".md")));
 
     let ast = quote! {
         #![allow(bad_style, missing_docs, unreachable_pub)]

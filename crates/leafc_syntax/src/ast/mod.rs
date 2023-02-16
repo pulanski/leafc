@@ -21,18 +21,22 @@ pub mod node_id;
 
 /// ### A **typed** AST node.
 ///
-/// Defines the behavior for converting between an **untyped** `SyntaxNode` and a **typed** `AstNode`.
+/// Defines the behavior for converting between an **untyped** `SyntaxNode` and
+/// a **typed** `AstNode`.
 ///
-/// The conversion itself has no runtime cost since both `AstNode`s and `SyntaxNode`s have exactly
-/// the same representation. That is, they both contain a **pointer** to the **tree root** and a
-/// **pointer** to the **node itself**.
+/// The conversion itself has no runtime cost since both `AstNode`s and
+/// `SyntaxNode`s have exactly the same representation. That is, they both
+/// contain a **pointer** to the **tree root** and a **pointer** to the **node
+/// itself**.
 ///
 /// The `AstNode` trait is implemented for all the AST nodes and enforces
 /// the invariant that the specific `SyntaxNode` has the specific `SyntaxKind`.
-/// // TODO: check on this: (e.g. `FnDef` can only be casted from a `FN_DEF` node).
+/// // TODO: check on this: (e.g. `FnDef` can only be casted from a `FN_DEF`
+/// node).
 pub trait AstNode {
-    /// Returns `true` if the syntax node has the **correct kind** for this AST node and
-    /// as such can be converted to an `AstNode`. Otherwise, returns `false`.
+    /// Returns `true` if the syntax node has the **correct kind** for this AST
+    /// node and as such can be converted to an `AstNode`. Otherwise,
+    /// returns `false`.
     ///
     /// This is a **const fn**.
     ///
@@ -49,8 +53,9 @@ pub trait AstNode {
     where
         Self: Sized;
 
-    /// Casts the given syntax node to an `AstNode`, converting the **untyped** `SyntaxNode` to a
-    /// **typed** `AstNode`, if the syntax node has the **correct kind**. Otherwise, returns `None`.
+    /// Casts the given syntax node to an `AstNode`, converting the **untyped**
+    /// `SyntaxNode` to a **typed** `AstNode`, if the syntax node has the
+    /// **correct kind**. Otherwise, returns `None`.
     ///
     /// This is a **const fn**.
     ///
@@ -63,8 +68,8 @@ pub trait AstNode {
     where
         Self: Sized;
 
-    /// Returns the underlying `SyntaxNode` that this `AstNode` wraps. This is the
-    /// symmetric or inverse operation of `AstNode::cast`.
+    /// Returns the underlying `SyntaxNode` that this `AstNode` wraps. This is
+    /// the symmetric or inverse operation of `AstNode::cast`.
     ///
     /// # Example
     ///
@@ -89,19 +94,22 @@ pub trait AstNode {
 
 /// ### A **typed** AST token.
 ///
-/// Defines the behavior for converting between an **untyped** `SyntaxToken` and a **typed** `AstToken`.
-/// The conversion itself has no runtime cost since both `AstToken`s and `SyntaxToken`s have exactly
-/// the same representation. That is, they both contain a **pointer** to the **token itself**.
+/// Defines the behavior for converting between an **untyped** `SyntaxToken` and
+/// a **typed** `AstToken`. The conversion itself has no runtime cost since both
+/// `AstToken`s and `SyntaxToken`s have exactly the same representation. That
+/// is, they both contain a **pointer** to the **token itself**.
 ///
 /// The `AstToken` trait is implemented for all the AST tokens and enforces
 /// the invariant that the specific `SyntaxToken` has the specific `SyntaxKind`.
 ///
-/// **NOTE**: The current pipeline gathers lots of token metadata via `Logos` and stores it in the
-/// database. TODO: want to have interned strings for tokens, and make the lexing incremental or
-/// _"lazy"_ (i.e. if the same character stream is lexed twice, the lexer should not re-lex it).
+/// **NOTE**: The current pipeline gathers lots of token metadata via `Logos`
+/// and stores it in the database. TODO: want to have interned strings for
+/// tokens, and make the lexing incremental or _"lazy"_ (i.e. if the same
+/// character stream is lexed twice, the lexer should not re-lex it).
 pub trait AstToken {
-    /// Returns `true` if the syntax token has the **correct kind** for this AST token and
-    /// as such can be converted to an `AstToken`. Otherwise, returns `false`.
+    /// Returns `true` if the syntax token has the **correct kind** for this AST
+    /// token and as such can be converted to an `AstToken`. Otherwise,
+    /// returns `false`.
     ///
     /// This is a **const fn**.
     ///
@@ -114,8 +122,9 @@ pub trait AstToken {
     where
         Self: Sized;
 
-    /// Casts the given syntax token to an `AstToken`, converting the **untyped** `SyntaxToken` to a
-    /// **typed** `AstToken`, if the syntax token has the **correct kind**. Otherwise, returns `None`.
+    /// Casts the given syntax token to an `AstToken`, converting the
+    /// **untyped** `SyntaxToken` to a **typed** `AstToken`, if the syntax
+    /// token has the **correct kind**. Otherwise, returns `None`.
     ///
     /// This is a **const fn**.
     ///
@@ -128,8 +137,8 @@ pub trait AstToken {
     where
         Self: Sized;
 
-    /// Returns the underlying `SyntaxToken` that this `AstToken` wraps. This is the
-    /// symmetric or inverse operation of `AstToken::cast`.
+    /// Returns the underlying `SyntaxToken` that this `AstToken` wraps. This is
+    /// the symmetric or inverse operation of `AstToken::cast`.
     ///
     /// # Example
     ///

@@ -79,23 +79,25 @@ pub struct TokenStream {
     /// The **current line** of the lexer in the input string.
     ///
     /// This is used to provide better error messages (e.g. `unexpected token
-    /// on line 3` along with the line of code that caused the error and the span in the source code)
+    /// on line 3` along with the line of code that caused the error and the
+    /// span in the source code)
     ///
-    /// Stores the line where the first error token occurred, if any (calculated from the
-    /// source span during lexing).
+    /// Stores the line where the first error token occurred, if any (calculated
+    /// from the source span during lexing).
     curr_line: Option<usize>,
 
     /// The **current offset** of the lexer in the input string.
     ///
     /// This is used to provide better error messages (e.g. `unexpected token
-    /// on line 3 column 17` along with the line of code that caused the error and the span in the source code)
+    /// on line 3 column 17` along with the line of code that caused the error
+    /// and the span in the source code)
     ///
-    /// Stores the offset where the first error token occurred, if any (calculated from the
-    /// source span during lexing).
+    /// Stores the offset where the first error token occurred, if any
+    /// (calculated from the source span during lexing).
     curr_offset: Option<usize>,
 
-    /// Whether or not the token stream is **lossless** (e.g. a **full fidelity**
-    /// representation of the input text source).
+    /// Whether or not the token stream is **lossless** (e.g. a **full
+    /// fidelity** representation of the input text source).
     lossless: bool,
 }
 
@@ -122,7 +124,7 @@ impl fmt::Display for TokenStream {
 /// # Example:
 ///
 /// ```rust
-///         use std::fmt;
+/// use std::fmt;
 /// //       ^  ^  ^ ^  ^
 /// //       |  |  | |  |
 /// //       |  |  | |  +-> `;`   is a  `SEMICOLON` token
@@ -136,10 +138,12 @@ pub struct Token {
     /// The **kind** of the token (i.e. `WHITESPACE`, `IDENTIFIER`, etc.)
     kind: TokenKind,
 
-    /// The **lexeme** of the token (i.e. the **text** that the token represents)
+    /// The **lexeme** of the token (i.e. the **text** that the token
+    /// represents)
     lexeme: SmolStr,
 
-    /// The **span** of the token (i.e. the **location** of the token in the input string)
+    /// The **span** of the token (i.e. the **location** of the token in the
+    /// input string)
     span: Span,
 }
 

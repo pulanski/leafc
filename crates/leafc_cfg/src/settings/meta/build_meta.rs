@@ -1,15 +1,18 @@
 // use salsa::interned::InternedId;
 use serde::{Deserialize, Serialize};
 
-/// Defines the **build metadata** of the compiler This is used for **incremental compilation**.
+/// Defines the **build metadata** of the compiler This is used for
+/// **incremental compilation**.
 ///
-/// This includes the **build date**, **build time**, **build duration**, **build environment**, **build
-/// target**, **build profile**, **build features**, **build dependency graph** (_e.g. crates or language-specific
+/// This includes the **build date**, **build time**, **build duration**,
+/// **build environment**, **build target**, **build profile**, **build
+/// features**, **build dependency graph** (_e.g. crates or language-specific
 /// mechanism for dividing code in a more modular structure_), etc.
 ///
-/// Build metadata contains information about the **build environment** (_e.g. the **operating system**,
-/// **architecture**, **compiler**, **compiler version**, **compiler flags**, **build profile**, **build
-/// features**, **build dependencies**, etc._).
+/// Build metadata contains information about the **build environment** (_e.g.
+/// the **operating system**, **architecture**, **compiler**, **compiler
+/// version**, **compiler flags**, **build profile**, **build features**,
+/// **build dependencies**, etc._).
 ///
 /// // NOTE: this is a **work in progress**.
 ///
@@ -23,7 +26,8 @@ use serde::{Deserialize, Serialize};
 /// // TODO: display, from_str, new, default, get_set, builder, etc.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 struct Build {
-    /// The **Universally Unique Lexicographically Sortable Identifier** (ULID) of the build.
+    /// The **Universally Unique Lexicographically Sortable Identifier** (ULID)
+    /// of the build.
     build_id: BuildId,
 
     /// The **build date** of the compiler (_e.g. `2021-01-01 00:00:00`_).

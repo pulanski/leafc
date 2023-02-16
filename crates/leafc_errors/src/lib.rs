@@ -16,9 +16,10 @@ pub use repl::ReplError;
 pub use syntax::SyntaxError;
 
 /// The various **kinds of errors** that can occur within the compiler. These
-/// include errors that occur while **parsing the command line arguments** ([`CliError`]),
-/// that occur while **lexing the source code** ([`LexicalError`]), that occur
-/// while **type-checking the source code**, and more.
+/// include errors that occur while **parsing the command line arguments**
+/// ([`CliError`]), that occur while **lexing the source code**
+/// ([`LexicalError`]), that occur while **type-checking the source code**, and
+/// more.
 ///
 /// The top-level [`LeafcError`] enum is used to represent all of the possible
 /// errors that can occur within the compiler. This enum is then used to

@@ -6,7 +6,6 @@
 //!
 //! The driver crate is also responsible for setting up the compiler's
 //! logging system, and for handling the output of the compiler.
-//!
 #![deny(
     missing_docs,
     missing_debug_implementations,
@@ -69,16 +68,16 @@ use smol_str::SmolStr;
 /// The **leafc driver**. This is primary engine through which the compiler
 /// is run.
 ///
-/// This struct is responsible for orchestrating the various phases and subsystems
-/// found within the compiler from **parsing the command line arguments**, to
-/// **building an abstract syntax tree**, to **performing type checking** and
-/// **code generation**.
+/// This struct is responsible for orchestrating the various phases and
+/// subsystems found within the compiler from **parsing the command line
+/// arguments**, to **building an abstract syntax tree**, to **performing type
+/// checking** and **code generation**.
 ///
 /// The driver is also responsible for setting up the compiler's logging system,
 /// and for handling the output of the compiler.
 ///
-/// // TODO: Create a `DriverBuilder` struct to allow for customizing the driver.
-/// via some configuration options.
+/// // TODO: Create a `DriverBuilder` struct to allow for customizing the
+/// driver. via some configuration options.
 ///
 /// # Examples
 ///
@@ -106,8 +105,8 @@ pub struct LeafcDriver {
 }
 
 impl LeafcDriver {
-    /// **Compiles** the given source code, returning a result indicating whether
-    /// the compilation was successful.
+    /// **Compiles** the given source code, returning a result indicating
+    /// whether the compilation was successful.
     ///
     /// # Errors
     ///
@@ -133,8 +132,8 @@ impl LeafcDriver {
 }
 
 /// Runs the **leafc driver** with the given command line arguments in **batch
-/// compilation mode** and returns an exit code indicating whether the compilation
-/// was successful.
+/// compilation mode** and returns an exit code indicating whether the
+/// compilation was successful.
 ///
 /// This function is the primary entry point for the compiler when compiling
 /// source files in the typical batch processing model. It takes the command
@@ -147,9 +146,9 @@ impl LeafcDriver {
 /// # Examples
 ///
 /// ```rust,no_run
-/// use leafc_driver::LeafcDriver;
-/// use leafc_cli::LeafcCli;
 /// use clap::Parser;
+/// use leafc_cli::LeafcCli;
+/// use leafc_driver::LeafcDriver;
 ///
 /// // Execute the compilation pipeline on the user's input files.
 /// leafc_driver::batch_run(&LeafcCli::parse());
@@ -185,7 +184,8 @@ pub fn batch_run(cli: &LeafcCli) -> Result<ExitCode> {
     for file in &cli.sources {
         let filename = get_filename(file)?;
 
-        // leafc_log::compiling_file(filename); // TODO: update this to use the new logger
+        // leafc_log::compiling_file(filename); // TODO: update this to use the new
+        // logger
 
         let style =
             ProgressStyle::default_bar().template("{spinner:.green} {msg}").map_err(|error| {
@@ -203,8 +203,8 @@ pub fn batch_run(cli: &LeafcCli) -> Result<ExitCode> {
         // ProgressStyle::with_template("{spinner:.blue} {msg}").map_err(|error| {)
         // For more spinners check out the cli-spinners project:
         // https://github.com/sindresorhus/cli-spinners/blob/master/spinners.json
-        // .tick_strings(&["▹▹▹▹▹", "▸▹▹▹▹", "▹▸▹▹▹", "▹▹▸▹▹", "▹▹▹▸▹", "▹▹▹▹▸", "▪▪▪▪▪"]),
-        // );
+        // .tick_strings(&["▹▹▹▹▹", "▸▹▹▹▹", "▹▸▹▹▹", "▹▹▸▹▹", "▹▹▹▸▹", "▹▹▹▹▸",
+        // "▪▪▪▪▪"]), );
         pb_spinner.set_message(format!("Compiling {}", filename.bright_green().bold()));
 
         // read the file into a string

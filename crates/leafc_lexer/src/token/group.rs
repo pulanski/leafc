@@ -27,10 +27,11 @@
 pub enum TokenGroup {
     /// # **`Whitespace`**
     ///
-    /// Whitespace is captured primarily for the purpose of constructing **high-fidelity,
-    /// lossless syntax trees**. This idea is by no means new, as is in large part
-    /// inspired by its implementations in systems such as [**rust-analyzer**]() (_rowan_), the [**Swift
-    /// compiler**]() (_libsyntax_), and in [**C# compiler**]() (_Roslyn_).
+    /// Whitespace is captured primarily for the purpose of constructing
+    /// **high-fidelity, lossless syntax trees**. This idea is by no means
+    /// new, as is in large part inspired by its implementations in systems
+    /// such as [**rust-analyzer**]() (_rowan_), the [**Swift compiler**]()
+    /// (_libsyntax_), and in [**C# compiler**]() (_Roslyn_).
     ///
     /// # Example:
     ///
@@ -46,8 +47,8 @@ pub enum TokenGroup {
     /// compiler.
     ///
     /// Comments can be **single-line** or **multi-line**. Single-line
-    /// comments can be prefixed by either `//` or '#' and multi-line comments are
-    /// prefixed with `/*` and suffixed with `*/`.
+    /// comments can be prefixed by either `//` or '#' and multi-line comments
+    /// are prefixed with `/*` and suffixed with `*/`.
     ///
     /// Additionally, comments can be **doc-comments**. Doc-comments are
     /// multi-line comments that are prefixed with `///` or `/**`.

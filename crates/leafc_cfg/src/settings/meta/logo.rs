@@ -7,8 +7,9 @@ use super::version::LEAFC_TARGET;
 use super::version::LEAFC_VERSION;
 
 /// The **logo** of the **leafc** compiler.
-/// This is the **logo** that is **displayed** when the **compiler** is **run** in **REPL** mode
-/// or when the **compiler** is **run** with the `--interactive` flag during **batch** mode.
+/// This is the **logo** that is **displayed** when the **compiler** is **run**
+/// in **REPL** mode or when the **compiler** is **run** with the
+/// `--interactive` flag during **batch** mode.
 pub fn LOGO() -> String {
     String::from("\n\n              &&\n".green().to_string())
         + "            &&&&&\n".green().to_string()
@@ -75,16 +76,16 @@ pub fn LOGO() -> String {
 //          &&&\/& &&&                           888                    .d888
 //         &&|,/  |/& &&                         888                   d88P"
 //          &&/   /  /_&  &&                     888                   888
-//            \  {  |_____/_&                    888  .d88b.   8888b.  888888 .d8888b
-//            {  / /          &&&                888 d8P  Y8b     "88b 888   d88P"
-//            `, \{___________/_&&               888 88888888 .d888888 888   888
-//             } }{       \                      888 Y8b.     888  888 888   Y88b.
-//             }{{         \____&                888  "Y8888  "Y888888 888    "Y8888P
-//            {}{           `&\&&
+//            \  {  |_____/_&                    888  .d88b.   8888b.  888888
+// .d8888b            {  / /          &&&                888 d8P  Y8b     "88b
+// 888   d88P"            `, \{___________/_&&               888 88888888
+// .d888888 888   888             } }{       \                      888 Y8b.
+// 888  888 888   Y88b.             }{{         \____&                888
+// "Y8888  "Y888888 888    "Y8888P            {}{           `&\&&
 //            {{}             &&          Documentation: https://docs.leaf-lang.org/book/
 //      , -=-~{ .-^- _                    Documentation: https://docs.leaf-lang.org/book/
-// ejm        `}                                Type "?" for help, "]?" for Pkg help.
-//             {
+// ejm        `}                                Type "?" for help, "]?" for Pkg
+// help.             {
 //
 //                      Version leafc v0.1.0 (9ab85c8 2023-02-04)
 //                             target: macos-unix-aarch64

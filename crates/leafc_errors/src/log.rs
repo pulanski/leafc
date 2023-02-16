@@ -43,12 +43,15 @@ pub enum LogError {
     #[diagnostic(
         code(leafc::log::log_file_initialization),
         url(docsrs),
-        help("The log file could not be initialized. Please try again (and report this issue if it persists).")
+        help(
+            "The log file could not be initialized. Please try again (and report this issue if it \
+             persists)."
+        )
     )]
     LogFileInitialization(SmolStr),
 
-    /// This error is returned when an **error occurs** during the **initialization**
-    /// of the logging system.
+    /// This error is returned when an **error occurs** during the
+    /// **initialization** of the logging system.
     #[error(
         "{} {} {}{} {}",
         LOG_ERROR_PREFIX.blue(),
@@ -60,7 +63,10 @@ pub enum LogError {
     #[diagnostic(
         code(leafc::log::log_system_initialization),
         url(docsrs),
-        help("The log system could not be initialized. Please try again (and report this issue if it persists).")
+        help(
+            "The log system could not be initialized. Please try again (and report this issue if \
+             it persists)."
+        )
     )]
     LogSystemInitialization(SmolStr),
 
@@ -78,7 +84,10 @@ pub enum LogError {
     #[diagnostic(
         code(leafc::log::log_file),
         url(docsrs),
-        help("The log file could not be opened. Please try again (and report this issue if it persists).")
+        help(
+            "The log file could not be opened. Please try again (and report this issue if it \
+             persists)."
+        )
     )]
     LogFileOpen(SmolStr),
 }

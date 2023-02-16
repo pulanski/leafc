@@ -42,7 +42,8 @@
     clippy::multiple_crate_versions, // required for transitive dependencies
 )]
 
-/// Defines a collection of utilities for working with the various [`String`][alloc::string::String] types (e.g. `String`, `&str`, etc.).
+/// Defines a collection of utilities for working with the various
+/// [`String`][alloc::string::String] types (e.g. `String`, `&str`, etc.).
 pub mod string;
 
 // pub mod fs;
@@ -57,7 +58,8 @@ pub mod time;
 pub mod terminal;
 
 /// Defines a number of **more idiomatic** APIs for working with positions
-/// and spans found within the source code (e.g. [`FilePosition`][crate::location::FilePosition],
+/// and spans found within the source code (e.g.
+/// [`FilePosition`][crate::location::FilePosition],
 /// [`Span`][crate::location::Span], etc.). These APIs are used to provide
 /// **context** for error messages and to **highlight** the source code.
 pub mod location;

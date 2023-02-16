@@ -44,7 +44,8 @@ pub enum CfgError {
         code(leafc::cfg::initialization_failure),
         url(docsrs),
         help(
-            "The current compiler configuration is invalid. This is likely a bug in the compiler. Please report this issue to the developers."
+            "The current compiler configuration is invalid. This is likely a bug in the compiler. \
+             Please report this issue to the developers."
         )
     )]
     Initialization(SmolStr),

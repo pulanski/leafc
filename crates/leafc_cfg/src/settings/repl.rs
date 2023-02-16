@@ -26,8 +26,8 @@ pub const ASM_EXTENSION: &str = ".asm";
 #[derive(Debug, Derivative, PartialEq, Eq, Builder, Getters, MutGetters, CopyGetters, Setters)]
 #[derivative(Default(new = "true"))]
 pub struct ReplSettings {
-    /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
-    /// defaults to `vec![]`
+    /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM
+    /// IR`, etc.). defaults to `vec![]`
     #[derivative(Default(value = "vec![]"))]
     #[builder(default = "vec![]")]
     #[getset(set = "pub")]
@@ -63,7 +63,8 @@ pub struct ReplSettings {
 }
 
 impl ReplSettings {
-    /// Returns the **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
+    /// Returns the **kinds** of output to emit from the compiler (e.g. the
+    /// `AST`, `LLVM IR`, etc.).
     pub fn emit_kinds(&self) -> EmitKinds {
         self.emit_kinds.clone()
     }
@@ -101,8 +102,8 @@ impl ReplSettings {
         if let Some(line) = lines.next() {
             let mut emit_kinds = vec![];
 
-            // check if the line contains an emit kind (e.g. .tok, .ast, .hir, .mir, .ll, .asm)
-            // if so, remove it from the line and add it to the settings
+            // check if the line contains an emit kind (e.g. .tok, .ast, .hir, .mir, .ll,
+            // .asm) if so, remove it from the line and add it to the settings
             for word in line.split_whitespace() {
                 if word.starts_with("//") {
                     continue;

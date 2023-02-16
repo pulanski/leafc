@@ -7,5 +7,6 @@ fn lex_test_suite() {
     // the same as the expected output.
     //
     // Example:
-    // assert_eq!(lex("test_data/ok/block_comment/input.leaf"), "test_data/ok/block_comment/expected.txt");
+    // assert_eq!(lex("test_data/ok/block_comment/input.leaf"),
+    // "test_data/ok/block_comment/expected.txt");
 }

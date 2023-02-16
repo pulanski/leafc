@@ -1,9 +1,10 @@
 /// The **target triple** to use when compiling the input file.
 /// defaults to [`TargetTriple::Native`] if not specified.
 ///
-/// The target triple is used to specify the **target architecture** and **operating system** that the
-/// executable will be compiled for. This is used to **generate** the **correct** **machine code** for the
-/// target architecture and operating system.
+/// The target triple is used to specify the **target architecture** and
+/// **operating system** that the executable will be compiled for. This is used
+/// to **generate** the **correct** **machine code** for the target architecture
+/// and operating system.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TargetTriple {
     /// The **native target triple** for the current machine.
@@ -22,14 +23,21 @@ impl Default for TargetTriple {
 
 /// The **underlying data** for a [`TargetTriple`].
 ///
-/// This is used to specify the **target architecture**, **operating system**, and **environment** that the
-/// executable will be compiled for. This is used to **generate** the **correct** **machine code** for the
-/// target architecture and operating system.
+/// This is used to specify the **target architecture**, **operating system**,
+/// and **environment** that the executable will be compiled for. This is used
+/// to **generate** the **correct** **machine code** for the target architecture
+/// and operating system.
 ///
 /// # Examples
 ///
 /// ```rust
-/// use leafc_cfg::settings::target_triple::{TargetTriple, TargetTripleData, TargetArch, TargetOs, TargetEnv};
+/// use leafc_cfg::settings::target_triple::{
+///     TargetArch,
+///     TargetEnv,
+///     TargetOs,
+///     TargetTriple,
+///     TargetTripleData,
+/// };
 ///
 /// // The default target triple is `TargetTriple::Native`.
 /// // The default target triple data is `TargetTripleData::Native`.
@@ -60,7 +68,13 @@ impl TargetTripleData {
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_cfg::settings::target_triple::{TargetTriple, TargetTripleData, TargetArch, TargetOs, TargetEnv};
+    /// use leafc_cfg::settings::target_triple::{
+    ///     TargetArch,
+    ///     TargetEnv,
+    ///     TargetOs,
+    ///     TargetTriple,
+    ///     TargetTripleData,
+    /// };
     ///
     /// // The default target triple is `TargetTriple::Native`.
     /// // The default target triple data is `TargetTripleData::Native`.
@@ -88,12 +102,14 @@ impl TargetTripleData {
 /// The **target architecture** to use when compiling the input file.
 /// defaults to `TargetArch::Native`
 ///
-/// The target architecture is used to specify the **target architecture** that the executable will be compiled
-/// for. This is used to **generate** the **correct** **machine code** for the target architecture.
-/// This is used to **generate** the **correct** **machine code** for the target architecture.
+/// The target architecture is used to specify the **target architecture** that
+/// the executable will be compiled for. This is used to **generate** the
+/// **correct** **machine code** for the target architecture. This is used to
+/// **generate** the **correct** **machine code** for the target architecture.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, Hash)]
 pub enum TargetArch {
-    /// The **native** target architecture. This is the default target architecture.
+    /// The **native** target architecture. This is the default target
+    /// architecture.
     #[default]
     Native,
 
@@ -114,11 +130,14 @@ pub enum TargetArch {
 /// The **target operating system** to use when compiling the input file.
 /// defaults to `TargetOs::Native`
 ///
-/// The target operating system is used to specify the **target operating system** that the executable will be
-/// compiled for. This is used to **generate** the **correct** **machine code** for the target operating system.
+/// The target operating system is used to specify the **target operating
+/// system** that the executable will be compiled for. This is used to
+/// **generate** the **correct** **machine code** for the target operating
+/// system.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, Hash)]
 pub enum TargetOs {
-    /// The **native** target operating system. This is the default target operating system.
+    /// The **native** target operating system. This is the default target
+    /// operating system.
     #[default]
     Native,
 
@@ -138,11 +157,13 @@ pub enum TargetOs {
 /// The **target environment** to use when compiling the input file.
 /// defaults to `TargetEnv::Native`
 ///
-/// The target environment is used to specify the **target environment** that the executable will be compiled for.
-/// This is used to **generate** the **correct** **machine code** for the target environment.
+/// The target environment is used to specify the **target environment** that
+/// the executable will be compiled for. This is used to **generate** the
+/// **correct** **machine code** for the target environment.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Ord, PartialOrd, Hash)]
 pub enum TargetEnv {
-    /// The **native** target environment. This is the default target environment.
+    /// The **native** target environment. This is the default target
+    /// environment.
     #[default]
     Native,
 

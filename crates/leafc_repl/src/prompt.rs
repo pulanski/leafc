@@ -152,8 +152,8 @@ impl Prompt for LeafcPrompt {
             PromptHistorySearchStatus::Passing => "",
             PromptHistorySearchStatus::Failing => "failing ",
         };
-        // NOTE: magic strings, given there is logic on how these compose I am not sure if it
-        // is worth extracting in to static constant
+        // NOTE: magic strings, given there is logic on how these compose I am not sure
+        // if it is worth extracting in to static constant
         Cow::Owned(format!("({}reverse-search: {}) ", prefix, history_search.term))
     }
 

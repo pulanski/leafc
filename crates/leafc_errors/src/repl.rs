@@ -34,13 +34,16 @@ pub enum ReplError {
     #[diagnostic(
         code(leafc::repl::log_file_open),
         url(docsrs),
-        help("The log file could not be opened. Please try again (and report this issue if it persists).")
+        help(
+            "The log file could not be opened. Please try again (and report this issue if it \
+             persists)."
+        )
     )]
     LogFileOpen(SmolStr),
 
-    /// This error is returned when the **history file** could not be **opened**.
-    /// This error is typically returned during the **initialization** of the
-    /// REPL.
+    /// This error is returned when the **history file** could not be
+    /// **opened**. This error is typically returned during the
+    /// **initialization** of the REPL.
     #[error(
         "{} {} {}{} {}",
         REPL_ERROR_PREFIX.blue(),
@@ -52,7 +55,10 @@ pub enum ReplError {
     #[diagnostic(
         code(leafc::repl::history_file_open),
         url(docsrs),
-        help("The history file could not be opened. Please try again (and report this issue if it persists).")
+        help(
+            "The history file could not be opened. Please try again (and report this issue if it \
+             persists)."
+        )
     )]
     HistoryFileOpen(SmolStr),
 
@@ -70,7 +76,10 @@ pub enum ReplError {
     #[diagnostic(
         code(leafc::repl::invalid_settings_update),
         url(docsrs),
-        help("The REPL settings could not be updated. Please try again (and report this issue if it persists).")
+        help(
+            "The REPL settings could not be updated. Please try again (and report this issue if \
+             it persists)."
+        )
     )]
     InvalidSettingsUpdate(SmolStr),
 }

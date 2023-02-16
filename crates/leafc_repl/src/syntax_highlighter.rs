@@ -50,7 +50,8 @@ impl Highlighter for LeafcSyntaxHighlighter {
     }
 }
 impl LeafcSyntaxHighlighter {
-    /// Construct the default highlighter with a given set of extern commands/keywords to detect and highlight
+    /// Construct the default highlighter with a given set of extern
+    /// commands/keywords to detect and highlight
     pub fn new(external_commands: Vec<String>) -> LeafcSyntaxHighlighter {
         LeafcSyntaxHighlighter {
             external_commands,

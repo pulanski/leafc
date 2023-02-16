@@ -12,3 +12,55 @@ Cargo.lock
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+
+# MacOS directory attributes
+**/.DS_Store
+
+# Windows directory attributes
+**/Thumbs.db
+
+# Compressed files
+*.gz
+
+# Debug files
+*.dSYM/
+*.su
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.xo
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Backup files
+*.bak
+
+# Snyk test reports
+**/.dccache
+
+# .env file for environment variables
+.env
+
+# Vim
+.*.swp
+*.swp
+.*.swo
+*.swo
+tags
+tags.lock
+tags.temp

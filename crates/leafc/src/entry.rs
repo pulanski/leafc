@@ -8,8 +8,8 @@ use leafc_cli::LeafcCli;
 pub struct LeafcEntry;
 
 impl LeafcEntry {
-    /// Runs the **top level entry point** for **leafc** and returns an exit code indicating whether
-    /// the operation was successful.
+    /// Runs the **top level entry point** for **leafc** and returns an exit
+    /// code indicating whether the operation was successful.
     ///
     /// This function is the primary entry point for the compiler. It is
     /// responsible for parsing the command line arguments, and then starting
@@ -29,8 +29,8 @@ impl LeafcEntry {
     ///
     /// # Errors
     ///
-    /// This function will return an error if the driver or repl fails to run fails to run. This
-    /// could be due to a number of reasons, including:
+    /// This function will return an error if the driver or repl fails to run
+    /// fails to run. This could be due to a number of reasons, including:
     ///
     /// - The driver failed to **parse the command line arguments**.
     /// - The driver failed to **parse the input file**.

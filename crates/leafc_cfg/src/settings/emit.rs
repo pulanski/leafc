@@ -2,7 +2,8 @@ use strum_macros::EnumIter;
 
 pub type EmitKinds = Vec<EmitKind>;
 
-/// The **kind of output** to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
+/// The **kind of output** to emit from the compiler (e.g. the `AST`, `LLVM IR`,
+/// etc.).
 #[derive(Debug, Eq, PartialEq, Clone, Copy, Hash, EnumIter)]
 pub enum EmitKind {
     /// Emit the corresponding **token stream** for the input file.

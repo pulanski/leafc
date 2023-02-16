@@ -22,17 +22,19 @@ pub const LEAFC_TARGET: &str = env!("LEAFC_TARGET_TRIPLE");
 // Todo: implement comparison operators for semver vs commit hash based on
 // calculation of temporal distance between the two, additionally implement
 // `Ord` trait for `Version` enum
-/// The **version** of the compiler. This is either a **semantic version** or a **commit hash**.
-/// The **semantic version** is the **version** of the compiler that is **published** to **crates.io**,
-/// while the **commit hash** is the **version** of the compiler that is **built from source**.
-/// The **semantic version** is used to **determine** the **version** of the compiler that is **installed**.
-/// The **commit hash** is used to **determine** the **version** of the compiler that is **built from source**.
+/// The **version** of the compiler. This is either a **semantic version** or a
+/// **commit hash**. The **semantic version** is the **version** of the compiler
+/// that is **published** to **crates.io**, while the **commit hash** is the
+/// **version** of the compiler that is **built from source**. The **semantic
+/// version** is used to **determine** the **version** of the compiler that is
+/// **installed**. The **commit hash** is used to **determine** the **version**
+/// of the compiler that is **built from source**.
 ///
 /// # Examples
 ///
 /// ```rust
-/// use leafc_cfg::settings::meta::version::Version;
 /// use leafc_cfg::settings::meta::version::CommitHash;
+/// use leafc_cfg::settings::meta::version::Version;
 /// use semver::Version as Semver;
 ///
 /// let version = Version::Semver(Semver::new(0, 1, 0));
@@ -58,8 +60,9 @@ pub enum Version {
 // ?] [{timestamp} UTC]
 pub struct CommitHash {
     /// The **hash** of the commit (_e.g. `a1b2c3d4`_)
-    /// // i want the internal representation to be a `smartstring::alias::String`
-    /// // but i want the external representation to be a `&str`
+    /// // i want the internal representation to be a
+    /// `smartstring::alias::String` // but i want the external
+    /// representation to be a `&str`
     // #[new(value = "String::new().to_owned().as_str()")]
     hash: String,
 

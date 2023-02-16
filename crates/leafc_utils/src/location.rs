@@ -20,8 +20,9 @@ pub struct FileId(usize);
 /// to **highlight** the source code.
 /// It is also used to **track** the **location** of the source code.
 ///
-/// **NOTE:** The **span** maintains an **invariant** that the **start** of the span
-/// is **less than or equal to** the **end** of the span (_i.e. `start <= end`_).
+/// **NOTE:** The **span** maintains an **invariant** that the **start** of the
+/// span is **less than or equal to** the **end** of the span (_i.e. `start <=
+/// end`_).
 ///
 /// # Example
 ///
@@ -80,7 +81,12 @@ impl<T: Clone + Copy> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::{Locatable, Location, FileId, Span};
+    /// use leafc_utils::{
+    ///     FileId,
+    ///     Locatable,
+    ///     Location,
+    ///     Span,
+    /// };
     ///
     /// let location = Location::new(FileId::new(0), Span::new(0, 1));
     /// ```
@@ -378,7 +384,11 @@ impl Location {
     /// # Example
     ///
     /// ```
-    /// use leafc_utils::location::{Location, Span, FileId};
+    /// use leafc_utils::location::{
+    ///     FileId,
+    ///     Location,
+    ///     Span,
+    /// };
     ///
     /// let location = Location::new(FileId::new(0), Span::new(0, 10));
     ///

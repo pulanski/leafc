@@ -57,8 +57,10 @@ pub enum TokenKind {
     )] // decimal
     #[regex("[+-]?(0b|0B)[0-1][0-1_]*(u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize)?")] // binary
     #[regex("[+-]?(0o|0O)[0-7][0-7_]*(u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize)?")] // octal
-    #[regex("[+-]?(0x|0X)[0-9a-fA-F][0-9a-fA-F_]*(u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize)?",
-    priority = 1
+    #[regex(
+        "[+-]?(0x|0X)[0-9a-fA-F][0-9a-fA-F_]*\
+         (u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize)?",
+        priority = 1
     )]
     // hexadecimal
     INTEGER,
@@ -84,8 +86,9 @@ pub enum TokenKind {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Superscript literals
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// A **superscript integer** is a sequence of one or more decimal digits representing a non-negative
-    /// integer value. An **optional prefix** sets the base of the integer: `0o` for octal, `0x` or
+    /// A **superscript integer** is a sequence of one or more decimal digits
+    /// representing a non-negative integer value. An **optional prefix**
+    /// sets the base of the integer: `0o` for octal, `0x` or
     /// `0X` for hexadecimal, and `0b` or `0B` for binary.
     ///
     /// # Examples
@@ -100,8 +103,9 @@ pub enum TokenKind {
     #[regex("[⁺⁻]?⁰ˣ[⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ][⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᴮᶜᴰᴱᶠ_]*")] // hexadecimal
     INTEGER_SUP,
 
-    /// A **superscript floating point number** is a sequence of decimal digits representing a floating
-    /// point value. An **optional prefix** sets the base of the number: `0o` for octal, `0x` or `0X`
+    /// A **superscript floating point number** is a sequence of decimal digits
+    /// representing a floating point value. An **optional prefix** sets the
+    /// base of the number: `0o` for octal, `0x` or `0X`
     ///
     /// # Examples
     ///
@@ -270,8 +274,8 @@ pub enum TokenKind {
     #[token("mwisho")] // Swahili
     FINAL_KW,
 
-    /// The **reserved** keyword `import`, not intended for usage, but reserved for
-    /// disallowing it as an identifier.
+    /// The **reserved** keyword `import`, not intended for usage, but reserved
+    /// for disallowing it as an identifier.
     #[token("import")] // English
     #[token("importar")] // Spanish
     #[token("importer")] // French
@@ -590,9 +594,10 @@ pub enum TokenKind {
 
     /// The **keyword** `in`.
     ///
-    /// **NOTE**: Since `in` directly translates to `i` in Swedish, Danish, and Norwegian, we use the
-    /// we don't actually use the `i` keyword in those languages and instead use `in` such that
-    /// `i` can be **used as a variable name** commonly used for _indexing and iteration_.
+    /// **NOTE**: Since `in` directly translates to `i` in Swedish, Danish, and
+    /// Norwegian, we use the we don't actually use the `i` keyword in those
+    /// languages and instead use `in` such that `i` can be **used as a
+    /// variable name** commonly used for _indexing and iteration_.
     #[token("in")] // English, German, Dutch, Finnish
     #[token("dentro de")] // Spanish
     #[token("dans")] // French

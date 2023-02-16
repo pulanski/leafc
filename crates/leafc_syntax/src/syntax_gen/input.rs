@@ -1,13 +1,16 @@
 //! Defines **inputs** for the **code generation process** (e.g. `SyntaxKinds`).
 //!
-//! The module takes a **declarative** approach to defining the **syntax** of the language,
-//! and then uses this to **procedurally generate** many of the **language constructs** used
-//! throughout the compiler, particularly within the parser.
+//! The module takes a **declarative** approach to defining the **syntax** of
+//! the language, and then uses this to **procedurally generate** many of the
+//! **language constructs** used throughout the compiler, particularly within
+//! the parser.
 
 /// The **effective input** for the **code generation process**.
 ///
-/// Specifies all the _different kinds_ of **syntax nodes** and **tokens** in the **language**.
-/// The [`SyntaxKind`][crate::ast::generated::syntax_kind::SyntaxKind] enum is generated from this.
+/// Specifies all the _different kinds_ of **syntax nodes** and **tokens** in
+/// the **language**.
+/// The [`SyntaxKind`][crate::ast::generated::syntax_kind::SyntaxKind] enum is
+/// generated from this.
 pub(crate) struct SyntaxKinds<'a> {
     pub(crate) punct: &'a [(&'a str, &'a str)],
     pub(crate) keywords: &'a [&'a str],
@@ -126,7 +129,8 @@ pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
         "while",
         "yield",
     ],
-    // contextual_keywords: &["auto", "default", "existential", "union", "raw", "macro_rules", "yeet"], // TODO: update this
+    // contextual_keywords: &["auto", "default", "existential", "union", "raw", "macro_rules",
+    // "yeet"], // TODO: update this
     contextual_keywords: &[], // TODO: update this
     literals: &["RUNE", "STRING", "RAW_STRING", "INTEGER", "FLOAT", "LIFETIME"],
     tokens: &[
@@ -135,7 +139,8 @@ pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
         "IDENTIFIER",
         "COMMENT",
         "DOC_COMMENT",
-        // ("WHITESPACE", include_str!("../../../../docs/src/chapter_1/tokens/WHITESPACE.md")), // TODO: maybe this in future
+        // ("WHITESPACE", include_str!("../../../../docs/src/chapter_1/tokens/WHITESPACE.md")), //
+        // TODO: maybe this in future
     ],
     nodes: &[
         "SOURCE_FILE",

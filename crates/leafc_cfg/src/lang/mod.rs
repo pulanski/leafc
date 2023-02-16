@@ -12,9 +12,9 @@ use sys_locale::get_locale;
 
 /// ## Languages
 ///
-/// Used when emitting diagnostics and other messages (e.g. error messages) to the user
-/// concerning language configuration (i.e. when adding another language to the project,
-/// or when changing the current language).
+/// Used when emitting diagnostics and other messages (e.g. error messages) to
+/// the user concerning language configuration (i.e. when adding another
+/// language to the project, or when changing the current language).
 ///
 /// # Example
 ///
@@ -49,8 +49,9 @@ use sys_locale::get_locale;
 // /// Represents the **Chinese** language given the current [**language of execution**][Language].
 // pub static CHINESE_LANGUAGE_REF: Lazy<String> = Lazy::new(|| t!("leafc_cfg.lang.zh"));
 
-// /// Represents the **Portuguese** language given the current [**language of execution**][Language].
-// pub static PORTUGUESE_LANGUAGE_REF: Lazy<String> = Lazy::new(|| t!("leafc_cfg.lang.pt"));
+// /// Represents the **Portuguese** language given the current [**language of
+// execution**][Language]. pub static PORTUGUESE_LANGUAGE_REF: Lazy<String> = Lazy::new(||
+// t!("leafc_cfg.lang.pt"));
 
 // pub type LangRefs = ENGLISH_LANGUAGE_REF;
 
@@ -78,9 +79,10 @@ pub fn default_language() -> Language {
     Language::from_str(&lang_code).unwrap_or(Language::English)
 }
 
-// TODO: when instantiating the LanguageConfiguration, check and see if it is set
-// within the config file. If it is, then use the `Builder` pattern to instantiate
-// the LanguageConfiguration. If it is not, then use the `new` function via Default.
+// TODO: when instantiating the LanguageConfiguration, check and see if it is
+// set within the config file. If it is, then use the `Builder` pattern to
+// instantiate the LanguageConfiguration. If it is not, then use the `new`
+// function via Default.
 pub fn init() -> LanguageConfiguration {
     LanguageConfiguration::new()
 }
@@ -94,7 +96,11 @@ pub fn init() -> LanguageConfiguration {
 /// # Example
 ///
 /// ```rust
-///  use leafc_cfg::lang::{default_language, Language, LanguageConfiguration};
+/// use leafc_cfg::lang::{
+///     default_language,
+///     Language,
+///     LanguageConfiguration,
+/// };
 ///
 /// let lang_cfg = LanguageConfiguration::new();
 ///
@@ -121,13 +127,14 @@ pub struct LanguageConfiguration {
 }
 
 impl LanguageConfiguration {
-    /// Adds a **new language** to the **list of languages** that the project is **able to support**
-    /// (i.e. the compiler will be able to **compile** the project using the specified language as
-    /// source code).
+    /// Adds a **new language** to the **list of languages** that the project is
+    /// **able to support** (i.e. the compiler will be able to **compile**
+    /// the project using the specified language as source code).
     ///
     /// # Errors
     ///
-    /// If the language is already supported by the project, then an error is returned.
+    /// If the language is already supported by the project, then an error is
+    /// returned.
     ///
     /// # Example
     ///
@@ -261,7 +268,8 @@ pub enum Language {
     Swahili,
 }
 
-/// Represents the **English** language given the current [**language of execution**][Language].
+/// Represents the **English** language given the current [**language of
+/// execution**][Language].
 #[allow(dead_code)]
 fn english() -> String {
     t!("leafc_cfg.lang.en").into()

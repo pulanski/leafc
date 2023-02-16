@@ -45,7 +45,8 @@ pub enum DriverError {
         code(leafc::driver::initialization_failure),
         url(docsrs),
         help(
-            "The driver failed to initialize. This is likely a bug in the compiler. Please report this issue to the developers."
+            "The driver failed to initialize. This is likely a bug in the compiler. Please report \
+             this issue to the developers."
         )
     )]
     Initialization(SmolStr),

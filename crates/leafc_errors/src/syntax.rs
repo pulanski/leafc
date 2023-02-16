@@ -83,7 +83,7 @@ pub enum SyntaxError {
 //     code(leafc::syntax::unknown_token),
 //     url(docsrs),
 //     help(
-//         "The token you've entered is not valid (contained within the grammar of the language)."
-//     )
+//         "The token you've entered is not valid (contained within the grammar
+// of the language)."     )
 // )]
 // UnknownToken(SmolStr),

@@ -6,16 +6,18 @@ use derive_builder::Builder;
 use crate::settings::target_triple::TargetTripleData;
 use crate::settings::{emit::EmitKinds, LogLevel, OptLevel, TargetTriple};
 
-/// Settings for **adjusting the behavior** of the compiler from the command line.
-/// These are **parsed** from the command-line arguments passed to the compiler.
+/// Settings for **adjusting the behavior** of the compiler from the command
+/// line. These are **parsed** from the command-line arguments passed to the
+/// compiler.
 ///
-/// This data structure is mostly used as a bridge between the `clap` crate and the rest of the compiler
-/// in regards to configuring the compiler from the command line.
+/// This data structure is mostly used as a bridge between the `clap` crate and
+/// the rest of the compiler in regards to configuring the compiler from the
+/// command line.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Builder, Derivative)]
 #[derivative(Default(new = "true"))]
 pub struct CommandLineConfiguration {
-    /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM IR`, etc.).
-    /// defaults to `vec![]`
+    /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM
+    /// IR`, etc.). defaults to `vec![]`
     #[builder(default = "vec![]")]
     #[derivative(Default(value = "EmitKinds::default()"))]
     pub emit_kinds: EmitKinds,
@@ -32,8 +34,8 @@ pub struct CommandLineConfiguration {
     #[derivative(Default(value = "OptLevel::None"))]
     pub opt_level: OptLevel,
 
-    /// The **verbosity level** of the compiler (e.g. `LogLevel::Info`, `LogLevel::Warn`, etc.).
-    /// defaults to `LogLevel::Info`
+    /// The **verbosity level** of the compiler (e.g. `LogLevel::Info`,
+    /// `LogLevel::Warn`, etc.). defaults to `LogLevel::Info`
     #[builder(default = "LogLevel::Info")]
     #[derivative(Default(value = "LogLevel::Info"))]
     pub verbosity: LogLevel,

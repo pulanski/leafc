@@ -16,8 +16,8 @@ pub struct Time {
     format: String,
 }
 
-// #[derive(Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Add, Display, From)]
-// pub enum TimeFormat {
+// #[derive(Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Add,
+// Display, From)] pub enum TimeFormat {
 //     // #[display(fmt = "%Y-%m-%d %H:%M:%S")]
 //     #[default]
 //     Default,

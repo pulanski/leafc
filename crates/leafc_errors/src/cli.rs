@@ -44,7 +44,8 @@ pub enum CliError {
         code(leafc::cli::file_not_found),
         url(docsrs),
         help(
-            "The file could not be found. Please check that the file exists and that you have permission to access it."
+            "The file could not be found. Please check that the file exists and that you have \
+             permission to access it."
         )
     )]
     FileNotFound(SmolStr),
