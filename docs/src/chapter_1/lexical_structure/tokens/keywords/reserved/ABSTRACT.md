@@ -21,7 +21,7 @@ abstract // English, Dutch
 
 ## Examples
 
-```leaf
+```leaf,ignore
 abstract type Foo
 
 추상 타입 Foo

@@ -17,7 +17,7 @@ pub mod log;
 
 /// Defines the **settings** used to **tune** the compiler's behavior (e.g. the **log level**, **log topic**,
 /// **optimization level**, etc.) which can be set from the command line (e.g. `leafc --log-level=debug`).
-pub mod command_line;
+// pub mod command_line;
 
 /// Defines the **optimization level** to use when compiling the input file.
 pub mod opt;

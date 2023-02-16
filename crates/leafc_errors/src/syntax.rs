@@ -4,7 +4,7 @@ use smol_str::SmolStr;
 use strum_macros::EnumCount as EnumCountMacro;
 use thiserror::Error;
 
-use crate::LexicalError;
+// use crate::LexicalError;
 
 /// Prefix appended to all `SyntaxError` messages.
 pub const SYNTAX_ERROR_PREFIX: &str = "Syntax Error";

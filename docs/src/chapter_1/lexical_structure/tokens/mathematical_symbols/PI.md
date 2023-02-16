@@ -5,10 +5,10 @@ equal to **3.14159**. The value of `π` is defined as the ratio of the
 circumference of a circle to its diameter. It's used in many
 different use cases, including:
 
-- Geometry and Trigonometry
-- Science and Engineering
-- Computer Graphics
-- and more...
+-   Geometry and Trigonometry
+-   Science and Engineering
+-   Computer Graphics
+-   and more...
 
 ### Regex
 

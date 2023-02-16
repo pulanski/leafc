@@ -9,9 +9,7 @@
     <br>
 </h1>
 
-
 <h4 align="center">A statically-typed Programming Language inspired by <a href="
-
 
 <!-- <h4 align="center">A statically-typed
 

@@ -1,5 +1,3 @@
-
-
 /// The **optimization level** to use when compiling the input file.
 /// defaults to `OptLevel::None`
 ///

@@ -19,7 +19,7 @@
     patterns_in_fns_without_body,
     private_in_public,
     unconditional_recursion,
-    // unuseda,
+    unused,
     unused_allocation,
     unused_comparisons,
     unused_parens,
@@ -35,13 +35,12 @@
     clippy::correctness,
     clippy::cargo,
     clippy::suspicious,
-    rust_2018_idioms,
+    rust_2018_idioms
 )]
 #![allow(
     dead_code, unused_variables, // TODO: temporary
     clippy::multiple_crate_versions, // required for transitive dependencies
 )]
-#![feature(rustdoc_missing_doc_code_examples)]
 
 /// Defines a collection of utilities for working with the various [`String`][alloc::string::String] types (e.g. `String`, `&str`, etc.).
 pub mod string;
@@ -68,5 +67,5 @@ pub mod location;
 /// given regular expression.
 pub mod regex_gen;
 
-pub use location::{FileId, FilePosition, Location, Span};
+pub use location::{FileId, FilePosition, Locatable, Location, Span};
 pub use terminal::{horizontal_padding, vertical_padding};

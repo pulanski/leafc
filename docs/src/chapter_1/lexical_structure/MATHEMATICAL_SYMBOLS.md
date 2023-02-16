@@ -1,20 +1,20 @@
 # Mathematical Symbols
 
 Inspired by the use of mathematical symbols in both [Julia](https://julialang.org/)
-and [APL](https://en.wikipedia.org/wiki/APL_(programming_language)), and appreciating the
+and [APL](<https://en.wikipedia.org/wiki/APL_(programming_language)>), and appreciating the
 **expressive** and **concise** syntax that results, the Leaf language uses mathematical symbols for various **mathematical constants**,
 **functions**, and **operators**.
 
 ### Mathematical Constants
 
-- [Pi](#PI)
-- [Euler's Number](#EULER)
-- [Golden Ratio](#PHI)
-- [Tau](#TAU)
-- [Catalan's Constant](#CATALAN)
-- [Euler-Mascheroni Constant](#EULERGAMMA)
-- [Infinity](#INFINITY)
-- [Not a Number](#NAN)
+-   [Pi](#PI)
+-   [Euler's Number](#EULER)
+-   [Golden Ratio](#PHI)
+-   [Tau](#TAU)
+-   [Catalan's Constant](#CATALAN)
+-   [Euler-Mascheroni Constant](#EULERGAMMA)
+-   [Infinity](#INFINITY)
+-   [Not a Number](#NAN)
 
 # Mathematical Constants
 

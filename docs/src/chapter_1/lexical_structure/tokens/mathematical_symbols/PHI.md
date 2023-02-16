@@ -2,9 +2,9 @@
 
 The **mathematical constant** _phi_, `𝜙`. **Phi** is approximately equal to **1.61803**. The value of **phi**, `𝜙`, is defined as the ratio of the sum of the two sides of a right-angled triangle to the length of the hypotenuse. It's used in many different use cases, including:
 
-- Golden ratio
-- Fibonacci sequence
-- and more...
+-   Golden ratio
+-   Fibonacci sequence
+-   and more...
 
 ### Regex
 

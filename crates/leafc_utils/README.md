@@ -9,8 +9,8 @@ Utilities include:
 
 <!-- - `StringTable` for storing strings in a single location -->
 
-- `Span` for representing a span (e.g. `start..end`) in the source code
-- `FileLocation` for representing a location in the source code of a file (e.g. `line:column`)
-- `Location` for representing a location in the source code of a program (e.g. `file:line:column`)
+-   `Span` for representing a span (e.g. `start..end`) in the source code
+-   `FileLocation` for representing a location in the source code of a file (e.g. `line:column`)
+-   `Location` for representing a location in the source code of a program (e.g. `file:line:column`)
 
 and more...

@@ -1,3 +1,4 @@
+#![allow(unused_imports)] // TODO: Remove this once all nodes are implemented
 pub mod ast;
 pub mod syntax_gen;
 pub mod syntax_tree;

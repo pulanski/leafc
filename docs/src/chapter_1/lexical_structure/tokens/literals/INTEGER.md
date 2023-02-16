@@ -41,7 +41,7 @@ Additionally, an **optional suffix** may be used to set the size of the integer 
 
 The following are all **valid integer literals**:
 
-```
+```ignore
 123
 
 123i32

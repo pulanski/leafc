@@ -2,9 +2,9 @@
 
 General tokens include **whitespace**, **identifiers**, and a **lexical error**.
 
-- [Whitespace](#WHITESPACE)
-- [Identifier](#IDENTIFIER)
-- [Lexical Error](#LEXICAL_ERROR)
+-   [Whitespace](#WHITESPACE)
+-   [Identifier](#IDENTIFIER)
+-   [Lexical Error](#LEXICAL_ERROR)
 
 <a name="WHITESPACE"></a>
 

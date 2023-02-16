@@ -48,8 +48,8 @@ you are not interested in the details of the lexer.
 Each token created from the lexer is a combination of its **token kind** (e.g. `IDENTIFIER`),
 **span** (e.g. `0..19`), and the **raw bytes** (e.g. `🦀ferris_the_crab`).
 
-| Token Kind   | Span    | Raw Bytes          |
-| ------------ | ------- | ------------------ |
+| Token Kind   | Span    | Raw Bytes           |
+| ------------ | ------- | ------------------- |
 | `IDENTIFIER` | `0..19` | `🦀ferris_the_crab` |
 
 The **token kind** is used later in the **syntax** for the **parser's grammar**.
@@ -59,9 +59,9 @@ determine its value. Depending on the context, the output of the lexer is
 either a **lossless** or **lossy representation** of the source code. There are
 two **distinct use cases** in mind for the lexer:
 
-- Batch compilation of source code
+-   Batch compilation of source code
 
-- IDE integration
+-   IDE integration
 
 ## Token Groups
 
@@ -82,6 +82,7 @@ below. Each token group is defined by a **series of regular expressions**.
 | ------------------------------------------- |
 | Comment                                     |
 | Documentation Comment                       |
+
 <!-- TODO: refactor to this -->
 <!-- | Line Comment                                |
 | Block Comment                               |
@@ -122,7 +123,6 @@ below. Each token group is defined by a **series of regular expressions**.
 | `extern`                                             |
 | `final`                                              |
 | `is`                                                 |
-
 
 <!-- | Epsilon                                                             | -->
 <!-- <br>

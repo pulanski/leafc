@@ -6,6 +6,6 @@ encountered.
 
 ### Examples
 
-```
+```ignore
 '_foo
 ```

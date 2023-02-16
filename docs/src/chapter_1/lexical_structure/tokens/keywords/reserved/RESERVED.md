@@ -4,14 +4,14 @@ The following keywords are **reserved** for future use by the language. They are
 **currently not used** within the surface syntax of the language, but may be
 **used in the future**.
 
-- [Abstract](#ABSTRACT)
-- [Async](#ASYNC)
-- [Await](#AWAIT)
-- [Extern](#EXTERN)
-- [Final](#FINAL)
-- [Import](#IMPORT)
-- [Is](#IS)
-- [Let](#LET)
+-   [Abstract](#ABSTRACT)
+-   [Async](#ASYNC)
+-   [Await](#AWAIT)
+-   [Extern](#EXTERN)
+-   [Final](#FINAL)
+-   [Import](#IMPORT)
+-   [Is](#IS)
+-   [Let](#LET)
 
 <br>
 

@@ -1,5 +1,5 @@
 #![allow(dead_code, unused)]
-mod history;
+// mod history;
 mod prompt;
 mod syntax_highlighter;
 

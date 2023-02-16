@@ -2,9 +2,9 @@
 
 The **mathematical constant** _infinity_, `∞`. **Infinity** is a mathematical concept that represents an unbounded number. It is used to represent the limit of a sequence of numbers, or the limit of a function at a point. It's used in many different use cases, including:
 
-- Calculus
-- Statistics
-- and more...
+-   Calculus
+-   Statistics
+-   and more...
 
 ### Regex
 

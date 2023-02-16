@@ -38,3 +38,4 @@ compilation process**.
 
 Images below show the **lossless** and **lossy** representations of some example
 source code. [image](../mandelbrot.png)
+```

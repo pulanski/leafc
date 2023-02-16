@@ -12,7 +12,7 @@ b?'[^']*'
 
 ### Examples
 
-```
+```ignore
 '本'
 
 b'abc'

@@ -1,10 +1,9 @@
-
 # TODOS
 
-- [ ] In the future, look into creating a version crate
-  - [ ] Version crate should be able to parse version strings of different formats
-    - [ ] SemVer (https://semver.org/) (e.g. 1.0.0 or 1.0.0-alpha.1 or >=1.0.0 <2.0.4)
-    - [ ] Commit hash (e.g. 1234567890abcdef1234567890abcdef12345678)
+-   [ ] In the future, look into creating a version crate
+    -   [ ] Version crate should be able to parse version strings of different formats
+        -   [ ] SemVer (https://semver.org/) (e.g. 1.0.0 or 1.0.0-alpha.1 or >=1.0.0 <2.0.4)
+        -   [ ] Commit hash (e.g. 1234567890abcdef1234567890abcdef12345678)
 
 ```rust
 // wrapper around SemVer crate, no need to rewrite the wheel
@@ -75,9 +74,7 @@ pub struct CommitHash {
 
 [ ] - create a `generate_summary` xtask for generating the summary for the `docs`
 
-
-
 [ ] - auto get the user's language using their ip address, however, user's can specify the
-    language of the compiler in the config file
+language of the compiler in the config file
 
 [ ] - fix repl directory from ~, its getting annoying

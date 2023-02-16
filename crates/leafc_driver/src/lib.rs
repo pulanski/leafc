@@ -48,7 +48,6 @@
 #![allow(
     clippy::multiple_crate_versions, // required for transitive dependencies
 )]
-#![feature(rustdoc_missing_doc_code_examples)]
 
 use std::{path::PathBuf, process::ExitCode, time::Duration};
 

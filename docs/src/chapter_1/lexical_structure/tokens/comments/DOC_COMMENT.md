@@ -16,6 +16,6 @@ comments are **included** in the **output**.
 
 ### Examples
 
-```
+```leaf,ignore
 /// This is a doc comment
 ```

@@ -4,11 +4,11 @@ The **mathematical constant** _e_, `𝑒`. **Euler's number** is approximately e
 The value of **euler's number**, `𝑒`, is defined as the base of the natural logarithm.
 It's used in many different use cases, including:
 
-- Compound interest
-- Population growth
-- Probability and Statistics
-- Science and Engineering
-- and more...
+-   Compound interest
+-   Population growth
+-   Probability and Statistics
+-   Science and Engineering
+-   and more...
 
 ### Regex
 

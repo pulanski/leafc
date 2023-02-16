@@ -1,3 +1,4 @@
+#![allow(unused)]
 //! This module contains the **typed AST** of Leaf. The **typed AST** is a
 //! layer on top of the **untyped AST** (the `SyntaxNode` type). The typed
 //! AST is a tree of `AstNode`s, which are thin wrappers around `SyntaxNode`s.

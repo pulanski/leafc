@@ -1,0 +1,67 @@
+repos:
+    ###########
+    # General #
+    ###########
+
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.4.0
+      hooks:
+          - id: trailing-whitespace
+          - id: end-of-file-fixer
+          - id: check-ast
+          - id: check-executables-have-shebangs
+          - id: check-added-large-files
+          - id: requirements-txt-fixer
+          - id: check-merge-conflict
+          - id: detect-private-key
+          - id: check-symlinks
+          - id: check-case-conflict
+          - id: check-docstring-first
+          - id: fix-encoding-pragma
+            args: ["--remove"]
+          - id: debug-statements
+          - id: name-tests-test
+          - id: sort-simple-yaml
+          - id: check-yaml
+          - id: check-toml
+    - repo: https://github.com/jumanjihouse/pre-commit-hooks
+      rev: 3.0.0
+      hooks:
+          #   - id: forbid-binary
+          #     exclude: 'assets/'
+          #   - id: require-ascii
+          #     exclude: 'docs/themes/|third_party/|examples/'
+          - id: script-must-have-extension
+          - id: git-check
+    - repo: https://github.com/Lucas-C/pre-commit-hooks
+      rev: v1.3.1
+      hooks:
+          - id: forbid-tabs
+          - id: remove-tabs
+    - repo: https://github.com/asottile/add-trailing-comma
+      rev: v2.3.0
+      hooks:
+          - id: add-trailing-comma
+    - repo: https://github.com/pre-commit/mirrors-prettier
+      rev: v3.0.0-alpha.4
+      hooks:
+          - id: prettier
+    - repo: https://github.com/Yelp/detect-secrets
+      rev: v1.4.0
+      hooks:
+          - id: detect-secrets
+            args:
+                [
+                    "--exclude-files",
+                    "docs/themes/*",
+                    "--disable-plugin",
+                    "HexHighEntropyString",
+                    "--disable-plugin",
+                    "Base64HighEntropyString",
+                ]
+    - repo: https://github.com/doublify/pre-commit-rust
+      rev: v1.0
+      hooks:
+          - id: cargo-check
+          - id: clippy
+            args: ["--", "-D", "warnings"]

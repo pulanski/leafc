@@ -13,7 +13,7 @@ r#"'[\p{XID_Start}\p{Emoji_Presentation}][\p{XID_Continue}\p{Emoji_Presentation}
 
 ## Examples
 
-```
+```ignore
 'a
 
 '🦀

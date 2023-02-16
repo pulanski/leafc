@@ -8,7 +8,7 @@ on:
         branches:
             - main
     schedule:
-        - cron: '0 0 * * 0'
+        - cron: "0 0 * * 0"
 
 env:
     CARGO_TERM_COLOR: always
@@ -40,7 +40,7 @@ jobs:
                   command: check
 
     test:
-        runs-on: '${{ matrix.os }}'
+        runs-on: "${{ matrix.os }}"
         strategy:
             matrix:
                 include:
@@ -69,11 +69,11 @@ jobs:
             - uses: actions-rs/cargo@v1
               with:
                   command: test
-                  args: '--workspace'
+                  args: "--workspace"
             - uses: actions-rs/cargo@v1
               with:
                   command: run
-                  args: '-- -h'
+                  args: "-- -h"
 
     lints:
         runs-on: ubuntu-latest
@@ -96,15 +96,15 @@ jobs:
                   profile: minimal
                   toolchain: nightly
                   override: true
-                  components: 'rustfmt, clippy'
+                  components: "rustfmt, clippy"
             - uses: actions-rs/cargo@v1
               with:
                   command: fmt
-                  args: '--all -- --check'
+                  args: "--all -- --check"
             - uses: actions-rs/cargo@v1
               with:
                   command: clippy
-                  args: '-- -D warnings'
+                  args: "-- -D warnings"
 
     # version:
     #   runs-on: ubuntu-latest
@@ -144,16 +144,16 @@ jobs:
             - lints
             - test
             - check
-        runs-on: '${{ matrix.os }}'
+        runs-on: "${{ matrix.os }}"
         strategy:
             matrix:
                 include:
                     - os: macos-latest
                       target: x86_64-apple-darwin
-                      suffix: ''
+                      suffix: ""
                     - os: ubuntu-latest
                       target: x86_64-unknown-linux-gnu
-                      suffix: ''
+                      suffix: ""
                     - os: windows-latest
                       target: x86_64-pc-windows-msvc
                       suffix: .exe
@@ -205,7 +205,7 @@ jobs:
               #   REPOSITORY_NAME: '${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}'
               with:
                   command: build
-                  args: '--release'
+                  args: "--release"
             # - uses: actions/upload-artifact@master
             #   with:
             #       name: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}-${{ matrix.target }}

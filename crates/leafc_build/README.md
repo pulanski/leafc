@@ -16,11 +16,11 @@ The build process of leafc is split into two phases:
    This is done by determining which files need to be compiled, and which files need to be linked.
    This phase is implemented in the `leafc_build::action_graph` module.
 
-   Here we begin on a fined-grained level and work our way up to a more and more coarse-grained level to get the benefits of incremental compilation all the way up the **data** inputs** in the compilation pipeline.
+    Here we begin on a fined-grained level and work our way up to a more and more coarse-grained level to get the benefits of incremental compilation all the way up the **data** inputs\*\* in the compilation pipeline.
 
 E.g. `inputs` are the set of all source files that need to be compiled.
 
-   types of actions that can be performed and cached/memoized:
+types of actions that can be performed and cached/memoized:
 
     - `Compile`: This action compiles a single source file into a single object file.
       <!-- This action is memoized by the `CompileCache` struct.
@@ -67,18 +67,18 @@ The build plan is a tree of `BuildPlan` structs, where each `BuildPlan` struct d
 Each `BuildPlan` struct has a `BuildPlanKind` field that describes the kind of build step it describes.
 The `BuildPlanKind` field can be one of the following:
 
-- `BuildPlanKind::Binary`: This describes the process for a binary target (e.g. an executable program produced via `leafc`)
-- `BuildPlanKind::Library`: This describes the build process of a library target (e.g. a library produced via `leafc`)
-- `BuildPlanKind::Test`: This describes the build process of a test target (e.g. a test program produced via `leafc`)
+-   `BuildPlanKind::Binary`: This describes the process for a binary target (e.g. an executable program produced via `leafc`)
+-   `BuildPlanKind::Library`: This describes the build process of a library target (e.g. a library produced via `leafc`)
+-   `BuildPlanKind::Test`: This describes the build process of a test target (e.g. a test program produced via `leafc`)
 
 ## Build Plan Kind
 
 The `BuildPlanKind` enum describes the kind of build step that a `BuildPlan` struct describes.
 The `BuildPlanKind` enum can be one of the following:
 
-- `BuildPlanKind::Leafc`: This is the root of the build plan tree.
-  It describes the build process of the leafc binary itself.
+-   `BuildPlanKind::Leafc`: This is the root of the build plan tree.
+    It describes the build process of the leafc binary itself.
 
-- `BuildPlanKind::LeafcLib`: This describes the build process of the leafc library.
+-   `BuildPlanKind::LeafcLib`: This describes the build process of the leafc library.
 
-- `BuildPlanKind::LeafcLibTest`: This describes the build process of the leafc library tests.
+-   `BuildPlanKind::LeafcLibTest`: This describes the build process of the leafc library tests.

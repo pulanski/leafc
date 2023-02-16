@@ -14,8 +14,8 @@ The `leafc_syntax` crate inside `leafc` is a light-weight wrapper around the `ro
 
 In general, syntax trees possess the following properties:
 
-- **Immutable**: Syntax trees are **immutable**, meaning that once a syntax tree is created, it **cannot be modified**. This is a good thing, because it means that we can **share** them **between threads** without worrying about synchronization.
-- **Persistent**: Syntax trees are **persistent**, meaning that when a syntax tree is modified, the original syntax tree is **not modified**. Instead, a **new syntax tree** is created which shares as much data as possible with the original syntax tree. This allows us to **cache syntax trees** and reuse them whenever possible.
-- **Lossless**: Syntax trees are **lossless**, meaning that the original source code can be **recovered** from a syntax tree. This allows us to use syntax trees for things like refactoring and code generation, lending them useful for scenarios such as **code completion** in an **IDE context** and **code formatting** in a **linter context**.
+-   **Immutable**: Syntax trees are **immutable**, meaning that once a syntax tree is created, it **cannot be modified**. This is a good thing, because it means that we can **share** them **between threads** without worrying about synchronization.
+-   **Persistent**: Syntax trees are **persistent**, meaning that when a syntax tree is modified, the original syntax tree is **not modified**. Instead, a **new syntax tree** is created which shares as much data as possible with the original syntax tree. This allows us to **cache syntax trees** and reuse them whenever possible.
+-   **Lossless**: Syntax trees are **lossless**, meaning that the original source code can be **recovered** from a syntax tree. This allows us to use syntax trees for things like refactoring and code generation, lending them useful for scenarios such as **code completion** in an **IDE context** and **code formatting** in a **linter context**.
 
 This is a 50-thousand foot view of the syntax tree architecture in leafc. If you're interested in learning more about the design, I highly recommend reading the [rust-analyzer docs](https://github.com/rust-lang/rust-analyzer/blob/master/docs/dev/syntax.md).

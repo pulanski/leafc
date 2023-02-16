@@ -38,7 +38,7 @@ r#"[+-]?0o[0-7][0-7_]*\.[0-7][0-7_]*([pP][+-]?[0-9][0-9_]?)?(f32|f64)?"#
 
 The following are all **valid float literals**:
 
-```
+```ignore
 123.456
 
 0.

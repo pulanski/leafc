@@ -177,7 +177,7 @@ pub enum TokenKind {
     // Reserved keywords (e.g. `export`, `final`, `throw`, etc.) are not allowed
     // as identifiers.
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// The **reseved keyword** `abstract`.
+    /// The **reserved keyword** `abstract`.
     ///
     /// # Examples
     ///
@@ -210,7 +210,7 @@ pub enum TokenKind {
     #[token("dhahania")] // Swahili
     ABSTRACT_KW,
 
-    /// The **reseved keyword** `async`.
+    /// The **reserved keyword** `async`.
     #[token("async")] // English
     #[token("asíncrono")] // Spanish
     #[token("asynchrone")] // French

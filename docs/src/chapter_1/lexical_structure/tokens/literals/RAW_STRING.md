@@ -11,7 +11,7 @@ r#"r#[^#]*#"#
 
 ### Examples
 
-```
+```ignore
 r#"hello"#
 
 r#"hello\nworld"#

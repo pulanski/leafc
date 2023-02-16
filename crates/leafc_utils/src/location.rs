@@ -58,8 +58,8 @@ pub struct Location {
 ///
 /// # Example
 ///
-/// ```
-/// TODO: add example
+/// ```ignore
+/// // TODO: add example
 /// use leafc_lexer::TokenStream;
 /// use leafc_utils::Locatable;
 /// use leafc_lexer::Token;
@@ -80,8 +80,7 @@ impl<T: Clone + Copy> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// use leafc_utils::Location;
+    /// use leafc_utils::{Locatable, Location, FileId, Span};
     ///
     /// let location = Location::new(FileId::new(0), Span::new(0, 1));
     /// ```
@@ -164,14 +163,14 @@ impl<T: Clone + Copy> Locatable<T> {
 ///
 /// # Example
 ///
-/// ```
+/// ```ignore
 /// // TODO: add example
 /// use leafc_lexer::TokenStream;
 ///
 /// let input = "x := 5;";
 /// let lexer = TokenStream::new(input);
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, CopyGetters, MutGetters, Setters)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, CopyGetters, MutGetters, Setters, new)]
 pub struct FilePosition {
     /// The **line** of the position.
     line: usize,
@@ -381,13 +380,13 @@ impl Location {
     /// ```
     /// use leafc_utils::location::{Location, Span, FileId};
     ///
-    /// let location = Location::new(Span::new(0, 10), FileId::new(0));
+    /// let location = Location::new(FileId::new(0), Span::new(0, 10));
     ///
     /// assert_eq!(0, location.span().start());
     /// assert_eq!(10, location.span().end());
     /// ```
-    pub fn new<S: Into<Span>, F: Into<FileId>>(span: S, file: F) -> Self {
-        Self { span: span.into(), file: file.into() }
+    pub fn new<F: Into<FileId>, S: Into<Span>>(file: F, span: S) -> Self {
+        Self { file: file.into(), span: span.into() }
     }
 }
 
@@ -419,7 +418,7 @@ mod location_test_suite {
 
     #[test]
     fn test_location_new() {
-        let location = Location::new(Span::new(0, 1), FileId(0));
+        let location = Location::new(FileId::new(0), Span::new(0, 1));
 
         assert_eq!(location.span().start(), 0);
         assert_eq!(location.span().end(), 1);
