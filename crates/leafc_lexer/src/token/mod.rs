@@ -154,6 +154,7 @@ pub enum TokenKind {
     #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/CATALAN.md")]
     #[token("catalan")]
     #[token("K")]
+    #[token("𝑘")]
     CATALAN,
 
     #[doc = include_str!("../../../../docs/src/chapter_1/lexical_structure/tokens/mathematical_symbols/EULERGAMMA.md")]
@@ -259,7 +260,7 @@ pub enum TokenKind {
     EXTERN_KW,
 
     /// The **reserved keyword** `final`.
-    #[token("final")] // English,Spanish, Portuguese, Danish, Norwegian, Swedish, German, Dutch
+    #[token("final")] // English, Spanish, Portuguese, Danish, Norwegian, Swedish, German, Dutch
     #[token("finale")] // French
     #[token("finaali")] // Finnish
     #[token("конечный")] // Russian
@@ -269,9 +270,57 @@ pub enum TokenKind {
     #[token("mwisho")] // Swahili
     FINAL_KW,
 
+    /// The **reserved** keyword `import`, not intended for usage, but reserved for
+    /// disallowing it as an identifier.
+    #[token("import")] // English
+    #[token("importar")] // Spanish
+    #[token("importer")] // French
+    #[token("importeren")] // Dutch
+    #[token("importera")] // Swedish
+    #[token("importere")] // Norwegian
+    #[token("importare")] // Italian
+    #[token("importação")] // Portuguese
+    #[token("tuonti")] // Finnish
+    #[token("импорт")] // Russian
+    #[token("インポート")] // Japanese
+    #[token("导入")] // Chinese
+    #[token("kuagiza")] // Swahili
+    IMPORT_KW,
+
     /// The **reserved keyword** `is`.
-    #[token("is")]
+    #[token("is")] // English, Dutch
+    #[token("es")] // Spanish
+    #[token("est")] // French
+    #[token("lst")] // German
+    #[token("é")] // Portuguese
+    #[token("è")] // Italian
+    #[token("er")] // Danish, Norwegian
+    #[token("är")] // Swedish
+    #[token("on")] // Finnish
+    #[token("является")] // Russian
+    #[token("は")] // Japanese
+    #[token("是")] // Chinese
+    #[token("~이다")] // Korean
+    #[token("ni")] // Swahili
     IS_KW,
+
+    /// The **reserved keyword** `let`.
+    #[token("let")] // English
+    #[token("dejar")] // Spanish
+    #[token("laisser")] // French
+    #[token("laten")] // Dutch
+    #[token("låta")] // Swedish
+    #[token("laat")] // Danish
+    #[token("la")] // Norwegian
+    #[token("lasciare")] // Italian
+    #[token("deixar")] // Portuguese
+    #[token("jättää")] // Finnish
+    #[token("пусть")] // Russian
+    #[token("させる")] // Japanese
+    #[token("让")] // Chinese
+    #[token("놔두다")] // Korean
+    #[token("acha")] // Swahili
+    LET_KW,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Keywords (e.g. `as`, `if`, `else`, etc.) are not allowed as identifiers.
@@ -357,6 +406,25 @@ pub enum TokenKind {
     #[token("계속")] // Korean
     #[token("kuendelea")] // Swahili
     CONTINUE_KW,
+
+    /// The **keyword** `defer`.
+    #[token("defer")] // English
+    #[token("aplazar")] // Spanish
+    #[token("reporter")] // French
+    #[token("verschieben")] // German
+    #[token("adiar")] // Portuguese
+    #[token("differire")] // Italian
+    #[token("verschuiven")] // Dutch
+    #[token("uppskjuta")] // Swedish
+    #[token("udsætte")] // Danish
+    #[token("utsette")] // Norwegian
+    #[token("lykätä")] // Finnish
+    #[token("отложить")] // Russian
+    #[token("延期する")] // Japanese
+    #[token("推迟")] // Chinese
+    #[token("연기하다")] // Korean
+    #[token("kuahirisha")] // Swahili
+    DEFER_KW,
 
     /// The **keyword** `do`.
     #[token("do")] // English
@@ -520,22 +588,6 @@ pub enum TokenKind {
     #[token("zana")] // Swahili
     IMPL_KW,
 
-    // The **reserved** keyword `import`.
-    #[token("import")] // English
-    #[token("importar")] // Spanish
-    #[token("importer")] // French
-    #[token("importeren")] // Dutch
-    #[token("importera")] // Swedish
-    #[token("importere")] // Norwegian
-    #[token("importare")] // Italian
-    #[token("importação")] // Portuguese
-    #[token("tuonti")] // Finnish
-    #[token("импорт")] // Russian
-    #[token("インポート")] // Japanese
-    #[token("导入")] // Chinese
-    #[token("kuagiza")] // Swahili
-    IMPORT_KW,
-
     /// The **keyword** `in`.
     ///
     /// **NOTE**: Since `in` directly translates to `i` in Swedish, Danish, and Norwegian, we use the
@@ -550,24 +602,6 @@ pub enum TokenKind {
     #[token("에서")] // Korean
     #[token("ndani")] // Swahili
     IN_KW,
-
-    /// The **reserved keyword** `let`.
-    #[token("let")] // English
-    #[token("dejar")] // Spanish
-    #[token("laisser")] // French
-    #[token("laten")] // Dutch
-    #[token("låta")] // Swedish
-    #[token("laat")] // Danish
-    #[token("la")] // Norwegian
-    #[token("lasciare")] // Italian
-    #[token("deixar")] // Portuguese
-    #[token("jättää")] // Finnish
-    #[token("пусть")] // Russian
-    #[token("させる")] // Japanese
-    #[token("让")] // Chinese
-    #[token("놔두다")] // Korean
-    #[token("acha")] // Swahili
-    LET_KW,
 
     /// The **keyword** `loop`.
     #[token("loop")] // English

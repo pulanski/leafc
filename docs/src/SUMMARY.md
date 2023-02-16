@@ -9,4 +9,5 @@
     - [Literals](./chapter_1/lexical_structure/LITERALS.md)
     - [Mathematical Symbols](./chapter_1/lexical_structure/MATHEMATICAL_SYMBOLS.md)
     - [Keywords](./chapter_1/lexical_structure/KEYWORDS.md)
+      - [Reserved Keywords](./chapter_1/lexical_structure/tokens/keywords/reserved/RESERVED.md)
     - [Punctuation](./chapter_1/lexical_structure/PUNCTUATION.md)

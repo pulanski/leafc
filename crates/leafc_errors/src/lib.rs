@@ -4,6 +4,7 @@ pub mod driver;
 pub mod lexer;
 pub mod log;
 pub mod repl;
+pub mod syntax;
 // pub mod parser;
 
 pub use cfg::CfgError;
@@ -12,6 +13,7 @@ pub use driver::DriverError;
 pub use lexer::LexicalError;
 pub use log::LogError;
 pub use repl::ReplError;
+pub use syntax::SyntaxError;
 
 /// The various **kinds of errors** that can occur within the compiler. These
 /// include errors that occur while **parsing the command line arguments** ([`CliError`]),
@@ -57,6 +59,8 @@ pub enum LeafcError {
     // TypeCheckError(TypeCheckError),
     // /// An error that occurred while generating the output.
     // CodegenError(CodegenError),
+    /// An error that occurred within the **syntax** of the source code.
+    SyntaxError(SyntaxError),
     /// An error that occurred while **running the repl**.
     ReplError(ReplError),
 }

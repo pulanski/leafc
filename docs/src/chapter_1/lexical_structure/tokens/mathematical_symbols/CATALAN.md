@@ -1,6 +1,6 @@
-## Catalan's Constant, `catalan`
+## Catalan's Constant, `𝑘`
 
-The **mathematical constant** _catalan_, `catalan`. **Catalan's Constant** is approximately equal to **0.91597**. The value of **catalan's constant**, `catalan`, commonly appears in estimates of combinatorial functions and in certain classes of sums and definite integrals. It's used in many different use cases, including:
+The **mathematical constant** _catalan_, `𝑘`. **Catalan's Constant** is approximately equal to **0.91597**. The value of **catalan's constant**, `𝑘`, commonly appears in estimates of combinatorial functions and in certain classes of sums and definite integrals. It's used in many different use cases, including:
 
 - Topology
 - Combinatorics
@@ -9,10 +9,10 @@ The **mathematical constant** _catalan_, `catalan`. **Catalan's Constant** is ap
 
 ### Regex
 
-The regex for `catalan` is:
+The regex for `𝑘` is:
 
 ```regex
-catalan|K
+catalan|K|𝑘
 ```
 
 ### Examples

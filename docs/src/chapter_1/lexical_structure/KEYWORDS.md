@@ -4,8 +4,37 @@ Within Leaf, there are a number of keywords that are **reserved** for use by the
 
 ## Reserved Keywords
 
-The following keywords are reserved for use by the language:
+The [following keywords](./tokens/keywords/reserved/RESERVED.md) are **reserved for future use** by the language:
 
+| Reserved Keyword | Description                                                          |
+| ---------------- | -------------------------------------------------------------------- |
+| `abstract`       | Used to **define** an **abstract class** or **method**.              |
+| `async`          | Used to **define** an **asynchronous function**.                     |
+| `await`          | Used to **wait for the completion** of an **asynchronous function**. |
+| `extern`         | Used to **define** an **external function**.                         |
+| `final`          | Used to **define** a **final variable**.                             |
+| `is`             | Used to **check** if a value is of a **certain type**.               |
+
+## Keywords
+
+The [following keywords](#KEYWORDS) are **reserved for use** by the language:
+
+| Keyword    | Description                                                                               |
+| ---------- | ----------------------------------------------------------------------------------------- |
+| `and`      | Used to **combine** two **boolean expressions**.                                          |
+| `as`       | Used to **cast** a value to a **different type**.                                         |
+| `break`    | Used to **break out of a loop**.                                                          |
+| `const`    | Used to **define** a **constant**.                                                        |
+| `continue` | Used to **continue to the next iteration** of a **loop**.                                 |
+| `defer`    | Used to **defer the execution** of a **block of code** until the **current scope exits**. |
+
+<br>
+
+<a name="KEYWORDS"></a>
+
+{{ #include tokens/keywords/AS.md }}
+
+<!--             | `deinit`                                                     | Used to define a deinitializer. | -->
 | Keyword     | Description                                                                   |
 | ----------- | ----------------------------------------------------------------------------- |
 | `as`        | Used to cast a value to a different type.                                     |
@@ -46,7 +75,3 @@ The following keywords are reserved for use by the language:
 | `where`     | Used to specify a constraint on a generic type.                               |
 | `with`      | Used to define a scope.                                                       |
 | `yield`     | Used to yield a value from a generator.                                       |
-
-<br>
-
-{{ #include tokens/keywords/AS.md }}

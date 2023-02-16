@@ -1,7 +1,18 @@
 [package]
 name = "leafc_log"
 version = "0.1.0"
-edition = "2021"
+description = "Logging facilities for Leafc (both user-facing and internal)"
+keywords = ["leafc", "logging"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

@@ -15,7 +15,7 @@ default language is **English**, the following code is valid:
 
 ```rust
 fn main() {
-    mut 🦀 = "ferris the crab"
+    mut 🦀 := "ferris the crab"
     println!("Hello, {}!", 🦀)
 
     🦀 = "ferris le crabe"
@@ -27,11 +27,11 @@ But the following code is **invalid**:
 
 ```rust
 fn principal() {
-    mutable 🦀 := "ferris le crabe"
-    ligne_d'impression!("Bonjour, {}!", 🦀)
+    mutable 🦀 := "ferris le crabe";
+    ligne_d'impression!("Bonjour, {}!", 🦀);
 
-    🦀 = "ferris le crabe"
-    ligne_d'impression!("Bonjour, {}!", 🦀)
+    🦀 = "ferris le crabe";
+    ligne_d'impression!("Bonjour, {}!", 🦀);
 }
 ```
 
@@ -102,8 +102,29 @@ below. Each token group is defined by a **series of regular expressions**.
 
 | [Mathematical Symbols](./lexical_structure/MATHEMATICAL_SYMBOLS.md) |
 | ------------------------------------------------------------------- |
-| Pi                                                                  |
+| Pi, `π`                                                             |
+| Euler's Number, `𝑒`                                                 |
+| Phi, `φ`                                                            |
+| Tau, `τ`                                                            |
+| Catalan's Constant, `𝑘`                                             |
+| Euler-Mascheroni Constant, `𝛾`                                      |
+| Infinity, `∞`                                                       |
+| Not-a-Number, `NaN`                                                 |
 
+<br>
+
+| [Reserved Keywords](./lexical_structure/KEYWORDS.md) |
+| ---------------------------------------------------- |
+| `abstract`                                           |
+| `as`                                                 |
+| `async`                                              |
+| `await`                                              |
+| `extern`                                             |
+| `final`                                              |
+| `is`                                                 |
+
+
+<!-- | Epsilon                                                             | -->
 <!-- <br>
 
 - [Keywords](./lexical_structure/KEYWORDS.md)

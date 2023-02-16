@@ -182,6 +182,30 @@ mod keyword_test_suite {
     }
 
     #[rstest]
+    #[case("defer")] // English
+    #[case("aplazar")] // Spanish
+    #[case("reporter")] // French
+    #[case("verschieben")] // German
+    #[case("adiar")] // Portuguese
+    #[case("differire")] // Italian
+    #[case("verschuiven")] // Dutch
+    #[case("uppskjuta")] // Swedish
+    #[case("udsætte")] // Danish
+    #[case("utsette")] // Norwegian
+    #[case("lykätä")] // Finnish
+    #[case("отложить")] // Russian
+    #[case("延期する")] // Japanese
+    #[case("推迟")] // Chinese
+    #[case("연기하다")] // Korean
+    #[case("kuahirisha")] // Swahili
+    fn test_defer_keyword(#[case] raw_token: &str) {
+        let mut token = TokenKind::lexer(raw_token);
+
+        assert_eq!(token.next(), Some(TokenKind::DEFER_KW));
+        assert_eq!(token.slice(), raw_token);
+    }
+
+    #[rstest]
     #[case("do")] // English
     #[case("hacer")] // Spanish
     #[case("faire")] // French
@@ -507,6 +531,28 @@ mod keyword_test_suite {
         let mut token = TokenKind::lexer(raw_token);
 
         assert_eq!(token.next(), Some(TokenKind::IN_KW));
+        assert_eq!(token.slice(), raw_token);
+    }
+
+    #[rstest]
+    #[case("is")] // English, Dutch
+    #[case("es")] // Spanish
+    #[case("est")] // French
+    #[case("lst")] // German
+    #[case("é")] // Portuguese
+    #[case("è")] // Italian
+    #[case("er")] // Danish, Norwegian
+    #[case("är")] // Swedish
+    #[case("on")] // Finnish
+    #[case("является")] // Russian
+    #[case("は")] // Japanese
+    #[case("是")] // Chinese
+    #[case("~이다")] // Korean
+    #[case("ni")] // Swahili
+    fn test_is_keyword(#[case] raw_token: &str) {
+        let mut token = TokenKind::lexer(raw_token);
+
+        assert_eq!(token.next(), Some(TokenKind::IS_KW));
         assert_eq!(token.slice(), raw_token);
     }
 

@@ -1,7 +1,18 @@
 [package]
 name = "leafc_syntax"
 version = "0.1.0"
-edition = "2021"
+description = "Defines lossless concrete syntax trees for Leaf, based on rowan"
+keywords = ["leafc", "syntax", "rowan", "red-green", "concrete-syntax-tree"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
