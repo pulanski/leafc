@@ -425,6 +425,25 @@ pub enum TokenKind {
     #[token("orodha")] // Swahili
     ENUM_KW,
 
+    /// The **keyword** `fallthrough`.
+    #[token("fallthrough")] // English
+    #[token("caer a través")] // Spanish
+    #[token("tomber dans")] // French
+    #[token("durchfallen")] // German
+    #[token("cair em")] // Portuguese
+    #[token("sfumare")] // Italian
+    #[token("doorval")] // Dutch
+    #[token("falla igenom")] // Swedish
+    #[token("falder gennem")] // Danish
+    #[token("faller gjennom")] // Norwegian
+    #[token("putoaminen")] // Finnish
+    #[token("Проваливаться")] // Russian
+    #[token("フォールスルー")] // Japanese
+    #[token("落空")] // Chinese
+    #[token("실패로 끝나다")] // Korean
+    #[token("kuanguka")] // Swahili
+    FALLTHROUGH_KW,
+
     /// The **keyword** `false`.
     #[regex("false|False")] // English
     #[regex("falso|Falso")] // Spanish, Italian, Portuguese
@@ -947,6 +966,14 @@ pub enum TokenKind {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Punctuation
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// A **definition operator** `:=`.
+    ///
+    /// **Usage**:
+    ///
+    /// * **Variable Definition**.
+    #[token(":=")]
+    DEFINE,
+
     /// A **plus sign** `+`.
     ///
     /// **Usage**:

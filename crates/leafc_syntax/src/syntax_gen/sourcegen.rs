@@ -119,6 +119,7 @@ fn generate_nodes(kinds: SyntaxKinds<'_>, grammar: &AstSrc) -> String {
         .map(|node| {
             let name = format_ident!("{}", node.name);
             let kind = format_ident!("{}", to_upper_snake_case(&node.name));
+            eprintln!("Generating node: {} {}", node.name, kind);
             let traits = node
                 .traits
                 .iter()
@@ -136,6 +137,8 @@ fn generate_nodes(kinds: SyntaxKinds<'_>, grammar: &AstSrc) -> String {
                 let method_name = field.method_name();
                 let ty = field.ty();
 
+                // eprintln!("Generating method: name:{method_name} ty:{ty} for field: {field:?}");
+
                 if field.is_many() {
                     quote! {
                         pub fn #method_name(&self) -> AstChildren<#ty> {
@@ -143,9 +146,31 @@ fn generate_nodes(kinds: SyntaxKinds<'_>, grammar: &AstSrc) -> String {
                         }
                     }
                 } else if let Some(token_kind) = field.token_kind() {
-                    quote! {
-                        pub fn #method_name(&self) -> Option<#ty> {
-                            support::token(&self.syntax, #token_kind)
+                    let tok_kind = token_kind.to_string();
+
+                    if tok_kind.contains("self") {
+                        quote! {
+                            pub fn #method_name(&self) -> Option<#ty> {
+                                support::token(&self.syntax, T ! [self_value])
+                            }
+                        }
+                    } else if tok_kind.contains("Self") {
+                        quote! {
+                            pub fn #method_name(&self) -> Option<#ty> {
+                                support::token(&self.syntax, T ! [self_type])
+                            }
+                        }
+                    } else if tok_kind.contains("pkg") {
+                        quote! {
+                            pub fn #method_name(&self) -> Option<#ty> {
+                                support::token(&self.syntax, T ! [package])
+                            }
+                        }
+                    } else {
+                        quote! {
+                            pub fn #method_name(&self) -> Option<#ty> {
+                                support::token(&self.syntax, #token_kind)
+                            }
                         }
                     }
                 } else {
@@ -504,6 +529,7 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
         macro_rules! T {
             #([#punctuation_values] => { $crate::SyntaxKind::#punctuation };)*
             #([#all_keywords_idents] => { $crate::SyntaxKind::#all_keywords };)*
+            [ident] => { $crate::SyntaxKind::IDENTIFIER };
             ['⁽'] => { $crate::SyntaxKind::L_PAREN_SUPERSCRIPT };
             ['⁾'] => { $crate::SyntaxKind::R_PAREN_SUPERSCRIPT };
         }
@@ -631,7 +657,8 @@ impl Field {
 
 fn lower(grammar: &Grammar) -> AstSrc {
     let mut res = AstSrc {
-        tokens: "Whitespace Comment String ByteString IntNumber FloatNumber Char Byte Ident"
+        tokens: "Whitespace Comment Rune String RawString Integer Float Lifetime Identifier"
+            // tokens: "Whitespace Comment String ByteString IntNumber FloatNumber Char Byte Ident"
             .split_ascii_whitespace()
             .map(|it| it.to_string())
             .collect::<Vec<_>>(),

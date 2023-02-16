@@ -20,25 +20,103 @@
 // Names, Paths and Macros //
 //*************************//
 
-/// Items
-
-// Visibility =
-//   'pub' ('(' 'in'? Path ')')?
-
 Name =
   'ident' | 'self'
 
-// NameRef =
+NameRef =
+  'ident' | 'self' | 'super' | 'pkg' | 'Self'
 //   'ident' | 'int_number' | 'self' | 'super' | 'crate' | 'Self'
 
-// Lifetime =
-//   'lifetime_ident'
+Path =
+  (qualifier:Path '::')? segment:PathSegment
 
-// Path =
-//   (qualifier:Path '::')? segment:PathSegment
-
-// PathSegment =
-//   '::'? NameRef
+PathSegment =
+  '::'? NameRef
 // | NameRef GenericArgList?
 // | NameRef ParamList RetType?
 // | '<' PathType ('as' PathType)? '>'
+
+TokenTree =
+  '(' ')'
+| '{' '}'
+| '[' ']'
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Attr =
+  '#' '!'? '[' Meta ']'
+
+Meta =
+  Path TokenTree?
+//   Path ('=' Expr | TokenTree)?
+
+//****************************//
+// Statements and Expressions //
+//****************************//
+
+// Stmt =
+//   ';'
+// | ExprStmt
+// | Item
+// | LetStmt
+
+// ExprStmt =
+//   Expr ';'?
+
+// Expr =
+//   ArrayExpr
+// | AwaitExpr
+// | BinExpr
+// | BlockExpr
+// | BoxExpr
+// | BreakExpr
+// | CallExpr
+// | CastExpr
+// | ClosureExpr
+// | ContinueExpr
+// | FieldExpr
+// | ForExpr
+// | IfExpr
+// | IndexExpr
+// | Literal
+// | LoopExpr
+// | MacroExpr
+// | MatchExpr
+// | MethodCallExpr
+// | ParenExpr
+// | PathExpr
+// | PrefixExpr
+// | RangeExpr
+// | RecordExpr
+// | RefExpr
+// | ReturnExpr
+// | TryExpr
+// | TupleExpr
+// | WhileExpr
+// | YieldExpr
+// | YeetExpr
+// | LetExpr
+// | UnderscoreExpr
+
+//*************************//
+//          Types          //
+//*************************//
+
+// Type =
+//   ArrayType
+// | DynTraitType
+// | FnPtrType
+// | ForType
+// | ImplTraitType
+// | InferType
+// | MacroType
+// | NeverType
+// | ParenType
+// | PathType
+// | PtrType
+// | RefType
+// | SliceType
+// | TupleType
+
+// ArrayType =
+//   '[' Type ';' Expr ']'

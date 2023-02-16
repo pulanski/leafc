@@ -13,7 +13,72 @@ pub struct Name {
 }
 impl Name {
     pub fn ident_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![ident]) }
-    pub fn self_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![self]) }
+    pub fn self_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![self_value]) }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct NameRef {
+    pub(crate) syntax: SyntaxNode,
+}
+impl NameRef {
+    pub fn ident_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![ident]) }
+    pub fn self_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![self_value]) }
+    pub fn super_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![super]) }
+    pub fn pkg_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![package]) }
+    pub fn Self_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![self_type]) }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Path {
+    pub(crate) syntax: SyntaxNode,
+}
+impl Path {
+    pub fn qualifier(&self) -> Option<Path> { support::child(&self.syntax) }
+    pub fn coloncolon_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![::]) }
+    pub fn segment(&self) -> Option<PathSegment> { support::child(&self.syntax) }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct PathSegment {
+    pub(crate) syntax: SyntaxNode,
+}
+impl PathSegment {
+    pub fn coloncolon_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![::]) }
+    pub fn name_ref(&self) -> Option<NameRef> { support::child(&self.syntax) }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct TokenTree {
+    pub(crate) syntax: SyntaxNode,
+}
+impl TokenTree {
+    pub fn l_paren_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T!['(']) }
+    pub fn r_paren_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![')']) }
+    pub fn l_curly_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T!['{']) }
+    pub fn r_curly_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T!['}']) }
+    pub fn l_brack_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T!['[']) }
+    pub fn r_brack_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![']']) }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Attr {
+    pub(crate) syntax: SyntaxNode,
+}
+impl Attr {
+    pub fn pound_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![#]) }
+    pub fn excl_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![!]) }
+    pub fn l_brack_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T!['[']) }
+    pub fn meta(&self) -> Option<Meta> { support::child(&self.syntax) }
+    pub fn r_brack_token(&self) -> Option<SyntaxToken> { support::token(&self.syntax, T![']']) }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Meta {
+    pub(crate) syntax: SyntaxNode,
+}
+impl Meta {
+    pub fn path(&self) -> Option<Path> { support::child(&self.syntax) }
+    pub fn token_tree(&self) -> Option<TokenTree> { support::child(&self.syntax) }
 }
 impl AstNode for Name {
     fn can_cast(kind: SyntaxKind) -> bool { kind == NAME }
@@ -26,7 +91,103 @@ impl AstNode for Name {
     }
     fn syntax(&self) -> &SyntaxNode { &self.syntax }
 }
+impl AstNode for NameRef {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == NAME_REF }
+    fn cast(syntax: SyntaxNode) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxNode { &self.syntax }
+}
+impl AstNode for Path {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == PATH }
+    fn cast(syntax: SyntaxNode) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxNode { &self.syntax }
+}
+impl AstNode for PathSegment {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == PATH_SEGMENT }
+    fn cast(syntax: SyntaxNode) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxNode { &self.syntax }
+}
+impl AstNode for TokenTree {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == TOKEN_TREE }
+    fn cast(syntax: SyntaxNode) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxNode { &self.syntax }
+}
+impl AstNode for Attr {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == ATTR }
+    fn cast(syntax: SyntaxNode) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxNode { &self.syntax }
+}
+impl AstNode for Meta {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == META }
+    fn cast(syntax: SyntaxNode) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxNode { &self.syntax }
+}
 impl std::fmt::Display for Name {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(self.syntax(), f)
+    }
+}
+impl std::fmt::Display for NameRef {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(self.syntax(), f)
+    }
+}
+impl std::fmt::Display for Path {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(self.syntax(), f)
+    }
+}
+impl std::fmt::Display for PathSegment {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(self.syntax(), f)
+    }
+}
+impl std::fmt::Display for TokenTree {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(self.syntax(), f)
+    }
+}
+impl std::fmt::Display for Attr {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(self.syntax(), f)
+    }
+}
+impl std::fmt::Display for Meta {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(self.syntax(), f)
     }

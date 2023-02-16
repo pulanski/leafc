@@ -13,11 +13,22 @@ pub enum LeafLanguage {}
 impl rowan::Language for LeafLanguage {
     type Kind = crate::ast::generated::kinds::SyntaxKind;
 
+    /// Converts a generic rowan-`SyntaxKind` into a `SyntaxKind` specific to the Leaf language.
+    ///
+    ///
+    /// # Panics
+    ///
+    /// Panics if the `SyntaxKind` is not a valid `SyntaxKind` for the Leaf language.
     fn kind_from_raw(raw: rowan::SyntaxKind) -> SyntaxKind {
         Self::Kind::from_u16(raw.0).unwrap()
         // SyntaxKind::from(raw.0)
     }
 
+    /// Converts a `SyntaxKind` specific to the Leaf language into a generic rowan-`SyntaxKind`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the `SyntaxKind` is not a valid `SyntaxKind` for the Leaf language.
     fn kind_to_raw(kind: SyntaxKind) -> rowan::SyntaxKind {
         rowan::SyntaxKind(kind.to_u16().unwrap())
         // rowan::SyntaxKind(kind.into())
@@ -26,9 +37,14 @@ impl rowan::Language for LeafLanguage {
 }
 
 /// Leaf's `SyntaxNode` type, a wrapper around **rowan**'s language-agnostic `SyntaxNode`.
+///
+/// These are analogous to a `RedNode` in the [**Red-Green**](https://ericlippert.com/2012/06/08/red-green-trees/) tree model seen in **Roslyn**.
 pub type SyntaxNode = rowan::SyntaxNode<LeafLanguage>;
 
 /// Leaf's `SyntaxToken` type, a wrapper around **rowan**'s language-agnostic `SyntaxToken`.
+///
+/// These are analogous to a `RedNode` in the [**Red-Green**](https://ericlippert.com/2012/06/08/red-green-trees/)
+/// tree model seen in **Roslyn**, however, they signify terminal nodes in the syntax tree aka **tokens**.
 pub type SyntaxToken = rowan::SyntaxToken<LeafLanguage>;
 
 /// Leaf's `SyntaxElement` type, a wrapper around **rowan**'s language-agnostic `SyntaxElement`.

@@ -288,6 +288,30 @@ mod keyword_test_suite {
     }
 
     #[rstest]
+    #[case("fallthrough")] // English
+    #[case("caer a través")] // Spanish
+    #[case("tomber dans")] // French
+    #[case("durchfallen")] // German
+    #[case("cair em")] // Portuguese
+    #[case("sfumare")] // Italian
+    #[case("doorval")] // Dutch
+    #[case("falla igenom")] // Swedish
+    #[case("falder gennem")] // Danish
+    #[case("faller gjennom")] // Norwegian
+    #[case("putoaminen")] // Finnish
+    #[case("Проваливаться")] // Russian
+    #[case("フォールスルー")] // Japanese
+    #[case("落空")] // Chinese
+    #[case("실패로 끝나다")] // Korean
+    #[case("kuanguka")] // Swahili
+    fn test_fallthrough_keyword(#[case] raw_token: &str) {
+        let mut token = TokenKind::lexer(raw_token);
+
+        assert_eq!(token.next(), Some(TokenKind::FALLTHROUGH_KW));
+        assert_eq!(token.slice(), raw_token);
+    }
+
+    #[rstest]
     #[case("false")]
     #[case("False")]
     #[case("falso")]

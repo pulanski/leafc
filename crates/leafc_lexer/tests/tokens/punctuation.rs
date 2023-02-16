@@ -7,6 +7,15 @@ mod punctuation_test_suite {
     // Test all punctuation (tokens used in expressions)
 
     #[rstest]
+    #[case(":=")]
+    fn test_define(#[case] input: &str) {
+        let mut lexer = TokenKind::lexer(input);
+        let token = lexer.next();
+        assert_eq!(token, Some(TokenKind::DEFINE));
+        assert_eq!(lexer.slice(), input);
+    }
+
+    #[rstest]
     #[case("+")]
     fn test_plus(#[case] input: &str) {
         let mut lexer = TokenKind::lexer(input);

@@ -49,6 +49,27 @@ impl AstToken for Comment {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Rune {
+    pub(crate) syntax: SyntaxToken,
+}
+impl std::fmt::Display for Rune {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(&self.syntax, f)
+    }
+}
+impl AstToken for Rune {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == RUNE }
+    fn cast(syntax: SyntaxToken) -> Option<Self> {
+        if Self::can_cast(syntax.kind()) {
+            Some(Self { syntax })
+        } else {
+            None
+        }
+    }
+    fn syntax(&self) -> &SyntaxToken { &self.syntax }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct String {
     pub(crate) syntax: SyntaxToken,
 }
@@ -70,16 +91,16 @@ impl AstToken for String {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct ByteString {
+pub struct RawString {
     pub(crate) syntax: SyntaxToken,
 }
-impl std::fmt::Display for ByteString {
+impl std::fmt::Display for RawString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(&self.syntax, f)
     }
 }
-impl AstToken for ByteString {
-    fn can_cast(kind: SyntaxKind) -> bool { kind == BYTE_STRING }
+impl AstToken for RawString {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == RAW_STRING }
     fn cast(syntax: SyntaxToken) -> Option<Self> {
         if Self::can_cast(syntax.kind()) {
             Some(Self { syntax })
@@ -91,16 +112,16 @@ impl AstToken for ByteString {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct IntNumber {
+pub struct Integer {
     pub(crate) syntax: SyntaxToken,
 }
-impl std::fmt::Display for IntNumber {
+impl std::fmt::Display for Integer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(&self.syntax, f)
     }
 }
-impl AstToken for IntNumber {
-    fn can_cast(kind: SyntaxKind) -> bool { kind == INT_NUMBER }
+impl AstToken for Integer {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == INTEGER }
     fn cast(syntax: SyntaxToken) -> Option<Self> {
         if Self::can_cast(syntax.kind()) {
             Some(Self { syntax })
@@ -112,16 +133,16 @@ impl AstToken for IntNumber {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct FloatNumber {
+pub struct Float {
     pub(crate) syntax: SyntaxToken,
 }
-impl std::fmt::Display for FloatNumber {
+impl std::fmt::Display for Float {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(&self.syntax, f)
     }
 }
-impl AstToken for FloatNumber {
-    fn can_cast(kind: SyntaxKind) -> bool { kind == FLOAT_NUMBER }
+impl AstToken for Float {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == FLOAT }
     fn cast(syntax: SyntaxToken) -> Option<Self> {
         if Self::can_cast(syntax.kind()) {
             Some(Self { syntax })
@@ -133,16 +154,16 @@ impl AstToken for FloatNumber {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Char {
+pub struct Lifetime {
     pub(crate) syntax: SyntaxToken,
 }
-impl std::fmt::Display for Char {
+impl std::fmt::Display for Lifetime {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(&self.syntax, f)
     }
 }
-impl AstToken for Char {
-    fn can_cast(kind: SyntaxKind) -> bool { kind == CHAR }
+impl AstToken for Lifetime {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == LIFETIME }
     fn cast(syntax: SyntaxToken) -> Option<Self> {
         if Self::can_cast(syntax.kind()) {
             Some(Self { syntax })
@@ -154,37 +175,16 @@ impl AstToken for Char {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Byte {
+pub struct Identifier {
     pub(crate) syntax: SyntaxToken,
 }
-impl std::fmt::Display for Byte {
+impl std::fmt::Display for Identifier {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Display::fmt(&self.syntax, f)
     }
 }
-impl AstToken for Byte {
-    fn can_cast(kind: SyntaxKind) -> bool { kind == BYTE }
-    fn cast(syntax: SyntaxToken) -> Option<Self> {
-        if Self::can_cast(syntax.kind()) {
-            Some(Self { syntax })
-        } else {
-            None
-        }
-    }
-    fn syntax(&self) -> &SyntaxToken { &self.syntax }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Ident {
-    pub(crate) syntax: SyntaxToken,
-}
-impl std::fmt::Display for Ident {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        std::fmt::Display::fmt(&self.syntax, f)
-    }
-}
-impl AstToken for Ident {
-    fn can_cast(kind: SyntaxKind) -> bool { kind == IDENT }
+impl AstToken for Identifier {
+    fn can_cast(kind: SyntaxKind) -> bool { kind == IDENTIFIER }
     fn cast(syntax: SyntaxToken) -> Option<Self> {
         if Self::can_cast(syntax.kind()) {
             Some(Self { syntax })
