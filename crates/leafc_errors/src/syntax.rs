@@ -1,4 +1,16 @@
-use miette::Diagnostic;
+use codespan_reporting::{
+    diagnostic::{
+        Diagnostic,
+        Label,
+    },
+    files::Files as SourceFiles,
+    term::{
+        self,
+        termcolor::StandardStream,
+        Config,
+    },
+};
+// use miette::Diagnostic;
 use owo_colors::OwoColorize;
 use smol_str::SmolStr;
 use strum_macros::EnumCount as EnumCountMacro;
@@ -21,7 +33,7 @@ pub const SYNTAX_ERROR_PREFIX: &str = "Syntax Error";
 /// // There are x variants of the `LexicalError` enum.
 /// assert_eq!(1, SyntaxError::COUNT);
 /// ```
-#[derive(Debug, Error, EnumCountMacro, Diagnostic)]
+#[derive(Debug, Error, EnumCountMacro, Clone)]
 pub enum SyntaxError {
     /// This error is returned when an **unknown token** is encountered
     /// during **lexical analysis**.
@@ -42,14 +54,11 @@ pub enum SyntaxError {
         ":".black(),
         .0.yellow().italic()
     )]
-    #[diagnostic(
-        code(leafc::syntax::unknown_token),
-        url(docsrs),
-        help(
-            "The token you've entered is not valid (contained within the grammar of the language)."
-        )
-    )]
     UnknownToken(SmolStr),
+}
+
+fn foo() {
+    println!("Hello, world!");
 }
 
 // impl From<LexicalError> for SyntaxError {

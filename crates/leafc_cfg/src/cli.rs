@@ -4,7 +4,12 @@ use derivative::Derivative;
 use derive_builder::Builder;
 
 use crate::settings::target_triple::TargetTripleData;
-use crate::settings::{emit::EmitKinds, LogLevel, OptLevel, TargetTriple};
+use crate::settings::{
+    emit::EmitKinds,
+    LogLevel,
+    OptLevel,
+    TargetTriple,
+};
 
 /// Settings for **adjusting the behavior** of the compiler from the command
 /// line. These are **parsed** from the command-line arguments passed to the

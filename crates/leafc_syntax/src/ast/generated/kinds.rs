@@ -152,117 +152,120 @@ pub enum SyntaxKind {
 }
 use self::SyntaxKind::*;
 use leafc_lexer::TokenKind;
-use num_derive::{FromPrimitive, ToPrimitive};
+use num_derive::{
+    FromPrimitive,
+    ToPrimitive,
+};
 impl SyntaxKind {
     pub fn is_keyword(self) -> bool {
         matches!(
             self,
-            ABSTRACT_KW
-                | ASYNC_KW
-                | AWAIT_KW
-                | EXTERN_KW
-                | FINAL_KW
-                | IS_KW
-                | AND_KW
-                | AS_KW
-                | BREAK_KW
-                | CONST_KW
-                | CONTINUE_KW
-                | DO_KW
-                | DYN_KW
-                | ELSE_KW
-                | ENUM_KW
-                | FALSE_KW
-                | FN_KW
-                | FOR_KW
-                | IF_KW
-                | IMPL_KW
-                | IMPORT_KW
-                | IN_KW
-                | LET_KW
-                | LOOP_KW
-                | MATCH_KW
-                | MISSING_KW
-                | MOD_KW
-                | MOVE_KW
-                | MUT_KW
-                | NOT_KW
-                | OR_KW
-                | PACKAGE_KW
-                | PUB_KW
-                | RETURN_KW
-                | SELF_TYPE_KW
-                | SELF_VALUE_KW
-                | STATIC_KW
-                | STRUCT_KW
-                | SUPER_KW
-                | TRAIT_KW
-                | TRUE_KW
-                | TYPE_KW
-                | UNSAFE_KW
-                | USE_KW
-                | WHERE_KW
-                | WHILE_KW
-                | YIELD_KW
+            ABSTRACT_KW |
+                ASYNC_KW |
+                AWAIT_KW |
+                EXTERN_KW |
+                FINAL_KW |
+                IS_KW |
+                AND_KW |
+                AS_KW |
+                BREAK_KW |
+                CONST_KW |
+                CONTINUE_KW |
+                DO_KW |
+                DYN_KW |
+                ELSE_KW |
+                ENUM_KW |
+                FALSE_KW |
+                FN_KW |
+                FOR_KW |
+                IF_KW |
+                IMPL_KW |
+                IMPORT_KW |
+                IN_KW |
+                LET_KW |
+                LOOP_KW |
+                MATCH_KW |
+                MISSING_KW |
+                MOD_KW |
+                MOVE_KW |
+                MUT_KW |
+                NOT_KW |
+                OR_KW |
+                PACKAGE_KW |
+                PUB_KW |
+                RETURN_KW |
+                SELF_TYPE_KW |
+                SELF_VALUE_KW |
+                STATIC_KW |
+                STRUCT_KW |
+                SUPER_KW |
+                TRAIT_KW |
+                TRUE_KW |
+                TYPE_KW |
+                UNSAFE_KW |
+                USE_KW |
+                WHERE_KW |
+                WHILE_KW |
+                YIELD_KW
         )
     }
     pub fn is_punct(self) -> bool {
         matches!(
             self,
-            DEFINE
-                | PLUS
-                | MINUS
-                | STAR
-                | SLASH
-                | PERCENT
-                | CARET
-                | BANG
-                | AMPERSAND
-                | PIPE
-                | DOUBLE_AMPERSAND
-                | DOUBLE_PIPE
-                | SHL
-                | SHR
-                | PLUS_EQ
-                | MINUS_EQ
-                | STAR_EQ
-                | SLASH_EQ
-                | PERCENT_EQ
-                | CARET_EQ
-                | AMPERSAND_EQ
-                | PIPE_EQ
-                | SHL_EQ
-                | SHR_EQ
-                | EQ
-                | EQEQ
-                | NE
-                | GT
-                | LT
-                | GE
-                | LE
-                | AT
-                | UNDERSCORE
-                | DOT
-                | DOTDOT
-                | DOTDOTEQ
-                | COMMA
-                | SEMICOLON
-                | COLON
-                | PATHSEP
-                | RARROW
-                | FATARROW
-                | HASH
-                | DOLLAR
-                | QMARK
-                | TILDE
-                | L_BRACKET
-                | R_BRACKET
-                | L_PAREN
-                | R_PAREN
-                | L_BRACE
-                | R_BRACE
-                | L_ARROW
-                | DOUBLE_STAR
+            DEFINE |
+                PLUS |
+                MINUS |
+                STAR |
+                SLASH |
+                PERCENT |
+                CARET |
+                BANG |
+                AMPERSAND |
+                PIPE |
+                DOUBLE_AMPERSAND |
+                DOUBLE_PIPE |
+                SHL |
+                SHR |
+                PLUS_EQ |
+                MINUS_EQ |
+                STAR_EQ |
+                SLASH_EQ |
+                PERCENT_EQ |
+                CARET_EQ |
+                AMPERSAND_EQ |
+                PIPE_EQ |
+                SHL_EQ |
+                SHR_EQ |
+                EQ |
+                EQEQ |
+                NE |
+                GT |
+                LT |
+                GE |
+                LE |
+                AT |
+                UNDERSCORE |
+                DOT |
+                DOTDOT |
+                DOTDOTEQ |
+                COMMA |
+                SEMICOLON |
+                COLON |
+                PATHSEP |
+                RARROW |
+                FATARROW |
+                HASH |
+                DOLLAR |
+                QMARK |
+                TILDE |
+                L_BRACKET |
+                R_BRACKET |
+                L_PAREN |
+                R_PAREN |
+                L_BRACE |
+                R_BRACE |
+                L_ARROW |
+                DOUBLE_STAR
         )
     }
     pub fn is_literal(self) -> bool {

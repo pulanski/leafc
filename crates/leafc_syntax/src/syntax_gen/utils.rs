@@ -1,9 +1,17 @@
 use std::{
-    fmt, fs, mem,
-    path::{Path, PathBuf},
+    fmt,
+    fs,
+    mem,
+    path::{
+        Path,
+        PathBuf,
+    },
 };
 
-use xshell::{cmd, Shell};
+use xshell::{
+    cmd,
+    Shell,
+};
 
 /// The name of the module that contains the generated code.
 pub const GENERATOR: &str = "syntax_gen";
@@ -16,10 +24,10 @@ pub struct Location {
 
 #[derive(Clone)]
 pub struct CommentBlock {
-    pub id: String,
-    pub line: usize,
+    pub id:       String,
+    pub line:     usize,
     pub contents: Vec<String>,
-    is_doc: bool,
+    is_doc:       bool,
 }
 
 pub fn list_rust_files(dir: &Path) -> Vec<PathBuf> {
@@ -79,8 +87,12 @@ impl CommentBlock {
 
         let lines = text.lines().map(str::trim_start);
 
-        let dummy_block =
-            CommentBlock { id: String::new(), line: 0, contents: Vec::new(), is_doc: false };
+        let dummy_block = CommentBlock {
+            id:       String::new(),
+            line:     0,
+            contents: Vec::new(),
+            is_doc:   false,
+        };
         let mut block = dummy_block.clone();
         for (line_num, line) in lines.enumerate() {
             match line.strip_prefix("//") {

@@ -2,9 +2,19 @@
 
 #![allow(non_snake_case)]
 use crate::{
-    ast::{self, support, AstChildren, AstNode},
-    SyntaxKind::{self, *},
-    SyntaxNode, SyntaxToken, T,
+    ast::{
+        self,
+        support,
+        AstChildren,
+        AstNode,
+    },
+    SyntaxKind::{
+        self,
+        *,
+    },
+    SyntaxNode,
+    SyntaxToken,
+    T,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

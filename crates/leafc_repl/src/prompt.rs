@@ -1,12 +1,26 @@
 use owo_colors::OwoColorize;
-use std::{borrow::Cow, env};
+use std::{
+    borrow::Cow,
+    env,
+};
 
-use crossterm::style::{Color, Stylize};
+use crossterm::style::{
+    Color,
+    Stylize,
+};
 use derivative::Derivative;
-use getset::{Getters, MutGetters, Setters};
+use getset::{
+    Getters,
+    MutGetters,
+    Setters,
+};
 use leafc_utils::time::Time;
 use reedline::{
-    Prompt, PromptEditMode, PromptHistorySearch, PromptHistorySearchStatus, PromptViMode,
+    Prompt,
+    PromptEditMode,
+    PromptHistorySearch,
+    PromptHistorySearchStatus,
+    PromptViMode,
 };
 
 /// The default prompt indicator
@@ -28,11 +42,11 @@ pub static DEFAULT_PROMPT_RIGHT_COLOR: Color = Color::AnsiValue(5);
 // #[derivative(Default(new = "true"))]
 pub struct LeafcPrompt {
     /// The segment that should be rendered in the **left** prompt.
-    pub left_prompt: PromptSegment,
+    pub left_prompt:  PromptSegment,
     /// The segment that should be rendered in the **right** prompt.
     pub right_prompt: PromptSegment,
 
-    multiline: bool,
+    multiline:  bool,
     // /// The current edit mode of the prompt.
     // /// This is used to determine which prompt indicator to use.
     // edit_mode: PromptEditMode,
@@ -69,11 +83,11 @@ impl LeafcPrompt {
 impl Default for LeafcPrompt {
     fn default() -> Self {
         Self {
-            left_prompt: PromptSegment::WithLineCount,
+            left_prompt:  PromptSegment::WithLineCount,
             right_prompt: PromptSegment::Empty,
-            multiline: false,
+            multiline:    false,
             // edit_mode: PromptEditMode::Default,
-            line_count: 0,
+            line_count:   0,
         }
     }
 }

@@ -174,9 +174,9 @@ impl TokenStream {
             }
 
             tokens.push(Token {
-                kind: token,
+                kind:   token,
                 lexeme: SmolStr::new(lex.slice()),
-                span: Span::new(lex.span().start, lex.span().end),
+                span:   Span::new(lex.span().start, lex.span().end),
             });
         }
 

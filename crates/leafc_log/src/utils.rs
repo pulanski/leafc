@@ -1,5 +1,8 @@
 use leafc_cfg::settings::{
-    meta::{logo::LOGO, version::LEAFC_VERSION},
+    meta::{
+        logo::LOGO,
+        version::LEAFC_VERSION,
+    },
     LogLevel,
 };
 use log::log;

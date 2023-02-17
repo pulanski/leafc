@@ -2,8 +2,15 @@
 // use miette::Result;
 // use serde::Deserialize;
 
-use self::{emit::EmitKinds, target_triple::TargetTripleData};
-pub use self::{log::LogLevel, opt::OptLevel, target_triple::TargetTriple};
+use self::{
+    emit::EmitKinds,
+    target_triple::TargetTripleData,
+};
+pub use self::{
+    log::LogLevel,
+    opt::OptLevel,
+    target_triple::TargetTriple,
+};
 pub use emit::EmitKind;
 
 /// Defines the **kinds** of output to emit from the compiler (e.g. the `AST`,
@@ -95,10 +102,10 @@ impl LeafcSettings {
     /// A `Result` containing the **settings** for the compiler.
     pub fn new() -> LeafcSettings {
         LeafcSettings {
-            version: "0.1.0".to_string(),
-            emit_kinds: vec![],
-            opt_level: OptLevel::None,
-            verbosity: LogLevel::Info,
+            version:       "0.1.0".to_string(),
+            emit_kinds:    vec![],
+            opt_level:     OptLevel::None,
+            verbosity:     LogLevel::Info,
             target_triple: TargetTriple::Native(TargetTripleData::new()),
         }
     }

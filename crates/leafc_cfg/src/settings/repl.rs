@@ -3,14 +3,28 @@ use std::path::PathBuf;
 use derivative::Derivative;
 use derive_builder::Builder;
 use dirs_next::home_dir;
-use getset::{CopyGetters, Getters, MutGetters, Setters};
+use getset::{
+    CopyGetters,
+    Getters,
+    MutGetters,
+    Setters,
+};
 use leafc_errors::repl::ReplError;
-use miette::{IntoDiagnostic, Result};
+use miette::{
+    IntoDiagnostic,
+    Result,
+};
 use smartstring::alias::String;
 
-use crate::cli::{CommandLineConfiguration, CommandLineConfigurationBuilder};
+use crate::cli::{
+    CommandLineConfiguration,
+    CommandLineConfigurationBuilder,
+};
 
-use super::emit::{EmitKind, EmitKinds};
+use super::emit::{
+    EmitKind,
+    EmitKinds,
+};
 
 pub const DEFAULT_HISTORY_FILE: &str = ".leafc_history";
 pub const DEFAULT_LOG_FILE: &str = ".leafc/repl.log";
@@ -109,13 +123,13 @@ impl ReplSettings {
                     continue;
                 }
 
-                if !updated
-                    && (word.contains(TOK_EXTENSION)
-                        || word.contains(AST_EXTENSION)
-                        || word.contains(HIR_EXTENSION)
-                        || word.contains(MIR_EXTENSION)
-                        || word.contains(LLVM_IR_EXTENSION)
-                        || word.contains(ASM_EXTENSION))
+                if !updated &&
+                    (word.contains(TOK_EXTENSION) ||
+                        word.contains(AST_EXTENSION) ||
+                        word.contains(HIR_EXTENSION) ||
+                        word.contains(MIR_EXTENSION) ||
+                        word.contains(LLVM_IR_EXTENSION) ||
+                        word.contains(ASM_EXTENSION))
                 {
                     updated = true;
                 }

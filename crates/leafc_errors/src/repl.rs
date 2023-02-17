@@ -18,7 +18,7 @@ pub const REPL_ERROR_PREFIX: &str = "REPL Error";
 /// // There are x variants of the `ReplError` enum.
 /// assert_eq!(3, ReplError::COUNT);
 /// ```
-#[derive(Debug, Error, EnumCountMacro, Diagnostic)]
+#[derive(Debug, Error, EnumCountMacro, Diagnostic, Clone)]
 pub enum ReplError {
     /// This error is returned when the **log file** could not be **opened**.
     /// This error is typically returned during the **initialization** of the

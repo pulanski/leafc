@@ -2,7 +2,10 @@
 
 use crate::{
     ast::AstToken,
-    SyntaxKind::{self, *},
+    SyntaxKind::{
+        self,
+        *,
+    },
     SyntaxToken,
 };
 

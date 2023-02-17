@@ -3,13 +3,20 @@ pub mod ast;
 pub mod syntax_gen;
 pub mod syntax_tree;
 
-use std::{marker::PhantomData, sync::Arc};
+use std::{
+    marker::PhantomData,
+    sync::Arc,
+};
 
 pub use ast::generated::kinds::SyntaxKind;
 use ast::AstNode;
 use rowan::GreenNode;
 pub use syntax_tree::{
-    PreorderWithTokens, SyntaxElement, SyntaxElementChildren, SyntaxNode, SyntaxNodeChildren,
+    PreorderWithTokens,
+    SyntaxElement,
+    SyntaxElementChildren,
+    SyntaxNode,
+    SyntaxNodeChildren,
     SyntaxToken,
 };
 
@@ -22,7 +29,7 @@ pub use syntax_tree::{
 pub struct Parse<T> {
     green: GreenNode,
     // errors: Arc<Vec<SyntaxError>>,
-    _ty: PhantomData<fn() -> T>,
+    _ty:   PhantomData<fn() -> T>,
 }
 
 // impl<T> Clone for Parse<T> {

@@ -17,9 +17,16 @@ doctest = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+leafc_utils = { path = "../leafc_utils" }
+
+codespan-reporting = { workspace = true }
+derivative = { workspace = true }
 miette = { workspace = true }
 owo-colors = { workspace = true }
 smol_str = { workspace = true }
 strum = { workspace = true }
 strum_macros = { workspace = true }
 thiserror = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }

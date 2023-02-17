@@ -1,5 +1,8 @@
 // use salsa::interned::InternedId;
-use serde::{Deserialize, Serialize};
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 /// Defines the **build metadata** of the compiler This is used for
 /// **incremental compilation**.
@@ -49,7 +52,7 @@ mod build_test_suite {
         let time = std::time::SystemTime::now();
         let build = Build {
             build_id: BuildId(ulid),
-            date: humantime::format_rfc3339_seconds(time).to_string(),
+            date:     humantime::format_rfc3339_seconds(time).to_string(),
         };
 
         assert_eq!(build.build_id, BuildId(ulid));

@@ -19,7 +19,7 @@ pub const LEXICAL_ERROR_PREFIX: &str = "Lexical Error";
 /// // There are x variants of the `LexicalError` enum.
 /// assert_eq!(1, LexicalError::COUNT);
 /// ```
-#[derive(Debug, Error, EnumCountMacro, Diagnostic)]
+#[derive(Debug, Error, EnumCountMacro, Diagnostic, Clone)]
 pub enum LexicalError {
     /// This error is returned when an **unknown token** is encountered
     /// during **lexical analysis**.

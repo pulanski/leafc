@@ -2,7 +2,10 @@ use std::path::PathBuf;
 
 use clap::Parser;
 use getset::Getters;
-use leafc_cfg::settings::{log::LogLevel, meta::version::LEAFC_VERSION};
+use leafc_cfg::settings::{
+    log::LogLevel,
+    meta::version::LEAFC_VERSION,
+};
 
 /// # **Leafc**, an Experimental Compiler
 #[derive(Parser, Default, Debug, Getters, PartialEq, Eq, Hash)]

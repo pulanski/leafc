@@ -12,17 +12,17 @@
 /// The [`SyntaxKind`][crate::ast::generated::syntax_kind::SyntaxKind] enum is
 /// generated from this.
 pub(crate) struct SyntaxKinds<'a> {
-    pub(crate) punct: &'a [(&'a str, &'a str)],
-    pub(crate) keywords: &'a [&'a str],
+    pub(crate) punct:               &'a [(&'a str, &'a str)],
+    pub(crate) keywords:            &'a [&'a str],
     pub(crate) contextual_keywords: &'a [&'a str],
-    pub(crate) literals: &'a [&'a str],
-    pub(crate) tokens: &'a [&'a str],
+    pub(crate) literals:            &'a [&'a str],
+    pub(crate) tokens:              &'a [&'a str],
     // pub(crate) tokens: &'a [(&'a str, &'a str)],
-    pub(crate) nodes: &'a [&'a str],
+    pub(crate) nodes:               &'a [&'a str],
 }
 
 pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
-    punct: &[
+    punct:               &[
         (":=", "DEFINE"),
         ("+", "PLUS"),
         ("-", "MINUS"),
@@ -80,7 +80,7 @@ pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
         ("<-", "L_ARROW"),
         ("**", "DOUBLE_STAR"),
     ],
-    keywords: &[
+    keywords:            &[
         "abstract",
         "async",
         "await",
@@ -132,8 +132,8 @@ pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
     // contextual_keywords: &["auto", "default", "existential", "union", "raw", "macro_rules",
     // "yeet"], // TODO: update this
     contextual_keywords: &[], // TODO: update this
-    literals: &["RUNE", "STRING", "RAW_STRING", "INTEGER", "FLOAT", "LIFETIME"],
-    tokens: &[
+    literals:            &["RUNE", "STRING", "RAW_STRING", "INTEGER", "FLOAT", "LIFETIME"],
+    tokens:              &[
         "WHITESPACE",
         "ERROR",
         "IDENTIFIER",
@@ -142,7 +142,7 @@ pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
         // ("WHITESPACE", include_str!("../../../../docs/src/chapter_1/tokens/WHITESPACE.md")), //
         // TODO: maybe this in future
     ],
-    nodes: &[
+    nodes:               &[
         "SOURCE_FILE",
         // "STRUCT",
         // "UNION",
@@ -289,14 +289,14 @@ pub(crate) const KINDS_SRC: SyntaxKinds<'_> = SyntaxKinds {
 #[derive(Default, Debug)]
 pub(crate) struct AstSrc {
     pub(crate) tokens: Vec<String>,
-    pub(crate) nodes: Vec<AstNodeSrc>,
-    pub(crate) enums: Vec<AstEnumSrc>,
+    pub(crate) nodes:  Vec<AstNodeSrc>,
+    pub(crate) enums:  Vec<AstEnumSrc>,
 }
 
 #[derive(Debug)]
 pub(crate) struct AstNodeSrc {
-    pub(crate) doc: Vec<String>,
-    pub(crate) name: String,
+    pub(crate) doc:    Vec<String>,
+    pub(crate) name:   String,
     pub(crate) traits: Vec<String>,
     pub(crate) fields: Vec<Field>,
 }
@@ -315,8 +315,8 @@ pub(crate) enum Cardinality {
 
 #[derive(Debug)]
 pub(crate) struct AstEnumSrc {
-    pub(crate) doc: Vec<String>,
-    pub(crate) name: String,
-    pub(crate) traits: Vec<String>,
+    pub(crate) doc:      Vec<String>,
+    pub(crate) name:     String,
+    pub(crate) traits:   Vec<String>,
     pub(crate) variants: Vec<String>,
 }

@@ -1,8 +1,15 @@
 #![allow(non_snake_case)]
 
 use chrono::Utc;
-use std::env::consts::{ARCH, FAMILY, OS};
-use std::{error::Error, process::Command};
+use std::env::consts::{
+    ARCH,
+    FAMILY,
+    OS,
+};
+use std::{
+    error::Error,
+    process::Command,
+};
 
 fn main() -> Result<(), Box<dyn Error>> {
     LEAFC_COMMIT_HASH()?;

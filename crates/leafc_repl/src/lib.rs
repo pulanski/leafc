@@ -5,22 +5,43 @@ mod syntax_highlighter;
 
 pub use prompt::LeafcPrompt;
 
-use std::{fs::File, process::ExitCode};
+use std::{
+    fs::File,
+    process::ExitCode,
+};
 
 use derivative::Derivative;
 use derive_builder::Builder;
 use derive_new::new;
-use getset::{CopyGetters, Getters, MutGetters, Setters};
+use getset::{
+    CopyGetters,
+    Getters,
+    MutGetters,
+    Setters,
+};
 use leafc_cfg::settings::{
     repl::{
-        ReplSettings, ASM_EXTENSION, AST_EXTENSION, DEFAULT_HISTORY_FILE, DEFAULT_HISTORY_SIZE,
-        LLVM_IR_EXTENSION, TOK_EXTENSION,
+        ReplSettings,
+        ASM_EXTENSION,
+        AST_EXTENSION,
+        DEFAULT_HISTORY_FILE,
+        DEFAULT_HISTORY_SIZE,
+        LLVM_IR_EXTENSION,
+        TOK_EXTENSION,
     },
     EmitKind,
 };
-use miette::{IntoDiagnostic, Result};
+use miette::{
+    IntoDiagnostic,
+    Result,
+};
 use reedline::{
-    ExampleHighlighter, FileBackedHistory, Highlighter, Reedline, Signal, SqliteBackedHistory,
+    ExampleHighlighter,
+    FileBackedHistory,
+    Highlighter,
+    Reedline,
+    Signal,
+    SqliteBackedHistory,
 };
 use smartstring::alias::String;
 

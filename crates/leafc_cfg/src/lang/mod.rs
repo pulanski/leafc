@@ -3,7 +3,11 @@ use std::str::FromStr;
 use derivative::Derivative;
 use derive_builder::Builder;
 use derive_more::Display;
-use getset::{Getters, MutGetters, Setters};
+use getset::{
+    Getters,
+    MutGetters,
+    Setters,
+};
 use rust_i18n::t;
 use smartstring::alias::String;
 use strum::EnumVariantNames;
@@ -300,11 +304,18 @@ fn english() -> String {
 mod language_test_suite {
     use pretty_assertions_sorted::assert_eq;
     use rstest::rstest;
-    use rust_i18n::{locale, set_locale};
+    use rust_i18n::{
+        locale,
+        set_locale,
+    };
     use std::str::FromStr;
     use strum::VariantNames;
 
-    use crate::lang::{default_language, english, Language};
+    use crate::lang::{
+        default_language,
+        english,
+        Language,
+    };
 
     #[test]
     fn smoke_default_language() {
@@ -345,26 +356,23 @@ mod language_test_suite {
 
     #[test]
     fn smoke_enum_variants() {
-        assert_eq!(
-            Language::VARIANTS,
-            vec![
-                "English",
-                "Spanish",
-                "French",
-                "German",
-                "Portuguese",
-                "Italian",
-                "Dutch",
-                "Swedish",
-                "Danish",
-                "Norwegian",
-                "Finnish",
-                "Russian",
-                "Japanese",
-                "Chinese",
-                "Korean",
-                "Swahili",
-            ]
-        );
+        assert_eq!(Language::VARIANTS, vec![
+            "English",
+            "Spanish",
+            "French",
+            "German",
+            "Portuguese",
+            "Italian",
+            "Dutch",
+            "Swedish",
+            "Danish",
+            "Norwegian",
+            "Finnish",
+            "Russian",
+            "Japanese",
+            "Chinese",
+            "Korean",
+            "Swahili",
+        ]);
     }
 }

@@ -1,18 +1,25 @@
+/// This module contains the **location** of an **item** in a **file**.
+pub mod file;
+
 use derive_new::new;
 use owo_colors::OwoColorize;
-use std::{fmt, ops::Range};
+use std::{
+    fmt,
+    ops::Range,
+};
 
-use getset::{CopyGetters, MutGetters, Setters};
+use getset::{
+    CopyGetters,
+    Getters,
+    MutGetters,
+    Setters,
+};
 
-/// A **unique identifier** for a **file**.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new)]
-pub struct FileId(usize);
-
-// pub struct File {
-//     id: FileId,
-//     abs_path: String,
-//     text: String,
-// }
+pub use self::file::{
+    File,
+    FileId,
+    FileSet,
+};
 
 /// A **range** of text in the input string (_i.e. a **span**_).
 ///
@@ -39,7 +46,7 @@ pub struct Span {
     /// The **start** of the span.
     start: usize,
     /// The **end** of the span.
-    end: usize,
+    end:   usize,
 }
 
 /// Used to store information about the **location** of an **item in a file**.
@@ -48,7 +55,7 @@ pub struct Span {
 #[getset(get_copy = "pub", get_mut = "pub", set = "pub")]
 pub struct Location {
     /// A **unique identifier** for the **file** that the location is in.
-    file: FileId,
+    pub file: FileId,
 
     /// The **span** of the location in the file.
     span: Span,
@@ -65,16 +72,16 @@ pub struct Location {
 /// use leafc_utils::Locatable;
 /// use leafc_lexer::Token;
 /// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, CopyGetters, MutGetters, Setters)]
-#[getset(get_copy = "pub", get_mut = "pub", set = "pub")]
-pub struct Locatable<T: Clone + Copy> {
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, MutGetters, Setters)]
+#[getset(get = "pub", get_mut = "pub", set = "pub")]
+pub struct Locatable<T: Clone> {
     /// The **location** of the item.
     location: Location,
     /// The **item** itself.
-    item: T,
+    item:     T,
 }
 
-impl<T: Clone + Copy> Locatable<T> {
+impl<T: Clone> Locatable<T> {
     /// Creates a new `Locatable` from the given `location` and `item`.
     ///
     /// # Example
@@ -156,9 +163,17 @@ impl<T: Clone + Copy> Locatable<T> {
         self.location.span().end()
     }
 
-    // pub fn map<U: Clone, F: FnOnce(T) -> U>(self, f: F) -> Locatable<U> {
-    //     Locatable::new(self.location, f(self.item))
-    // }
+    /// Maps the `Locatable` item to another item using the given `f` function.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn map<U: Clone, F: FnOnce(T) -> U>(self, f: F) -> Locatable<U> {
+        Locatable::new(self.location, f(self.item))
+    }
 }
 
 /// A **position** in the input string (e.g. a **line** and **offset**
@@ -179,7 +194,7 @@ impl<T: Clone + Copy> Locatable<T> {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, CopyGetters, MutGetters, Setters, new)]
 pub struct FilePosition {
     /// The **line** of the position.
-    line: usize,
+    line:   usize,
     /// The **offset** of the position.
     offset: usize,
 }

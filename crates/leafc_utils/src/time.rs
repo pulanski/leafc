@@ -1,5 +1,11 @@
-use chrono::{DateTime, Local};
-use derive_more::{Display, From};
+use chrono::{
+    DateTime,
+    Local,
+};
+use derive_more::{
+    Display,
+    From,
+};
 
 /// Get the current time in the format of `YYYY-MM-DD HH:MM:SS`.
 /// // TODO: Make this configurable via a specific time format string.
@@ -12,7 +18,7 @@ pub fn now() -> String {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Display, From)]
 #[display(fmt = "{}", "time.format(format)")]
 pub struct Time {
-    time: DateTime<Local>,
+    time:   DateTime<Local>,
     format: String,
 }
 

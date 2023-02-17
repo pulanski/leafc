@@ -19,7 +19,7 @@ pub const LOG_ERROR_PREFIX: &str = "Logging System Error";
 /// // There are x variants of the `LexicalError` enum.
 /// assert_eq!(3, LogError::COUNT);
 /// ```
-#[derive(Debug, Error, EnumCountMacro, Diagnostic)]
+#[derive(Debug, Error, EnumCountMacro, Diagnostic, Clone)]
 pub enum LogError {
     /// This error is returned when an **unknown token** is encountered
     /// during **lexical analysis**.

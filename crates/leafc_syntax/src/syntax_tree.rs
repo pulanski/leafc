@@ -1,7 +1,13 @@
 // use leafc_lexer::TokenKind;
-use num_traits::{FromPrimitive, ToPrimitive};
+use num_traits::{
+    FromPrimitive,
+    ToPrimitive,
+};
 
-use rowan::{GreenNodeBuilder, Language};
+use rowan::{
+    GreenNodeBuilder,
+    Language,
+};
 
 use crate::ast::generated::kinds::SyntaxKind;
 

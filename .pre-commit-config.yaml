@@ -59,9 +59,3 @@ repos:
                     "--disable-plugin",
                     "Base64HighEntropyString",
                 ]
-    - repo: https://github.com/doublify/pre-commit-rust
-      rev: v1.0
-      hooks:
-          - id: cargo-check
-          - id: clippy
-            args: ["--", "-D", "warnings"]

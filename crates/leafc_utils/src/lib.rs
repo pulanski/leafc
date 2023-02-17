@@ -69,5 +69,14 @@ pub mod location;
 /// given regular expression.
 pub mod regex_gen;
 
-pub use location::{FileId, FilePosition, Locatable, Location, Span};
-pub use terminal::{horizontal_padding, vertical_padding};
+pub use location::{
+    FileId,
+    FilePosition,
+    Locatable,
+    Location,
+    Span,
+};
+pub use terminal::{
+    horizontal_padding,
+    vertical_padding,
+};

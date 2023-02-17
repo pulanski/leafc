@@ -12,7 +12,10 @@ use itertools::Either;
 
 use self::generated::kinds::SyntaxKind;
 use crate::{
-    syntax_tree::{SyntaxNode, SyntaxToken},
+    syntax_tree::{
+        SyntaxNode,
+        SyntaxToken,
+    },
     SyntaxNodeChildren,
 };
 
@@ -156,7 +159,7 @@ pub trait AstToken {
 #[derive(Debug, Clone)]
 pub struct AstChildren<N> {
     inner: SyntaxNodeChildren,
-    ph: PhantomData<N>,
+    ph:    PhantomData<N>,
 }
 
 impl<N> AstChildren<N> {
@@ -201,7 +204,13 @@ where
 }
 
 mod support {
-    use super::{AstChildren, AstNode, SyntaxKind, SyntaxNode, SyntaxToken};
+    use super::{
+        AstChildren,
+        AstNode,
+        SyntaxKind,
+        SyntaxNode,
+        SyntaxToken,
+    };
 
     pub(super) fn child<N: AstNode>(parent: &SyntaxNode) -> Option<N> {
         parent.children().find_map(N::cast)

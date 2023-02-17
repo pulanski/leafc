@@ -5,14 +5,13 @@
 # Directories
 /.git/
 /.github/
-/target/
-/docs/
-/examples/
+# /target/
+# /docs/
+# /examples/
 
 # Files
 .editorconfig
 .gitignore
-*.md
 Dockerfile
 LICENSE
 rustfmt.toml

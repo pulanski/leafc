@@ -10,4 +10,7 @@ pub mod lexer;
 
 pub use token::TokenKind;
 
-pub use lexer::{lossless_lex, lossy_lex};
+pub use lexer::{
+    lossless_lex,
+    lossy_lex,
+};

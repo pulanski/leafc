@@ -11,19 +11,41 @@
 //! **not** intended to be **manually edited**.
 
 use std::{
-    collections::{BTreeSet, HashSet},
+    collections::{
+        BTreeSet,
+        HashSet,
+    },
     fmt::Write,
     path::PathBuf,
 };
 
 use doc_comment::doc_comment;
 use itertools::Itertools;
-use proc_macro2::{Punct, Spacing};
-use quote::{format_ident, quote};
-use ungrammar::{Grammar, Rule};
+use proc_macro2::{
+    Punct,
+    Spacing,
+};
+use quote::{
+    format_ident,
+    quote,
+};
+use ungrammar::{
+    Grammar,
+    Rule,
+};
 
-use super::{input::KINDS_SRC, utils::GeneratorKind};
-use crate::syntax_gen::input::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, SyntaxKinds};
+use super::{
+    input::KINDS_SRC,
+    utils::GeneratorKind,
+};
+use crate::syntax_gen::input::{
+    AstEnumSrc,
+    AstNodeSrc,
+    AstSrc,
+    Cardinality,
+    Field,
+    SyntaxKinds,
+};
 use crate::syntax_gen::utils;
 
 const SYNTAX_KINDS_FILE: &str = "crates/leafc_syntax/src/ast/generated/kinds.rs";
@@ -129,8 +151,8 @@ fn generate_nodes(kinds: SyntaxKinds<'_>, grammar: &AstSrc) -> String {
                 .iter()
                 .filter(|trait_name| {
                     // Loops have two expressions so this might collide, therefore manual impl it
-                    node.name != "ForExpr" && node.name != "WhileExpr"
-                        || trait_name.as_str() != "HasLoopBody"
+                    node.name != "ForExpr" && node.name != "WhileExpr" ||
+                        trait_name.as_str() != "HasLoopBody"
                 })
                 .map(|trait_name| {
                     let trait_name = format_ident!("{}", trait_name);
@@ -749,20 +771,20 @@ fn lower_rule(acc: &mut Vec<Field>, grammar: &Grammar, label: Option<&String>, r
             assert!(label.is_none());
             let manually_implemented = matches!(
                 l.as_str(),
-                "lhs"
-                    | "rhs"
-                    | "then_branch"
-                    | "else_branch"
-                    | "start"
-                    | "end"
-                    | "op"
-                    | "index"
-                    | "base"
-                    | "value"
-                    | "trait"
-                    | "self_ty"
-                    | "iterable"
-                    | "condition"
+                "lhs" |
+                    "rhs" |
+                    "then_branch" |
+                    "else_branch" |
+                    "start" |
+                    "end" |
+                    "op" |
+                    "index" |
+                    "base" |
+                    "value" |
+                    "trait" |
+                    "self_ty" |
+                    "iterable" |
+                    "condition"
             );
             if manually_implemented {
                 return;

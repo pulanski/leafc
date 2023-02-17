@@ -19,7 +19,7 @@ pub const CLI_ERROR_PREFIX: &str = "CLI Error";
 /// // There are x variants of the `LexicalError` enum.
 /// assert_eq!(1, LexicalError::COUNT);
 /// ```
-#[derive(Debug, Error, EnumCountMacro, Diagnostic)]
+#[derive(Debug, Error, EnumCountMacro, Diagnostic, Clone)]
 pub enum CliError {
     /// This error is returned when an **unknown token** is encountered
     /// during **lexical analysis**.

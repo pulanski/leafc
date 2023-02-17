@@ -48,20 +48,40 @@
     clippy::multiple_crate_versions, // required for transitive dependencies
 )]
 
-use std::{path::PathBuf, process::ExitCode, time::Duration};
+use std::{
+    path::PathBuf,
+    process::ExitCode,
+    time::Duration,
+};
 
 use derivative::Derivative;
 use derive_builder::Builder;
-use getset::{Getters, MutGetters, Setters};
-use indicatif::{ProgressBar, ProgressStyle};
+use getset::{
+    Getters,
+    MutGetters,
+    Setters,
+};
+use indicatif::{
+    ProgressBar,
+    ProgressStyle,
+};
 use leafc_cfg::{
     cli::CommandLineConfiguration,
-    settings::{emit::EmitKinds, EmitKind},
+    settings::{
+        emit::EmitKinds,
+        EmitKind,
+    },
 };
 use leafc_cli::LeafcCli;
-use leafc_errors::{cli::CliError, driver::DriverError};
+use leafc_errors::{
+    cli::CliError,
+    driver::DriverError,
+};
 use leafc_lexer::lexer::TokenStream;
-use miette::{IntoDiagnostic, Result};
+use miette::{
+    IntoDiagnostic,
+    Result,
+};
 use owo_colors::OwoColorize;
 use smol_str::SmolStr;
 
