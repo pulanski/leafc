@@ -55,7 +55,6 @@ use std::{
 };
 
 use derivative::Derivative;
-use derive_builder::Builder;
 use getset::{
     Getters,
     MutGetters,
@@ -84,6 +83,7 @@ use miette::{
 };
 use owo_colors::OwoColorize;
 use smol_str::SmolStr;
+use typed_builder::TypedBuilder;
 
 /// The **leafc driver**. This is primary engine through which the compiler
 /// is run.
@@ -108,11 +108,14 @@ use smol_str::SmolStr;
 /// // Run a new driver with the default configuration.
 /// // LeafcDriver::compile();
 /// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Derivative, Builder, Getters, Setters, MutGetters)]
+#[derive(
+    Debug, Clone, PartialEq, Eq, Hash, Derivative, TypedBuilder, Getters, Setters, MutGetters,
+)]
 #[derivative(Default(new = "true"))]
 pub struct LeafcDriver {
     /// The driver's version.
     #[derivative(Default(value = "\"0.1.0\".into()"))]
+    #[builder(default = "0.1.0".into())]
     #[getset(get = "pub")]
     version: SmolStr,
 
@@ -120,6 +123,7 @@ pub struct LeafcDriver {
     // #[derivative(Default(value = "vec![EmitKind::Ast]"))]
     // have this default to the default defined in settings.rs within the leafc_cfg crate
     #[derivative(Default(value = "vec![]"))]
+    #[builder(default = vec![])]
     #[getset(get = "pub", get_mut = "pub")]
     emit_kinds: EmitKinds,
 }
@@ -138,6 +142,7 @@ impl LeafcDriver {
 
         // if we are emitting the tokens, then log them
         if self.emit_kinds().contains(&EmitKind::TokenStream) {
+            // TODO: log::lexed!(tokens);
             log::info!("{tokens}");
         }
 

@@ -7,13 +7,13 @@ pub mod repl;
 pub mod syntax;
 // pub mod parser;
 
+use derivative::Derivative;
+use leafc_utils::Locatable;
 use std::collections::VecDeque;
 
 pub use cfg::CfgError;
 pub use cli::CliError;
-use derivative::Derivative;
 pub use driver::DriverError;
-use leafc_utils::Locatable;
 pub use lexer::LexicalError;
 pub use log::LogError;
 pub use repl::ReplError;

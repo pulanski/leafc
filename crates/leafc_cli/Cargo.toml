@@ -27,7 +27,6 @@ leafc_cfg = { path = "../leafc_cfg" }
 atomic = { workspace = true }
 clap = { workspace = true }
 derivative = { workspace = true }
-derive_builder = { workspace = true }
 getset = { workspace = true }
 log = { workspace = true }
 miette = { workspace = true }
@@ -35,3 +34,4 @@ num_cpus = { workspace = true }
 parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
+typed-builder = { workspace = true }

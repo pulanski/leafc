@@ -1,9 +1,9 @@
 use derivative::Derivative;
-use derive_builder::Builder;
 use derive_more::Display;
 use semver::Version as Semver;
 use smartstring::alias::String;
 use std::fmt::Display;
+use typed_builder::TypedBuilder;
 
 pub const LEAFC_VERSION: &str = concat!(
     "v",
@@ -53,7 +53,8 @@ pub enum Version {
 }
 // ANCHOR_END: input
 
-#[derive(Debug, Display, Clone, PartialEq, Eq, Builder, Derivative)]
+// #[derive(Debug, Display, Clone, PartialEq, Eq, Builder, Derivative)]
+#[derive(Debug, Display, Clone, PartialEq, Eq, TypedBuilder, Derivative)]
 #[derivative(Default)]
 // #[derive(new)]
 #[display(fmt = "{hash}")]
@@ -121,11 +122,10 @@ mod version_test_suite {
         // CommitHash
 
         // let commit_hash = CommitHash::new("a1b2c3d4");
-        let commit_hash = CommitHashBuilder::default()
+        let commit_hash = CommitHash::builder()
             .hash("a1b2c3d4".into())
             .timestamp("2021-01-01 00:00:00".into())
-            .build()
-            .unwrap();
+            .build();
 
         assert_eq!(commit_hash.to_string(), "a1b2c3d4");
 

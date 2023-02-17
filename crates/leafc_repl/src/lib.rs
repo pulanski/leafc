@@ -11,7 +11,6 @@ use std::{
 };
 
 use derivative::Derivative;
-use derive_builder::Builder;
 use derive_new::new;
 use getset::{
     CopyGetters,
@@ -44,6 +43,7 @@ use reedline::{
     SqliteBackedHistory,
 };
 use smartstring::alias::String;
+use typed_builder::TypedBuilder;
 
 use leafc_cli::LeafcCli;
 use leafc_driver::LeafcDriver;

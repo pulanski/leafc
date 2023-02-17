@@ -5,9 +5,9 @@ use miette::Result;
 
 use leafc_cli::LeafcCli;
 
-pub struct LeafcEntry;
+pub struct Leafc;
 
-impl LeafcEntry {
+impl Leafc {
     /// Runs the **top level entry point** for **leafc** and returns an exit
     /// code indicating whether the operation was successful.
     ///
@@ -63,6 +63,8 @@ impl LeafcEntry {
 
         // initialize the logging system
         leafc_log::init(cli.verbosity)?;
+
+        // log the settings
 
         // run the driver or repl as appropriate
         if cli.sources().is_empty() {

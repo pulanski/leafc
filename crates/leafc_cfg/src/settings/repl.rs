@@ -1,7 +1,6 @@
 use std::path::PathBuf;
 
 use derivative::Derivative;
-use derive_builder::Builder;
 use dirs_next::home_dir;
 use getset::{
     CopyGetters,
@@ -9,17 +8,11 @@ use getset::{
     MutGetters,
     Setters,
 };
-use leafc_errors::repl::ReplError;
-use miette::{
-    IntoDiagnostic,
-    Result,
-};
+use miette::Result;
 use smartstring::alias::String;
+use typed_builder::TypedBuilder;
 
-use crate::cli::{
-    CommandLineConfiguration,
-    CommandLineConfigurationBuilder,
-};
+use crate::cli::CommandLineConfiguration;
 
 use super::emit::{
     EmitKind,
@@ -37,40 +30,42 @@ pub const MIR_EXTENSION: &str = ".mir";
 pub const LLVM_IR_EXTENSION: &str = ".ll";
 pub const ASM_EXTENSION: &str = ".asm";
 
-#[derive(Debug, Derivative, PartialEq, Eq, Builder, Getters, MutGetters, CopyGetters, Setters)]
+#[derive(
+    Debug, Derivative, PartialEq, Eq, TypedBuilder, Getters, MutGetters, CopyGetters, Setters,
+)]
 #[derivative(Default(new = "true"))]
 pub struct ReplSettings {
     /// The **kinds** of output to emit from the compiler (e.g. the `AST`, `LLVM
     /// IR`, etc.). defaults to `vec![]`
     #[derivative(Default(value = "vec![]"))]
-    #[builder(default = "vec![]")]
+    #[builder(default = vec![])]
     #[getset(set = "pub")]
     pub emit_kinds: Vec<EmitKind>,
 
     /// The **history file** to use for the repl.
     /// defaults to `~/.leafc/history`
     #[derivative(Default(value = "home_dir().unwrap_or_default().join(DEFAULT_HISTORY_FILE)"))]
-    #[builder(setter(into), default = "home_dir().unwrap_or_default().join(DEFAULT_HISTORY_FILE)")]
+    #[builder(setter(into), default = home_dir().unwrap_or_default().join(DEFAULT_HISTORY_FILE))]
     #[getset(get = "pub")]
     repl_history_file: PathBuf,
 
     /// The **log file** to use for the repl.
     /// defaults to `~/.leafc/repl.log`
-    #[builder(setter(into), default = "home_dir().unwrap_or_default().join(DEFAULT_LOG_FILE)")]
+    #[builder(setter(into), default = home_dir().unwrap_or_default().join(DEFAULT_LOG_FILE))]
     #[derivative(Default(value = "home_dir().unwrap_or_default().join(DEFAULT_LOG_FILE)"))]
     #[getset(get = "pub")]
     repl_log_file: PathBuf,
 
     /// The **theme** to use for the repl.
     /// defaults to `Theme::Default`
-    #[builder(default = "ReplTheme::DarkPlus")]
+    #[builder(default = ReplTheme::DarkPlus)]
     #[derivative(Default(value = "ReplTheme::DarkPlus"))]
     #[getset(set = "pub")]
     theme: ReplTheme,
 
     /// Whether or not to use **syntax highlighting** in the repl.
     /// defaults to `true`
-    #[builder(default = "true")]
+    #[builder(default = true)]
     #[derivative(Default(value = "true"))]
     #[getset(get_copy = "pub")]
     use_syntax_highlighting: bool,
@@ -169,13 +164,7 @@ impl ReplSettings {
         }
 
         // use builder pattern to create a new CommandLineConfig
-        let config = CommandLineConfigurationBuilder::default()
-            .emit_kinds(self.emit_kinds())
-            .build()
-            .into_diagnostic()
-            .map_err(|e| {
-                ReplError::InvalidSettingsUpdate(format!("Couldn't update settings: {e}").into())
-            })?;
+        let config = CommandLineConfiguration::builder().emit_kinds(self.emit_kinds()).build();
 
         Ok((updated, config))
     }
@@ -239,11 +228,10 @@ mod repl_test_suite {
         assert_eq!(settings.repl_log_file(), &PathBuf::from("~/.leafc/repl2.log"));
         assert_eq!(settings.theme(), ReplTheme::DarkPlus);
 
-        let mut settings = ReplSettingsBuilder::default()
+        let mut settings = ReplSettings::builder()
             .emit_kinds(vec![EmitKind::Ast])
             .repl_history_file("~/.leafc_history")
-            .build()
-            .unwrap();
+            .build();
 
         assert_eq!(settings.emit_kinds(), vec![EmitKind::Ast]);
         assert_eq!(

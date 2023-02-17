@@ -28,7 +28,6 @@ leafc_repl = { path = "../leafc_repl" }
 atomic = { workspace = true }
 clap = { workspace = true }
 derivative = { workspace = true }
-derive_builder = { workspace = true }
 dirs-next = { workspace = true }
 log = { workspace = true }
 miette = { workspace = true }

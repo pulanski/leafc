@@ -1,7 +1,6 @@
 use std::str::FromStr;
 
 use derivative::Derivative;
-use derive_builder::Builder;
 use derive_more::Display;
 use getset::{
     Getters,
@@ -13,6 +12,7 @@ use smartstring::alias::String;
 use strum::EnumVariantNames;
 use strum_macros::EnumString;
 use sys_locale::get_locale;
+use typed_builder::TypedBuilder;
 
 /// ## Languages
 ///
@@ -111,13 +111,17 @@ pub fn init() -> LanguageConfiguration {
 /// // The default language is retrieved.
 /// let language: &Language = lang_cfg.current_language();
 /// ```
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Getters, MutGetters, Setters, Derivative, Builder)]
+// #[derive(Clone, Debug, PartialEq, Eq, Hash, Getters, MutGetters, Setters, Derivative, Builder)]
+#[derive(
+    Clone, Debug, PartialEq, Eq, Hash, Getters, MutGetters, Setters, Derivative, TypedBuilder,
+)]
 #[derivative(Default(new = "true"))]
 pub struct LanguageConfiguration {
     /// The various **languages** that the project is able to support. This
     /// means that the compiler will be able to **compile** the project using
     /// the specified languages as source code.
     #[getset(get_copy = "pub", get_mut, set)]
+    #[builder(default = vec![default_language()])]
     #[derivative(Default(value = "vec![default_language()]"))]
     pub supported_languages: Vec<Language>,
 
@@ -126,6 +130,7 @@ pub struct LanguageConfiguration {
     /// diagnostics and other messages (e.g. error messages) to the user
     /// during both compilation and execution.
     #[getset(get = "pub", get_mut, set)]
+    #[builder(default = default_language())]
     #[derivative(Default(value = "default_language()"))]
     pub current_language: Language,
 }
@@ -317,6 +322,8 @@ mod language_test_suite {
         Language,
     };
 
+    use super::LanguageConfiguration;
+
     #[test]
     fn smoke_default_language() {
         assert_eq!(default_language(), Language::English);
@@ -374,5 +381,13 @@ mod language_test_suite {
             "Korean",
             "Swahili",
         ]);
+    }
+
+    #[test]
+    fn test_config_builder() {
+        let lang_cfg = LanguageConfiguration::builder().current_language(Language::English).build();
+
+        assert_eq!(lang_cfg.current_language, Language::English);
+        assert_eq!(lang_cfg.supported_languages, vec![Language::English]);
     }
 }

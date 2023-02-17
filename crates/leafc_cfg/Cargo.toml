@@ -29,7 +29,6 @@ atomic = { workspace = true }
 clap = { workspace = true }
 config = { workspace = true }
 derivative = { workspace = true }
-derive_builder = { workspace = true }
 derive_more = { workspace = true }
 derive-new = { workspace = true }
 dirs-next = { workspace = true }
@@ -50,6 +49,7 @@ smol_str = { workspace = true }
 strum = { workspace = true }
 strum_macros = { workspace = true }
 sys-locale = { workspace = true }
+typed-builder = { workspace = true }
 once_cell = { workspace = true }
 owo-colors = { workspace = true }
 

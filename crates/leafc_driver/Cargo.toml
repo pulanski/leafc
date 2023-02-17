@@ -31,7 +31,6 @@ leafc_log = { path = "../leafc_log" }
 atomic = { workspace = true }
 clap = { workspace = true }
 derivative = { workspace = true }
-derive_builder = { workspace = true }
 getset = { workspace = true }
 indicatif = { workspace = true }
 log = { workspace = true }
@@ -41,3 +40,4 @@ owo-colors = { workspace = true }
 parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
+typed-builder = { workspace = true }
