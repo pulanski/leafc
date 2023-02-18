@@ -6,6 +6,22 @@
 //! `AstNode` type is used to provide a **strongly-typed** API for tree
 //! traversal and manipulation.
 
+pub mod generated;
+mod node_ext;
+pub mod node_id;
+mod token_ext;
+pub mod traits;
+
+pub use generated::nodes::*;
+use generated::tokens::*;
+use traits::{
+    HasAttrs,
+    HasDocComments,
+    HasModuleItem,
+    HasName,
+    HasVisibility,
+};
+
 use std::marker::PhantomData;
 
 use itertools::Either;
@@ -18,9 +34,6 @@ use crate::{
     },
     SyntaxNodeChildren,
 };
-
-pub mod generated;
-pub mod node_id;
 
 /// ### A **typed** AST node.
 ///

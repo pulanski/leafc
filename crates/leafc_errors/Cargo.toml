@@ -21,6 +21,7 @@ leafc_utils = { path = "../leafc_utils" }
 
 codespan-reporting = { workspace = true }
 derivative = { workspace = true }
+getset = { workspace = true }
 miette = { workspace = true }
 owo-colors = { workspace = true }
 smol_str = { workspace = true }

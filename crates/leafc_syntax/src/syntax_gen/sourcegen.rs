@@ -1,9 +1,9 @@
 //! Handles the **generation process** for the various **data structures**
-//! which are used to represent the **syntax trees** of the **language**,
-//! based on the **grammar** specified in `leaf.ungram`. To put it simply,
-//! this generator is the backbone of the **syntax tree** system utilized
-//! for creating both **concrete syntax trees** and **abstract syntax trees**
-//! for symbolically representing the **language**. To better understand
+//! which are used to represent the **syntax trees** of the **language**. This
+//! is done based on the **grammar** specified in `leaf.ungram`. To put it
+//! simply, this generator is the backbone of the **syntax tree** system
+//! utilized for creating both **concrete syntax trees** and **abstract syntax
+//! trees** for symbolically representing the **language**. To better understand
 //! the motivation behind this approach, please refer to the
 //! **motivation** section in the module above (i.e. `leafc_syntax::syntaxgen`).
 //!
@@ -78,18 +78,16 @@ fn create_syntax_kinds() -> (String, PathBuf) {
 fn sourcegen_ast() {
     use super::input::KINDS_SRC;
 
-    // const SYNTAX_KINDS_FILE: &str =
-    // "crates/leafc_syntax/src/ast/generated/syntax_kind.rs";
     const TOKENS_FILE: &str = "crates/leafc_syntax/src/ast/generated/tokens.rs";
     const NODES_FILE: &str = "crates/leafc_syntax/src/ast/generated/nodes.rs";
-
-    const GRAMMAR_FILE: &str = "/leaf.ungram";
+    const GRAMMAR_FILE: &str = "crates/leafc_syntax/src/ungrammar/leaf.ungram";
 
     // make sure syntax kinds are up to date
     update_syntax_kinds_if_necessary();
 
-    let grammar =
-        include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/leaf.ungram")).parse().unwrap();
+    let grammar = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/ungrammar/leaf.ungram"))
+        .parse()
+        .unwrap();
     let ast = lower(&grammar);
 
     let ast_tokens = generate_tokens(&ast);
@@ -388,12 +386,25 @@ fn generate_nodes(kinds: SyntaxKinds<'_>, grammar: &AstSrc) -> String {
             T,
         };
 
+        #[doc = "Node defs"]
         #(#node_defs)*
+
+        #[doc = "Enum defs"]
         #(#enum_defs)*
+
+        #[doc = "Any node defs"]
         #(#any_node_defs)*
+
+        #[doc = "Node boilerplate"]
         #(#node_boilerplate_impls)*
+
+        #[doc = "Enum boilerplate"]
         #(#enum_boilerplate_impls)*
+
+        #[doc = "Any node boilerplate"]
         #(#any_node_boilerplate_impls)*
+
+        #[doc = "Display impls"]
         #(#display_impls)*
     };
 

@@ -1,0 +1,1560 @@
+use crate::ast::*;
+use crate::ReservedKeyword::Crate;
+
+use crate::parser_errors::*;
+// use colored::Colorize;
+
+use lalrpop_util::ParseError;
+
+grammar;
+
+extern {
+    type Error = InternalParserError;
+}
+
+// pub LiteralExpression: LiteralExpression = {
+//     // <n: IntegerLiteral> => LiteralExpression::Integer{n},
+//     // <f: FloatLiteral> => LiteralExpression::Float{f},
+//     <s: StringLiteral> => LiteralExpression::String{s},
+//     // <b: BoolLiteral> => LiteralExpression::Bool{b},
+//     // <c: CharLiteral> => LiteralExpression::Char{c},
+// }
+
+//////////////////////////////////////////////////////////////////////////////
+// Keywords (e.g. `as`, `if`, `else`, etc.) are not allowed as identifiers. //
+//////////////////////////////////////////////////////////////////////////////
+
+pub(crate) Keyword: Keyword = {
+    <abstract_terminal:Abstract> => abstract_terminal,
+    <as_terminal:As> => as_terminal,
+    <async_terminal:Async> => async_terminal,
+    <await_terminal:Await> => await_terminal,
+    <break_terminal:Break> => break_terminal,
+    <const_terminal:Const> => const_terminal,
+    <continue_terminal:Continue> => continue_terminal,
+    <crate_terminal:Crate> => crate_terminal,
+    <do_terminal:Do> => do_terminal,
+    <dyn_terminal:Dyn> => dyn_terminal,
+    <else_terminal:Else> => else_terminal,
+    <enum_terminal:Enum> => enum_terminal,
+    <export_terminal:Export> => export_terminal,
+    <extern_terminal:Extern> => extern_terminal,
+    <false_terminal:False> => false_terminal,
+    <final_terminal:Final> => final_terminal,
+    <fn_terminal:Fn> => fn_terminal,
+    <for_terminal:For> => for_terminal,
+    <if_terminal:If> => if_terminal,
+    <impl_terminal:Impl> => impl_terminal,
+    <import_terminal:Import> => import_terminal,
+    <in_terminal:In> => in_terminal,
+    <let_terminal:Let> => let_terminal,
+    <loop_terminal:Loop> => loop_terminal,
+    <macro_terminal:Macro> => macro_terminal,
+    <match_terminal:Match> => match_terminal,
+    <missing_terminal:Missing> => missing_terminal,
+    <mod_terminal:Mod> => mod_terminal,
+    <move_terminal:Move> => move_terminal,
+    <mut_terminal:Mut> => mut_terminal,
+    <override_terminal:Override> => override_terminal,
+    <priv_terminal:Priv> => priv_terminal,
+    <proc_terminal:Proc> => proc_terminal,
+    <pub_terminal:Pub> => pub_terminal,
+    <ref_terminal:Ref> => ref_terminal,
+    <return_terminal:Return> => return_terminal,
+    <self_type_terminal:SelfType> => self_type_terminal,
+    <self_value_terminal:SelfValue> => self_value_terminal,
+    <static_terminal:Static> => static_terminal,
+    <struct_terminal:Struct> => struct_terminal,
+    <super_terminal:Super> => super_terminal,
+    <trait_terminal:Trait> => trait_terminal,
+    <true_terminal:True> => true_terminal,
+    <type_terminal:Type> => type_terminal,
+    <typeof_terminal:Typeof> => typeof_terminal,
+    <unsafe_terminal:Unsafe> => unsafe_terminal,
+    <unsized_terminal:Unsized> => unsized_terminal,
+    <use_terminal:Use> => use_terminal,
+    <virtual_terminal:Virtual> => virtual_terminal,
+    <where_terminal:Where> => where_terminal,
+    <while_terminal:While> => while_terminal,
+    <yield_terminal:Yield> => yield_terminal,
+}
+
+// "abstract"
+Abstract: Keyword = {
+    "abstract" => Keyword::Reserved(ReservedKeyword::Abstract),
+}
+
+// "as"
+As: Keyword = {
+    "as" => Keyword::As,
+}
+
+// "async"
+Async: Keyword = {
+    "async" => Keyword::Reserved(ReservedKeyword::Async),
+}
+
+// "await"
+Await: Keyword = {
+    "await" => Keyword::Reserved(ReservedKeyword::Await),
+}
+
+// "break"
+Break: Keyword = {
+    "break" => Keyword::Break,
+}
+
+// "const"
+Const: Keyword = {
+    "const" => Keyword::Const,
+}
+
+// "continue"
+Continue: Keyword = {
+    "continue" => Keyword::Continue,
+}
+
+// "crate"
+Crate: Keyword = {
+    "crate" => Keyword::Reserved(ReservedKeyword::Crate),
+}
+
+// "do"
+Do: Keyword = {
+    "do" => Keyword::Reserved(ReservedKeyword::Do),
+}
+
+// "dyn"
+Dyn: Keyword = {
+    "dyn" => Keyword::Reserved(ReservedKeyword::Dyn),
+}
+
+// "else"
+Else: Keyword = {
+    "else" => Keyword::Else,
+}
+
+// "enum"
+Enum: Keyword = {
+    "enum" => Keyword::Enum,
+}
+
+// "export"
+Export: Keyword = {
+    "export" => Keyword::Reserved(ReservedKeyword::Export),
+}
+
+// "extern"
+Extern: Keyword = {
+    "extern" => Keyword::Reserved(ReservedKeyword::Extern),
+}
+
+// "false" | "False"
+False: Keyword = {
+    "false" => Keyword::False,
+    "False" => Keyword::False,
+}
+
+// "final"
+Final: Keyword = {
+    "final" => Keyword::Reserved(ReservedKeyword::Final),
+}
+
+// "fn"
+Fn: Keyword = {
+    "fn" => Keyword::Fn,
+}
+
+// "for"
+For: Keyword = {
+    "for" => Keyword::For,
+}
+
+// "if"
+If: Keyword = {
+    "if" => Keyword::If,
+}
+
+// "impl"
+Impl: Keyword = {
+    "impl" => Keyword::Impl,
+}
+
+// "import"
+Import: Keyword = {
+    "import" => Keyword::Reserved(ReservedKeyword::Import),
+}
+
+// "in"
+In: Keyword = {
+    "in" => Keyword::In,
+}
+
+// "let"
+Let: Keyword = {
+    "let" => Keyword::Reserved(ReservedKeyword::Let),
+}
+
+// "loop"
+Loop: Keyword = {
+    "loop" => Keyword::Loop,
+}
+
+// "macro"
+Macro: Keyword = {
+    "macro" => Keyword::Reserved(ReservedKeyword::Macro),
+}
+
+// "match"
+Match: Keyword = {
+    "match" => Keyword::Match,
+}
+
+// "missing" | "Missing"
+Missing: Keyword = {
+    "missing" => Keyword::Missing,
+    "Missing" => Keyword::Missing,
+}
+
+// "mod"
+Mod: Keyword = {
+    "mod" => Keyword::Mod,
+}
+
+// "move"
+Move: Keyword = {
+    "move" => Keyword::Reserved(ReservedKeyword::Move),
+}
+
+// "mut"
+Mut: Keyword = {
+    "mut" => Keyword::Reserved(ReservedKeyword::Mut),
+}
+
+// "Override"
+Override: Keyword = {
+    "override" => Keyword::Reserved(ReservedKeyword::Override),
+}
+
+// "priv"
+Priv: Keyword = {
+    "priv" => Keyword::Reserved(ReservedKeyword::Priv),
+}
+
+// "proc"
+Proc: Keyword = {
+    "proc" => Keyword::Reserved(ReservedKeyword::Proc),
+}
+
+// "pub"
+Pub: Keyword = {
+    "pub" => Keyword::Pub,
+}
+
+// "ref"
+Ref: Keyword = {
+    "ref" => Keyword::Reserved(ReservedKeyword::Ref),
+}
+
+// "return"
+Return: Keyword = {
+    "return" => Keyword::Return,
+}
+
+// "Self"
+SelfType: Keyword = {
+    "Self" => Keyword::SelfType,
+}
+
+// "self"
+SelfValue: Keyword = {
+    "self" => Keyword::SelfValue,
+}
+
+// "static"
+Static: Keyword = {
+    "static" => Keyword::Static,
+}
+
+// "struct"
+Struct: Keyword = {
+    "struct" => Keyword::Struct,
+}
+
+// "super"
+Super: Keyword = {
+    "super" => Keyword::Super,
+}
+
+// "trait"
+Trait: Keyword = {
+    "trait" => Keyword::Trait,
+}
+
+// "true" | "True"
+True: Keyword = {
+    "true" => Keyword::True,
+    "True" => Keyword::True,
+}
+
+// "type"
+Type: Keyword = {
+    "type" => Keyword::Type,
+}
+
+// "typeof"
+Typeof: Keyword = {
+    "typeof" => Keyword::Reserved(ReservedKeyword::Typeof),
+}
+
+// "unsafe"
+Unsafe: Keyword = {
+    "unsafe" => Keyword::Reserved(ReservedKeyword::Unsafe),
+}
+
+// "unsized"
+Unsized: Keyword = {
+    "unsized" => Keyword::Reserved(ReservedKeyword::Unsized),
+}
+
+// "use"
+Use: Keyword = {
+    "use" => Keyword::Use,
+}
+
+// "virtual"
+Virtual: Keyword = {
+    "virtual" => Keyword::Reserved(ReservedKeyword::Virtual),
+}
+
+// "where"
+Where: Keyword = {
+    "where" => Keyword::Where,
+}
+
+// "while"
+While: Keyword = {
+    "while" => Keyword::While,
+}
+
+// "yield"
+Yield: Keyword = {
+    "yield" => Keyword::Reserved(ReservedKeyword::Yield),
+}
+
+// IDENTIFIER_OR_KEYWORD :
+//       XID_Start XID_Continue*
+//    | _ XID_Continue+
+// TODO lexer/parser is erroring here when it comes to keywords inside of identifiers
+// FIXME e.g. `foobarfor` is being parsed as `foobar` and `for` and erroring
+pub(crate) Identifier: Identifier = {
+    <xid_start:XidStart> <xid_continues:XidContinue*> => {
+        let mut text = String::new();
+        text.push(xid_start);
+        text.extend(xid_continues);
+        Identifier{ name: text }
+        // TODO potentially refactor to below for more idiomatic rust
+        // in general, refactor to following this pattern
+        // Identifier::new(name)
+    },
+    <underscore:Underscore> <xid_continues:XidContinue+> => {
+        let mut text = String::new();
+        text.push('_');
+        text.extend(xid_continues);
+        Identifier{ name: text }
+    },
+}
+
+// XidStartOrUnderscore: char = {
+//     <xid_start:XidStart> => xid_start,
+//     <underscore:Underscore> => '_',
+// }
+
+pub(crate) XidStart: char = {
+    <xid_start:r"[G-Zg-zªµºÀ-ÖØ-öø-ˁˆ-ˑ ˠ-ˤˬˮͰ-ʹͶͷͻ-ͽͿΆΈ-ΊΌΎ-Ρ Ϸ-ҁҊ-ԯԱ-Ֆՙՠ-ֈא-תׯ-ײ ؠ-يٮٯٱ-ۓەۥۦۮۯۺ-ۼۿܐܒ-ܯ ݍ-ޥޱߊ-ߪߴߵߺࠀ-ࠕࠚࠤࠨࡀ-ࡘࡠ-ࡪ ࡰ-ࢇࢉ-ࢎࢠ-ࣉऄ-हऽॐक़-ॡॱ-ঀঅ-ঌ এঐও-নপ-রলশ-হঽৎড়ঢ়য়-ৡৰৱ ৼਅ-ਊਏਐਓ-ਨਪ-ਰਲਲ਼ਵਸ਼ਸਹਖ਼-ੜ ਫ਼ੲ-ੴઅ-ઍએ-ઑઓ-નપ-રલળવ-હ ઽૐૠૡૹଅ-ଌଏଐଓ-ନପ-ରଲଳଵ-ହ ଽଡ଼ଢ଼ୟ-ୡୱஃஅ-ஊஎ-ஐஒ-கஙசஜஞ டணதந-பம-ஹௐఅ-ఌఎ-ఐఒ-నప-హ ఽౘ-ౚౝౠౡಀಅ-ಌಎ-ಐಒ-ನಪ-ಳವ-ಹ ಽೝೞೠೡೱೲഄ-ഌഎ-ഐഒ-ഺഽൎൔ-ൖ ൟ-ൡൺ-ൿඅ-ඖක-නඳ-රලව-ෆก-ะ าเ-ๆກຂຄຆ-ຊຌ-ຣລວ-ະາຽເ-ໄ ໆໜ-ໟༀཀ-ཇཉ-ཬྈ-ྌက-ဪဿၐ-ၕ ၚ-ၝၡၥၦၮ-ၰၵ-ႁႎႠ-ჅჇჍა-ჺ ჼ-ቈቊ-ቍቐ-ቖቘቚ-ቝበ-ኈኊ-ኍነ-ኰ ኲ-ኵኸ-ኾዀዂ-ዅወ-ዖዘ-ጐጒ-ጕጘ-ፚ ᎀ-ᎏᎠ-Ᏽᏸ-ᏽᐁ-ᙬᙯ-ᙿᚁ-ᚚᚠ-ᛪ ᛮ-ᛸᜀ-ᜑᜟ-ᜱᝀ-ᝑᝠ-ᝬᝮ-ᝰក-ឳ ៗៜᠠ-ᡸᢀ-ᢨᢪᢰ-ᣵᤀ-ᤞᥐ-ᥭᥰ-ᥴ ᦀ-ᦫᦰ-ᧉᨀ-ᨖᨠ-ᩔᪧᬅ-ᬳᭅ-ᭌᮃ-ᮠ ᮮᮯᮺ-ᯥᰀ-ᰣᱍ-ᱏᱚ-ᱽᲀ-ᲈᲐ-ᲺᲽ-Ჿ ᳩ-ᳬᳮ-ᳳᳵᳶᳺᴀ-ᶿḀ-ἕἘ-Ἕἠ-ὅ Ὀ-Ὅὐ-ὗὙὛὝὟ-ώᾀ-ᾴᾶ-ᾼιῂ-ῄ ῆ-ῌῐ-ΐῖ-Ίῠ-Ῥῲ-ῴῶ-ῼⁱⁿₐ-ₜ ℂℇℊ-ℓℕ℘-ℝℤΩℨⅉ ⅎⅠ-ↈⰀ-ⳤⳫ-ⳮⳲⳳⴀ-ⴥⴧⴭⴰ-ⵧⵯ ⶀ-ⶖⶠ-ⶦⶨ-ⶮⶰ-ⶶⶸ-ⶾⷀ-ⷆⷈ-ⷎ ⷐ-ⷖⷘ-ⷞ々-〇〡-〩〱-〵〸-〼ぁ-ゖ ゝ-ゟァ-ヺー-ヿㄅ-ㄯㄱ-ㆎㆠ-ㆿㇰ-ㇿ 㐀-䶿一-ꒌꓐ-ꓽꔀ-ꘌꘐ-ꘟꘪꘫꙀ-ꙮꙿ-ꚝ ꚠ-ꛯꜗ-ꜟꜢ-ꞈꞋ-ꟊꟐꟑꟓꟕ-ꟙꟲ-ꠁ ꠃ-ꠅꠇ-ꠊꠌ-ꠢꡀ-ꡳꢂ-ꢳꣲ-ꣷꣻꣽꣾ ꤊ-ꤥꤰ-ꥆꥠ-ꥼꦄ-ꦲꧏꧠ-ꧤꧦ-ꧯꧺ-ꧾ ꨀ-ꨨꩀ-ꩂꩄ-ꩋꩠ-ꩶꩺꩾ-ꪯꪱꪵꪶꪹ-ꪽ ꫀꫂꫛ-ꫝꫠ-ꫪꫲ-ꫴꬁ-ꬆꬉ-ꬎꬑ-ꬖꬠ-ꬦ ꬨ-ꬮꬰ-ꭚꭜ-ꭩꭰ-ꯢ가-힣ힰ-ퟆퟋ-ퟻ 豈-舘並-龎ﬀ-ﬆﬓ-ﬗיִײַ-ﬨשׁ-זּטּ-לּ מּנּסּףּפּצּ-ﮱﯓ-ﱝﱤ-ﴽﵐ-ﶏﶒ-ﷇﷰ-ﷹ ﹱﹳﹷﹹﹻﹽﹿ-ﻼＡ-Ｚａ-ｚｦ-ﾝ-ﾾￂ-ￇ ￊ-ￏￒ-ￗￚ-ￜ𐀀-𐀋𐀍-𐀦𐀨-𐀺𐀼𐀽𐀿-𐁍 𐁐-𐁝𐂀-𐃺𐅀-𐅴𐊀-𐊜𐊠-𐋐𐌀-𐌟𐌭-𐍊 𐍐-𐍵𐎀-𐎝𐎠-𐏃𐏈-𐏏𐏑-𐏕𐐀-𐒝𐒰-𐓓 𐓘-𐓻𐔀-𐔧𐔰-𐕣𐕰-𐕺𐕼-𐖊𐖌-𐖒𐖔𐖕𐖗-𐖡 𐖣-𐖱𐖳-𐖹𐖻𐖼𐘀-𐜶𐝀-𐝕𐝠-𐝧𐞀-𐞅𐞇-𐞰 𐞲-𐞺𐠀-𐠅𐠈𐠊-𐠵𐠷𐠸𐠼𐠿-𐡕𐡠-𐡶𐢀-𐢞 𐣠-𐣲𐣴𐣵𐤀-𐤕𐤠-𐤹𐦀-𐦷𐦾𐦿𐨀𐨐-𐨓𐨕-𐨗 𐨙-𐨵𐩠-𐩼𐪀-𐪜𐫀-𐫇𐫉-𐫤𐬀-𐬵𐭀-𐭕 𐭠-𐭲𐮀-𐮑𐰀-𐱈𐲀-𐲲𐳀-𐳲𐴀-𐴣𐺀-𐺩 𐺰𐺱𐼀-𐼜𐼧𐼰-𐽅𐽰-𐾁𐾰-𐿄𐿠-𐿶𑀃-𑀷 𑁱𑁲𑁵𑂃-𑂯𑃐-𑃨𑄃-𑄦𑅄𑅇𑅐-𑅲𑅶𑆃-𑆲 𑇁-𑇄𑇚𑇜𑈀-𑈑𑈓-𑈫𑈿𑉀𑊀-𑊆𑊈𑊊-𑊍𑊏-𑊝 𑊟-𑊨𑊰-𑋞𑌅-𑌌𑌏𑌐𑌓-𑌨𑌪-𑌰𑌲𑌳𑌵-𑌹 𑌽𑍐𑍝-𑍡𑐀-𑐴𑑇-𑑊𑑟-𑑡𑒀-𑒯𑓄𑓅𑓇𑖀-𑖮 𑗘-𑗛𑘀-𑘯𑙄𑚀-𑚪𑚸𑜀-𑜚𑝀-𑝆𑠀-𑠫𑢠-𑣟 𑣿-𑤆𑤉𑤌-𑤓𑤕𑤖𑤘-𑤯𑤿𑥁𑦠-𑦧𑦪-𑧐𑧡 𑧣𑨀𑨋-𑨲𑨺𑩐𑩜-𑪉𑪝𑪰-𑫸𑰀-𑰈𑰊-𑰮𑱀 𑱲-𑲏𑴀-𑴆𑴈𑴉𑴋-𑴰𑵆𑵠-𑵥𑵧𑵨𑵪-𑶉𑶘 𑻠-𑻲𑼂𑼄-𑼐𑼒-𑼳𑾰𒀀-𒎙𒐀-𒑮𒒀-𒕃𒾐-𒿰 𓀀-𓐯𓑁-𓑆𔐀-𔙆𖠀-𖨸𖩀-𖩞𖩰-𖪾𖫐-𖫭 𖬀-𖬯𖭀-𖭃𖭣-𖭷𖭽-𖮏𖹀-𖹿𖼀-𖽊𖽐𖾓-𖾟 𖿠𖿡𖿣𗀀-𘟷𘠀-𘳕𘴀-𘴈𚿰-𚿳𚿵-𚿻𚿽𚿾𛀀-𛄢 𛄲𛅐-𛅒𛅕𛅤-𛅧𛅰-𛋻𛰀-𛱪𛱰-𛱼𛲀-𛲈𛲐-𛲙 𝐀-𝑔𝑖-𝒜𝒞𝒟𝒢𝒥𝒦𝒩-𝒬𝒮-𝒹𝒻𝒽-𝓃 𝓅-𝔅𝔇-𝔊𝔍-𝔔𝔖-𝔜𝔞-𝔹𝔻-𝔾𝕀-𝕄 𝕆𝕊-𝕐𝕒-𝚥𝚨-𝛀 𝜶-𝝎𝝐-𝝮𝝰-𝞈𝞊-𝞨𝞪-𝟂𝟄-𝟋𝼀-𝼞 𝼥-𝼪𞀰-𞁭𞄀-𞄬𞄷-𞄽𞅎𞊐-𞊭𞋀-𞋫𞓐-𞓫 𞟠-𞟦𞟨-𞟫𞟭𞟮𞟰-𞟾𞠀-𞣄𞤀-𞥃𞥋𞸀-𞸃 𞸅-𞸟𞸡𞸢𞸤𞸧𞸩-𞸲𞸴-𞸷𞸹𞸻𞹂𞹇𞹉𞹋𞹍-𞹏 𞹑𞹒𞹔𞹗𞹙𞹛𞹝𞹟𞹡𞹢𞹤𞹧-𞹪𞹬-𞹲𞹴-𞹷𞹹-𞹼 𞹾𞺀-𞺉𞺋-𞺛𞺡-𞺣𞺥-𞺩𞺫-𞺻𠀀-𪛟𪜀-𫜹 𫝀-𫠝𫠠-𬺡𬺰-𮯠丽-𪘀𰀀-𱍊𱍐-𲎯]">  => xid_start.chars().next().unwrap(),
+    <hexadecimal_digit:HexadecimalDigit> => hexadecimal_digit
+}
+
+pub(crate) XidContinue: char = {
+    <xid_start:XidStart>  => xid_start,
+    <underscore:Underscore> => '_',
+}
+
+// pub(crate) XidContinue: char
+
+///////////////////////////////////
+// Character and String Literals //
+///////////////////////////////////
+
+// pub(crate) CharLiteral: char = {
+//     <left_apostrophe:Apostrophe> <character:r"[^\n\r\t'\\]"> <right_apostrophe:Apostrophe> => character.chars().next().unwrap(),
+// }
+
+////////////////////////////////////////////////
+// Character and String Literal symbol tokens //
+////////////////////////////////////////////////
+
+// UNICODE_ESCAPE :
+//    \u{ ( HEX_DIGIT _* )1..6 }
+
+// pub(crate) UnicodeEscape: String = {
+//     <left_backslash:Backslash> <u:U> <left_brace:LeftBrace> <digits:HexDigit> <digits:HexDigit>* <right_brace:RightBrace> => {
+//         let mut s = String::new();
+//         s.push(left_backslash);
+//         s.push(u);
+//         s.push(left_brace);
+//         s.push_str(&digits);
+//         s.push(right_brace);
+//         s
+//     },
+// }
+
+// "\u"
+pub(crate) UnicodeEscapePrefix: String = {
+    <left_backslash:Backslash> <u:"u"> => {
+        let mut s = String::new();
+        s.push_str("\\");
+        s.push_str(&u);
+        s
+    },
+}
+
+// TODO maybe in the future refactor to incorporating the following
+// into the parsing strategy of String and Charater literals
+
+// pub(crate) QuoteEscape: String = {
+//     <esc:r"\'"> => String::from(esc),
+//     <esc:r#"\""#> => String::from(esc),
+// }
+
+// pub(crate) UnicodeEscape = {
+//     <"\\u{" n: HexDigit+ "}" > => {
+//         let n = u32::from_str_radix(n, 16).unwrap();
+//         char::from_u32(n).unwrap()
+//     },
+//     <"\\u" n: HexDigit{4} > => {
+//         let n = u32::from_str_radix(n, 16).unwrap();
+//         char::from_u32(n).unwrap()
+//     },
+// }
+
+StringLiteral: String = {
+    <s:r#""[^"]*""#> => s.to_string()[1..s.len() - 1].to_string(),
+}
+
+// STRING_CONTINUE :
+//    \ followed by \n
+pub(crate) StringContinue: String = {
+    <left_backslash:Backslash> <newline:Newline> => {
+        return String::from("\n");
+    },
+}
+
+///////////////////////////////
+// Numeric Literals          //
+//                           //
+// - Integer Literals        //
+// - Floating Point Literals //
+// - Mathematic Constants    //
+///////////////////////////////
+
+// TODO PICK A GRAMMAR NOTATION, EITHER EBNF OR WIRTH
+/////////////////////////////////////////////////////////////////////////////////////
+// Integer Literals                                                                //
+//                                                                                 //
+// Lexer                                                                           //
+//                                                                                 //
+// Grammar:                                                                        //
+//   IntegerLiteral = (DecimalLiteral | BinaryLiteral | OctalLiteral               //
+//                     | HexadecimalLiteral ) IntegerSuffix?                       //
+//   DecimalLiteral = DecimalDigit DecimalDigitOrUnderscore*                       //
+//   HexadecimalLiteral = HexadecimalLiteralPrefix HexadecimalDigitOrUnderscore*   //
+//                   HexadecimalDigit HexadecimalDigitOrUnderscore*                //
+//   OctalLiteral = OctalLiteralPrefix OctalDigitOrUnderscore* OctalDigit          //
+//                   OctalDigitOrUnderscore*                                       //
+//   BinaryLiteral = BinaryLiteralPrefix BinaryDigitOrUnderscore* BinaryDigit      //
+//                   BinaryDigitOrUnderscore*                                      //
+//   HexadecimalDigitOrUnderscore = HexadecimalDigit | Score                       //
+//   BinaryDigitOrUnderscore = BinaryDigit | Underscore                            //
+//   HexadecimalDigit = OctalDigit | "8".."9" | "a".."f" | "A".."F"                //
+//   OctalDigit = BinaryDigit | "2".."7"                                           //
+//   BinaryDigit = "0" | "1"                                                       //
+//   HexadecimalLiteralPrefix = "0x" OR "0x" | "0X" <- TODO maybe use this instead //
+//   OctalLiteralPrefix = "0b" OR "0o" | "0O" <- TODO maybe use this instead       //
+//   BinaryLiteralPrefix = "0b" OR "0b" | "0B" <- TODO maybe use this instead      //
+//   IntegerSuffix = "i8" | "i16" | "i32" | "i64" | `i128" | "isize"               //
+//                 | "u8" | "u16" | "u32" | "u64" | "u128" | "usize"               //
+/////////////////////////////////////////////////////////////////////////////////////
+
+// NOTE: All integer literals are parsed as u128, and then casted to the appropriate type later (if needed). This is done to allow for the largest possible integer literal to be parsed. The largest possible integer literal is 128 bits, which is the size of a u128. We don't care about the sign of the integer literal, so we can just parse it as unsigned. The sign will be determined by the greater context in which the integer literal is used (i.e. NegationExpression).
+
+// TODO change parsing for type suffixes to be more robust
+pub(crate) IntegerLiteral: u128 = {
+    <hexadecimal_literal:HexadecimalLiteral> IntegerSuffix? => hexadecimal_literal,
+    <decimal_literal:DecimalLiteral> IntegerSuffix? => decimal_literal,
+    <octal_literal:OctalLiteral> IntegerSuffix? => octal_literal,
+    <binary_literal:BinaryLiteral> IntegerSuffix? => binary_literal,
+}
+
+
+pub(crate) HexadecimalLiteral: u128 = {
+    <hexadecimal_prefix:HexadecimalLiteralPrefix> <hexadecimal_digits:HexadecimalDigitOrUnderscore+> => {
+        let mut hexadecimal_digits = hexadecimal_digits;
+        hexadecimal_digits.reverse();
+        let mut result = 0;
+        let mut digit_count = 0;
+        for (i, d) in hexadecimal_digits.iter().enumerate() {
+            if d == &'_' {
+                continue;
+            }
+            match d {
+                '0' => {},
+                '1' => {result += 1 * 16_u128.pow(digit_count as u32);},
+                '2' => {result += 2 * 16_u128.pow(digit_count as u32);},
+                '3' => {result += 3 * 16_u128.pow(digit_count as u32);},
+                '4' => {result += 4 * 16_u128.pow(digit_count as u32);},
+                '5' => {result += 5 * 16_u128.pow(digit_count as u32);},
+                '6' => {result += 6 * 16_u128.pow(digit_count as u32);},
+                '7' => {result += 7 * 16_u128.pow(digit_count as u32);},
+                '8' => {result += 8 * 16_u128.pow(digit_count as u32);},
+                '9' => {result += 9 * 16_u128.pow(digit_count as u32);},
+                'a' => {result += 10 * 16_u128.pow(digit_count as u32);},
+                'b' => {result += 11 * 16_u128.pow(digit_count as u32);},
+                'c' => {result += 12 * 16_u128.pow(digit_count as u32);},
+                'd' => {result += 13 * 16_u128.pow(digit_count as u32);},
+                'e' => {result += 14 * 16_u128.pow(digit_count as u32);},
+                'f' => {result += 15 * 16_u128.pow(digit_count as u32);},
+                'A' => {result += 10 * 16_u128.pow(digit_count as u32);},
+                'B' => {result += 11 * 16_u128.pow(digit_count as u32);},
+                'C' => {result += 12 * 16_u128.pow(digit_count as u32);},
+                'D' => {result += 13 * 16_u128.pow(digit_count as u32);},
+                'E' => {result += 14 * 16_u128.pow(digit_count as u32);},
+                'F' => {result += 15 * 16_u128.pow(digit_count as u32);},
+                _ => unreachable!(),
+            }
+            digit_count += 1;
+        }
+        // if result is larger than u128::MAX, then it is an error
+        if result > u128::MAX {
+            panic!("Integer literal is too large");
+        }
+// 340_282_366_920_938_463_463_374_607_431_768_211_455u128
+        result as u128
+    }
+}
+
+// DEC_LITERAL :
+//    DEC_DIGIT (DEC_DIGIT|_)*
+pub(crate) DecimalLiteral: u128 = {
+    <start_decimal_digit:DecimalDigit> <end_decimal_digits:DecimalDigitOrUnderscore*> => {
+        let mut result = String::from(start_decimal_digit);
+        for decimal_digit in end_decimal_digits {
+            if decimal_digit == '_' {
+                continue;
+            }
+            result.push(decimal_digit);
+        }
+        // if result is larger than u128::MAX, then it is an error
+        // if result > u128::MAX {
+        //     panic!("Integer literal is too large");
+        // }
+        return result.parse::<u128>().unwrap();
+    }
+}
+
+//     // <decimal_digits:DecimalDigitOrUnderscore+> => {
+    //     let decimal_digits = decimal_digits.iter().filter(|&&d| d != '_').collect::<String>();
+    //     decimal_digits.parse().unwrap()
+    // }
+
+// TODO SHOULD BE REFACTORED TO OctalLiteralPrefix OctalDigitOrUnderscore* OctalDigit OctalDigitOrUnderscore*
+// OctalLiteralPrefix OctalDigitOrUnderscore*
+pub(crate) OctalLiteral: u128 = {
+    <octal_prefix:OctalLiteralPrefix> <octal_digits:OctalDigitOrUnderscore+> => {
+        let mut octal_digits = octal_digits;
+        octal_digits.reverse();
+        let mut result = 0;
+        let mut digit_count = 0;
+        for (i, d) in octal_digits.iter().enumerate() {
+            if d == &'_' {
+                continue;
+            }
+
+            result += d.to_digit(8).unwrap() * 8_u32.pow(digit_count as u32);
+            digit_count += 1;
+        }
+        result as u128
+    }
+}
+
+// TODO in the future refactor to where BinaryLiteral is lexed with the following production:
+// BinaryLiteral = BinaryLiteralPrefix BinaryDigitOrUnderscore* BinaryDigit BinaryDigitOrUnderscore*
+// Currently this is not working (not sure why) so I am using the following production:
+// BinaryLiteral = BinaryLiteralPrefix BinaryDigitOrUnderscore*
+// However, this is not correct because it allows for `0b_` to be a valid binary literal. Right now this case is being parsed to 0.
+// _ -> 0
+pub(crate) BinaryLiteral: u128 = {
+    <binary_prefix:BinaryLiteralPrefix> <binary_digits:BinaryDigitOrUnderscore+> => {
+        // We must redeclare each of the variables coming from the nonterminals in the grammar as mutable, because they are immutable by default.
+        let mut binary_digits = binary_digits;
+        binary_digits.reverse();
+        let mut result = 0;
+        let mut digit_count = 0;
+        for d in binary_digits {
+            if d == '_' {
+                continue;
+            }
+            result += d.to_digit(10).unwrap() * 2u32.pow(digit_count as u32);
+            digit_count += 1;
+        }
+        result as u128
+    }
+}
+
+// HexadecimalDigit | Underscore
+pub(crate) HexadecimalDigitOrUnderscore: char = {
+    <hexadecimal_digit:HexadecimalDigit> => hexadecimal_digit,
+    <underscore:Underscore> => '_',
+}
+
+// DecimalDigit | Underscore
+pub(crate) DecimalDigitOrUnderscore: char = {
+    <decimal_digit:DecimalDigit> => decimal_digit,
+    <underscore:Underscore> => '_',
+}
+
+// OctalDigit | Underscore
+pub(crate) OctalDigitOrUnderscore: char = {
+    <octal_digit:OctalDigit> => octal_digit,
+    <underscore:Underscore> => '_',
+}
+
+// BinaryDigit | Underscore
+pub(crate) BinaryDigitOrUnderscore: char = {
+    <binary_digit:BinaryDigit> => binary_digit,
+    <underscore:Underscore> => '_',
+}
+
+// "0".."9" | "a".."f" | "A".."F"
+pub(crate) HexadecimalDigit: char = {
+    <d:DecimalDigit> => d,
+    <e:ExponentialSymbol> => e,
+    <h:HexadecimalLetter> => h,
+}
+
+// "a".."d" | "f" | "A".."D" | "F"
+pub(crate) HexadecimalLetter: char = {
+    <h:r"[a-dfA-DF]"> => h.chars().next().unwrap(),
+}
+
+// "0".."9"
+pub(crate) DecimalDigit: char = {
+    <o:OctalDigit> => o,
+    <d:r"8|9"> => d.chars().next().unwrap(),
+}
+
+// "0".."7"
+pub(crate) OctalDigit: char = {
+    <b:BinaryDigit> => b,
+    <o:r"2|3|4|5|6|7"> => o.chars().next().unwrap(),
+}
+
+// "0" | "1"
+pub(crate) BinaryDigit: char = {
+    <b:r"0|1"> => b.chars().next().unwrap(),
+}
+
+// "0b" | "0B"
+pub(crate) BinaryLiteralPrefix: String = {
+    <b:r"0b"> => b.to_string(),
+    <b:r"0B"> => b.to_string(),
+}
+
+// "0o" | "0O"
+pub(crate) OctalLiteralPrefix: String = {
+    <o:r"0o"> => o.to_string(),
+    <o:r"0O"> => o.to_string(),
+}
+
+// "0x" | "0X"
+pub(crate) HexadecimalLiteralPrefix: String = {
+    <h:r"0x"> => h.to_string(),
+    <h:r"0X"> => h.to_string(),
+}
+
+// "u8" | "u16" | "u32" | "u64" | "u128" | "usize"
+// | "i8" | "i16" | "i32" | "i64" | "i128" | "isize"
+pub(crate) IntegerSuffix: String = {
+    <integer_suffix:r"u8|u16|u32|u64|u128|usize|i8|i16|i32|i64|i128|isize"> => integer_suffix.to_string(),
+}
+
+////////////////////
+// Float Literals //
+////////////////////
+
+// FLOAT_LITERAL :
+//       DEC_LITERAL . (not immediately followed by ., _ or an XID_Start character)
+//    | DEC_LITERAL FLOAT_EXPONENT
+//    | DEC_LITERAL . DEC_LITERAL FLOAT_EXPONENT?
+//    | DEC_LITERAL (. DEC_LITERAL)? FLOAT_EXPONENT? FLOAT_SUFFIX
+pub(crate) FloatLiteral: f64 = {
+    <start_decimal_literal:DecimalLiteral> <dot:Dot> <end_decimal_literal:DecimalLiteral> <exponent:FloatExponent?> => {
+        let mut result = start_decimal_literal.to_string();
+        result.push('.');
+        result.push_str(&end_decimal_literal.to_string());
+        if let Some(exponent) = exponent {
+            result.push_str(&exponent.to_string());
+        }
+        result.parse::<f64>().unwrap()
+    },
+    <decimal_literal:DecimalLiteral> <exponent:FloatExponent> => {
+        let mut result = decimal_literal.to_string();
+        result.push_str(&exponent.to_string().replace("_", ""));
+        result.parse::<f64>().unwrap()
+    },
+    <decimal_literal:DecimalLiteral> <dot:Dot> => {
+        let mut result = decimal_literal.to_string();
+        result.push('.');
+        result.parse::<f64>().unwrap()
+    },
+}
+
+//  (e|E) (+|-)? (DEC_DIGIT|_)* DEC_DIGIT (DEC_DIGIT|_)* <-- TODO SHOULD BE REFACTORED TO THIS PRODUCTION
+// (e|E) (+|-)? (DEC_DIGIT|_)+ <-- CURRENTLY USING THIS PRODUCTION (due to ambiguity in the above production from the parser)
+pub(crate) FloatExponent: String = {
+    <exponential_symbol:ExponentialSymbol> <sign:PlusOrMinusSign?> <decimal_digits:DecimalDigitOrUnderscore+> =>? {
+        let mut result = String::new();
+
+        // check if decimal_digits contains at least one digit
+        if !decimal_digits.iter().any(|d| d.is_digit(10)) {
+            return Err(ParseError::User {
+                error: InternalParserError::InvalidFloatExponent
+            })
+        }
+
+        result.push(exponential_symbol);
+        if let Some(sign) = sign {
+            result.push(sign);
+        }
+
+        for d in decimal_digits {
+            result.push(d);
+        }
+        Ok(result)
+    }
+}
+
+// "e" | "E"
+pub(crate) ExponentialSymbol: char = {
+    <e:r"e|E"> => e.chars().next().unwrap(),
+}
+
+// "+" | "-"
+pub(crate) PlusOrMinusSign: char = {
+    <sign:Plus> => '+',
+    <sign:Minus> => '-',
+}
+
+// "f32" | "f64"
+pub(crate) FloatSuffix: String = {
+    <float_suffix:r"f32|f64"> => float_suffix.to_string(),
+}
+
+////////////////////////////
+// Mathematical Constants //
+////////////////////////////
+
+// "pi" | "π" | "tau" | "τ" | "e"
+
+// PiLiteral := PiSymbol PiSuffix?
+// PiSymbol := "pi" | "π"
+// PiSuffix := "_" <decimal_digits:DecimalDigit+> where decimal_digits is < 15
+// TauLiteral := TauSymbol TauSuffix?
+
+// TODO MathematicalConstant: MathematicalConstant = {
+
+// "pi" | "π" | "𝜋"
+pub(crate) Pi: MathematicalConstant  = {
+    <pi:r"pi|π|𝜋"> => MathematicalConstant::Pi {
+        value: std::f64::consts::PI,
+    },
+}
+
+// "euler" | "ℯ"
+pub(crate) Euler: MathematicalConstant = {
+    <euler:r"euler|ℯ"> => MathematicalConstant::Euler {
+        value: std::f64::consts::E,
+    },
+}
+
+// "tau" | "τ" | "𝜏"
+pub(crate) Tau: MathematicalConstant = {
+    <tau:r"tau|τ|𝜏"> => MathematicalConstant::Tau {
+        value: std::f64::consts::TAU,
+    },
+}
+
+// "phi" | "φ" | "𝜙"
+pub(crate) GoldenRatio: MathematicalConstant = {
+    <golden:r"golden|φ|𝜙"> => MathematicalConstant::GoldenRatio {
+        value: 1.618033988749895,
+    },
+}
+
+// "catalan" | "𝜆"
+pub(crate) Catalan: MathematicalConstant = {
+    <catalan:"catalan"> => MathematicalConstant::Catalan {
+        value: 0.915965594177219,
+    },
+}
+
+// "eulergamma" | "γ" | "𝛾" | "eulermascheroni"
+pub(crate) EulerMascheroni: MathematicalConstant = {
+    <eulermascheroni:r"eulermascheroni|eulergamma"> => MathematicalConstant::EulerMascheroni {
+        value: 0.5772156649015329,
+    },
+    <euler_mascheroni_symbol:EulerMascheroniSymbol> => MathematicalConstant::EulerMascheroni {
+        value: 0.5772156649015329,
+    },
+}
+
+// "γ" | "𝛾"
+pub(crate) EulerMascheroniSymbol: MathematicalConstant = {
+    <eulergamma:r"γ|𝛾"> => MathematicalConstant::EulerMascheroni {
+        value: 0.5772156649015329,
+    },
+}
+
+// "Inf" | "∞"
+pub(crate) Infinity: MathematicalConstant = {
+    <infinity:r"Inf|∞"> => MathematicalConstant::Infinity {
+        value: std::f64::INFINITY,
+    },
+}
+
+// "NaN"
+pub(crate) NotANumber: MathematicalConstant = {
+    <nan:"NaN"> => MathematicalConstant::NotANumber
+}
+
+//////////////
+// Comments //
+//////////////
+
+// LINE_COMMENT :
+//    //   (~[/ !] | //) ~\n*
+//    | //
+pub(crate) LineComment: Comment = {
+    <comment:r"//([^/!]|//)[^\n]*"> => Comment::LineComment {
+        comment: String::from(comment),
+    },
+    <comment:"//"> => Comment::LineComment {
+        comment: String::from(comment),
+    },
+}
+
+// BLOCK_COMMENT :
+//    /* (~[*!] | **) (~*/) ~[*]*/
+//    | /**/
+//    | /***/
+pub(crate) BlockComment: Comment = {
+    <comment:r"/\*([^*!]|\*\*)[^*]*\*/"> => Comment::BlockComment {
+        comment: String::from(comment),
+    },
+    <comment:"/**/"> => Comment::BlockComment {
+        comment: String::from(comment),
+    },
+    <comment:"/***/"> => Comment::BlockComment {
+        comment: String::from(comment),
+    },
+}
+
+// OUTER_LINE_DOC :
+   /// (~/ ~[\n]*)?
+pub(crate) OuterLineDocComment: Comment = {
+    <comment:r"///([^/][^\n]*)?"> => Comment::DocComment(DocComment::OuterLineDocComment {
+        comment: String::from(comment),
+    }),
+}
+
+// INNER_LINE_DOC :
+//    //! ~[\n]*
+pub(crate) InnerLineDocComment: Comment = {
+    <comment:r"//![^\n]*"> => Comment::DocComment(DocComment::InnerLineDocComment {
+        comment: String::from(comment),
+    }),
+}
+
+// INNER_BLOCK_DOC :
+//    /*! ( BlockCommentOrDoc | ~[*/] )* */
+pub(crate) InnerBlockDocComment: String = {
+    <comment:r"/\*!([^\*/])*\*/"> => String::from(comment),
+}
+
+// OUTER_BLOCK_DOC :
+//    /** (~* | BlockCommentOrDoc ) (BlockCommentOrDoc | ~[*/])* */
+
+// BlockCommentOrDoc :
+//       BLOCK_COMMENT
+//    | OUTER_BLOCK_DOC
+//    | INNER_BLOCK_DOC
+
+///////////
+// Paths //
+///////////
+
+// SimplePath : SimplePathSegment ("::" PathSegment)*
+// pub(crate) SimplePath: SimplePath = {
+//     <path:SimplePathSegment> <rest:("::" SimplePathSegment)*> => {
+//         let mut path = path;
+//         for segment in rest {
+//             path.segments.push(segment.1);
+//         }
+//         Path::SimplePath(path)
+//     },
+// }
+
+// SimplePathSegment : Identifier | "super" | "self" | "crate"
+// pub(crate) SimplePathSegment: SimplePathSegment = {
+//     // <ident:Identifier> => SimplePathSegment::Identifier(ident),
+//     // <super:Super> => SimplePathSegment::SuperSegment {
+//     //     segment: String::from("super"),
+//     // },
+//     // <self:SelfValue> => SimplePathSegment::SelfValueSegment {
+//     //     segment: String::from("self"),
+//     // },
+//     // <crate:Crate> => SimplePathSegment::CrateSegment {
+//     //     segment: String::from("crate"),
+//     // },
+// }
+
+//////////////////
+// LogicLiteral //
+//////////////////
+
+// Supports Three-valued Logic (https://en.wikipedia.org/wiki/Three-valued_logic) with a loose syntax for better ease of use and lower learning curve when coming from different families of languages.
+// LogicLiteral : "true" | "false" | "missing" | "True" | "False" | "Missing"
+pub(crate) LogicLiteral: LogicLiteral = {
+    // Integrala..b()
+    <true_terminal:True> => LogicLiteral::True {
+        value: true,
+    },
+    <false_terminal:False> => LogicLiteral::False {
+        value: false,
+    },
+    <lower_missing:Missing> => LogicLiteral::Missing,
+}
+
+//////////////////////////
+// Mathematical Symbols //
+//////////////////////////
+
+pub(crate) MathematicalSymbol: MathematicalSymbol = {
+    <root:Root> => root,
+    <power:Power> => power,
+    <division:Division> => division,
+    <proportional_to:ProportionalTo> => proportional_to,
+    <intersection:Intersection> => intersection,
+    <union:Union> => union,
+    <integral:Integral> => integral,
+    <sum:Sum> => sum,
+    <therefore:Therefore> => therefore,
+    <because:Because> => because,
+    <approximately_equal:ApproximatelyEqual> => approximately_equal,
+    <not_approximately_equal:NotApproximatelyEqual> => not_approximately_equal,
+    <identical_to:IdenticalTo> => identical_to,
+    <not_identical_to:NotIdenticalTo> => not_identical_to,
+    <subset_of:SubsetOf> => subset_of,
+    <subset_of_or_equal_to:SubsetOfOrEqualTo> => subset_of_or_equal_to,
+    <not_subset_of:NotSubsetOf> => not_subset_of,
+    <superset_of:SupersetOf> => superset_of,
+    <superset_of_or_equal_to:SupersetOfOrEqualTo> => superset_of_or_equal_to,
+    <not_superset_of:NotSupersetOf> => not_superset_of,
+    // <element_of:ElementOf> => element_of,
+    // <cross_product:CrossProduct> => cross_product,
+    // <product:Product> => product,
+    // <partial_derivative:PartialDerivative> => partial_derivative,
+    // <multiplication:"×"> => multiplication,
+    // <plus_minus:"±"> => plus_minus,
+    // <minus_plus:"∓"> => minus_plus,
+}
+
+// Powers (e.g. ² or ³ in 2³ = 8 or 3² = 9)
+
+pub(crate) Power: MathematicalSymbol = {
+    <exponent:Exponent> => MathematicalSymbol::Power { exponent: exponent.value },
+}
+
+pub(crate) Root: MathematicalSymbol = {
+    <square_root:RootSymbol> => square_root,
+    <cube_root:CubeRoot> => cube_root,
+    <fourth_root:FourthRoot> => fourth_root,
+    <integer_literal_root:IntegerLiteralRoot> => integer_literal_root,
+}
+
+RootSymbol: MathematicalSymbol = {
+    "√" => MathematicalSymbol::Root { exponent: 2 },
+}
+
+CubeRoot: MathematicalSymbol = {
+    "∛" => MathematicalSymbol::Root { exponent: 3 },
+}
+
+FourthRoot: MathematicalSymbol = {
+    <fourth_root:"∜"> => MathematicalSymbol::Root { exponent: 4 },
+}
+
+IntegerLiteralRoot: MathematicalSymbol = {
+    <exponent:Exponent> <root_symbol:RootSymbol> => MathematicalSymbol::Root { exponent: exponent.value },
+}
+
+Exponent: Exponent = {
+    <superscript_plus_or_minus:SuperscriptPlusOrMinusSign?> <superscript_exponent:SuperscriptIntegerLiteral> => Exponent {
+        value: match superscript_plus_or_minus {
+            Some(SuperscriptPunctuation::Plus) => superscript_exponent.n,
+            Some(SuperscriptPunctuation::Minus) => -superscript_exponent.n,
+            None => superscript_exponent.n,
+            _ => unreachable!(),
+        },
+        // exponent: superscript_exponent.n,
+    },
+}
+
+Division: MathematicalSymbol = {
+    <division:"÷"> => MathematicalSymbol::Division,
+}
+
+ProportionalTo: MathematicalSymbol = {
+    <proportional_to:"∝"> => MathematicalSymbol::ProportionalTo,
+}
+
+Intersection: MathematicalSymbol = {
+    <intersection:"∩"> => MathematicalSymbol::Intersection,
+}
+
+Union: MathematicalSymbol = {
+    <union:"∪"> => MathematicalSymbol::Union,
+}
+
+Integral: MathematicalSymbol = {
+    <integral:"∫"> => MathematicalSymbol::Integral,
+}
+
+Sum: MathematicalSymbol = {
+    <sum:"∑"> => MathematicalSymbol::Sum,
+}
+
+Therefore: MathematicalSymbol = {
+    <therefore:"∴"> => MathematicalSymbol::Therefore,
+}
+
+Because: MathematicalSymbol = {
+    <because:"∵"> => MathematicalSymbol::Because,
+}
+
+ApproximatelyEqual: MathematicalSymbol = {
+    <approximately_equal:"≈"> => MathematicalSymbol::ApproximatelyEqual,
+}
+
+NotApproximatelyEqual: MathematicalSymbol = {
+    <not_approximately_equal:"≉"> => MathematicalSymbol::NotApproximatelyEqual,
+}
+
+IdenticalTo: MathematicalSymbol = {
+    <identical_to:"≡"> => MathematicalSymbol::IdenticalTo,
+}
+
+NotIdenticalTo: MathematicalSymbol = {
+    <not_identical_to:"≢"> => MathematicalSymbol::NotIdenticalTo,
+}
+
+SubsetOf: MathematicalSymbol = {
+    <subset_of:"⊂"> => MathematicalSymbol::SubsetOf,
+}
+
+NotSubsetOf: MathematicalSymbol = {
+    <not_subset_of:"⊄"> => MathematicalSymbol::NotSubsetOf,
+}
+
+SubsetOfOrEqualTo: MathematicalSymbol = {
+    <subset_of_or_equal_to:"⊆"> => MathematicalSymbol::SubsetOfOrEqualTo,
+}
+
+SupersetOf: MathematicalSymbol = {
+    <superset_of:"⊃"> => MathematicalSymbol::SupersetOf,
+}
+
+NotSupersetOf: MathematicalSymbol = {
+    <not_superset_of:"⊅"> => MathematicalSymbol::NotSupersetOf,
+}
+
+SupersetOfOrEqualTo: MathematicalSymbol = {
+    <superset_of_or_equal_to:"⊇"> => MathematicalSymbol::SupersetOfOrEqualTo,
+}
+
+///////////////////////////////////////
+// Superscript and Subscript Symbols //
+///////////////////////////////////////
+
+pub(crate) SuperscriptIntegerLiteral: SuperscriptIntegerLiteral = {
+<superscript_decimal_digits:SuperscriptDecimalDigit+> => {
+        let mut result = 0;
+        let mut superscript_decimal_digits = superscript_decimal_digits;
+        superscript_decimal_digits.reverse();
+
+        for (i, superscript_decimal_digit) in superscript_decimal_digits.iter().enumerate() {
+            result += superscript_decimal_digit.digit * 10i8.pow(i as u32);
+        }
+        // if result is larger than u128::MAX, then it is an error
+        // if result > u128::MAX {
+        //     panic!("Integer literal is too large");
+        // }
+        return SuperscriptIntegerLiteral {
+            n: result as i8,
+        }
+    }
+}
+
+pub(crate) SuperscriptDecimalDigit: SuperscriptDecimalDigit = {
+    <superscript_decimal_digit:r"⁰|¹|²|³|⁴|⁵|⁶|⁷|⁸|⁹"> => {
+        SuperscriptDecimalDigit {
+            digit: match superscript_decimal_digit {
+                "⁰" => 0,
+                "¹" => 1,
+                "²" => 2,
+                "³" => 3,
+                "⁴" => 4,
+                "⁵" => 5,
+                "⁶" => 6,
+                "⁷" => 7,
+                "⁸" => 8,
+                "⁹" => 9,
+                _ => unreachable!(),
+            }
+        }
+    },
+}
+
+pub(crate) SuperscriptPunctuation: SuperscriptPunctuation = {
+    <superscript_plus:SuperscriptPlus> => superscript_plus,
+    <superscript_minus:SuperscriptMinus> => superscript_minus,
+    <superscript_left_paren:SuperscriptLeftParen> => superscript_left_paren,
+    <superscript_right_paren:SuperscriptRightParen> => superscript_right_paren,
+}
+
+SuperscriptPlusOrMinusSign: SuperscriptPunctuation = {
+    <superscript_plus:SuperscriptPlus> => superscript_plus,
+    <superscript_minus:SuperscriptMinus> => superscript_minus,
+}
+
+SuperscriptPlus: SuperscriptPunctuation = {
+    <superscript_plus:"⁺"> => SuperscriptPunctuation::Plus,
+}
+
+SuperscriptMinus: SuperscriptPunctuation = {
+    <superscript_minus:"⁻"> => SuperscriptPunctuation::Minus,
+}
+
+SuperscriptLeftParen: SuperscriptPunctuation = {
+    <superscript_left_paren:"⁽"> => SuperscriptPunctuation::LeftParen,
+}
+
+SuperscriptRightParen: SuperscriptPunctuation = {
+    <superscript_right_paren:"⁾"> => SuperscriptPunctuation::RightParen,
+}
+
+// pub(crate) SuperscriptDecimalDigitOrUnderscore: SuperscriptDecimalDigitOrUnderscore = {
+//     <superscript_decimal_digit:SuperscriptDecimalDigit> => superscript_decimal_digit.digit,
+//     <superscript_underscore:"ⁿ"> => '_',
+// }
+
+// pub(crate) SubscriptZero: SubscriptSymbol = {
+//     <subscript_zero:"₀"> => SubscriptSymbol::Zero,
+// }
+
+// pub(crate) SubscriptOne: SubscriptSymbol = {
+//     <subscript_one:"₁"> => SubscriptSymbol::One,
+// }
+
+// pub(crate) SubscriptTwo: SubscriptSymbol = {
+//     <subscript_two:"₂"> => SubscriptSymbol::Two,
+// }
+
+// pub(crate) SubscriptThree: SubscriptSymbol = {
+//     <subscript_three:"₃"> => SubscriptSymbol::Three,
+// }
+
+// pub(crate) SubscriptFour: SubscriptSymbol = {
+//     <subscript_four:"₄"> => SubscriptSymbol::Four,
+// }
+
+// pub(crate) SubscriptFive: SubscriptSymbol = {
+//     <subscript_five:"₅"> => SubscriptSymbol::Five,
+// }
+
+// pub(crate) SubscriptSix: SubscriptSymbol = {
+//     <subscript_six:"₆"> => SubscriptSymbol::Six,
+// }
+
+// pub(crate) SubscriptSeven: SubscriptSymbol = {
+//     <subscript_seven:"₇"> => SubscriptSymbol::Seven,
+// }
+
+// pub(crate) SubscriptEight: SubscriptSymbol = {
+//     <subscript_eight:"₈"> => SubscriptSymbol::Eight,
+// }
+
+// pub(crate) SubscriptNine: SubscriptSymbol = {
+//     <subscript_nine:"₉"> => SubscriptSymbol::Nine,
+// }
+
+// pub(crate) SubscriptPlus: SubscriptSymbol = {
+//     <subscript_plus:"₊"> => SubscriptSymbol::Plus,
+// }
+
+// pub(crate) SubscriptMinus: SubscriptSymbol = {
+//     <subscript_minus:"₋"> => SubscriptSymbol::Minus,
+// }
+
+// pub(crate) SubscriptLeftParen: SubscriptSymbol = {
+//     <subscript_left_paren:"₍"> => SubscriptSymbol::LeftParen,
+// }
+
+// pub(crate) SubscriptRightParen: SubscriptSymbol = {
+//     <subscript_right_paren:"₎"> => SubscriptSymbol::RightParen,
+// }
+
+///////////////////////////////
+// Punctuation symbol tokens //
+///////////////////////////////
+
+pub(crate) Punctuation: Punctuation = {
+    <plus:Plus> => plus,
+    <minus:Minus> => minus,
+    <star:Star> => star,
+    <slash:Slash> => slash,
+    <backslash:Backslash> => backslash,
+    <percent:Percent> => percent,
+    <caret:Caret> => caret,
+    <not:Not> => not,
+    <and:And> => and,
+    <or:Or> => or,
+    <and_and:AndAnd> => and_and,
+    <or_or:OrOr> => or_or,
+    <plus_equals:PlusEquals> => plus_equals,
+    <minus_equals:MinusEquals> => minus_equals,
+    <star_equals:StarEquals> => star_equals,
+    <slash_equals:SlashEquals> => slash_equals,
+    <percent_equals:PercentEquals> => percent_equals,
+    <caret_equals:CaretEquals> => caret_equals,
+    <and_equals:AndEquals> => and_equals,
+    <or_equals:OrEquals> => or_equals,
+    <equals:Equals> => equals,
+    <double_equals:DoubleEquals> => double_equals,
+    <not_equal:NotEqual> => not_equal,
+    <less_than:LessThan> => less_than,
+    <less_than_equal:LessThanEqual> => less_than_equal,
+    <greater_than:GreaterThan> => greater_than,
+    <greater_than_equal:GreaterThanEqual> => greater_than_equal,
+    <underscore:Underscore> => underscore,
+    <dot:Dot> => dot,
+    <dot_dot:DotDot> => dot_dot,
+    <dot_dot_dot:DotDotDot> => dot_dot_dot,
+    <dot_dot_equals:DotDotEquals> => dot_dot_equals,
+    <comma:Comma> => comma,
+    <colon:Colon> => colon,
+    <semicolon:Semicolon> => semicolon,
+    <path_separator:PathSeparator> => path_separator,
+    <right_arrow:RightArrow> => right_arrow,
+    <left_arrow:LeftArrow> => left_arrow,
+    <fat_right_arrow:FatRightArrow> => fat_right_arrow,
+    <fat_left_arrow:FatLeftArrow> => fat_left_arrow,
+    <pound:Pound> => pound,
+    <dollar:Dollar> => dollar,
+    <question:Question> => question,
+    <apostrophe:Apostrophe> => apostrophe,
+    <quote:Quote> => quote,
+}
+
+Plus: Punctuation = {
+    <plus:"+"> => Punctuation::Plus,
+}
+
+Minus: Punctuation = {
+    <minus:"-"> => Punctuation::Minus,
+}
+
+Star: Punctuation = {
+    <star:"*"> => Punctuation::Star,
+}
+
+Slash: Punctuation = {
+    <slash:"/"> => Punctuation::Slash,
+}
+
+Backslash: Punctuation = {
+    <backslash:"\\"> => Punctuation::Backslash,
+}
+
+Percent: Punctuation = {
+    <percent:"%"> => Punctuation::Percent,
+}
+
+Caret: Punctuation = {
+    <caret:"^"> => Punctuation::Caret,
+}
+
+Not: Punctuation = {
+    <not:r"!|not"> => Punctuation::Not,
+}
+
+And: Punctuation = {
+    <and:"&"> => Punctuation::And,
+}
+
+Or: Punctuation = {
+    <or:"|"> => Punctuation::Or,
+}
+
+AndAnd: Punctuation = {
+    <and_and:"&&"> => Punctuation::AndAnd,
+}
+
+OrOr: Punctuation = {
+    <or_or:"||"> => Punctuation::OrOr,
+}
+
+PlusEquals: Punctuation = {
+    <plus_equals:"+="> => Punctuation::PlusEquals,
+}
+
+MinusEquals: Punctuation = {
+    <minus_equals:"-="> => Punctuation::MinusEquals,
+}
+
+StarEquals: Punctuation = {
+    <star_equals:"*="> => Punctuation::StarEquals,
+}
+
+SlashEquals: Punctuation = {
+    <slash_equals:"/="> => Punctuation::SlashEquals,
+}
+
+PercentEquals: Punctuation = {
+    <percent_equals:"%="> => Punctuation::PercentEquals,
+}
+
+CaretEquals: Punctuation = {
+    <caret_equals:"^="> => Punctuation::CaretEquals,
+}
+
+AndEquals: Punctuation = {
+    <and_equals:"&="> => Punctuation::AndEquals,
+}
+
+OrEquals: Punctuation = {
+    <or_equals:"|="> => Punctuation::OrEquals,
+}
+
+Equals: Punctuation = {
+    <equals:"="> => Punctuation::Equals,
+}
+
+DoubleEquals: Punctuation = {
+    <double_equals:"=="> => Punctuation::DoubleEquals,
+}
+
+NotEqual: Punctuation = {
+    <not_equal:r"!=|≠"> => Punctuation::NotEqual,
+}
+
+LessThan: Punctuation = {
+    <less_than:"<"> => Punctuation::LessThan,
+}
+
+LessThanEqual: Punctuation = {
+    <less_than_equal:r"<=|≤"> => Punctuation::LessThanEqual,
+}
+
+GreaterThan: Punctuation = {
+    <greater_than:">"> => Punctuation::GreaterThan,
+}
+
+GreaterThanEqual: Punctuation = {
+    <greater_than_equal:r">=|≥"> => Punctuation::GreaterThanEqual,
+}
+
+Underscore: Punctuation = {
+    <underscore:"_"> => Punctuation::Underscore,
+}
+
+Dot: Punctuation = {
+    <dot:"."> => Punctuation::Dot,
+}
+
+DotDot: Punctuation = {
+    <dot_dot:".."> => Punctuation::DotDot,
+}
+
+DotDotDot: Punctuation = {
+    <dot_dot_dot:"..."> => Punctuation::DotDotDot,
+}
+
+DotDotEquals: Punctuation = {
+    <dot_dot_equals:"..="> => Punctuation::DotDotEquals,
+}
+
+Comma: Punctuation = {
+    <comma:","> => Punctuation::Comma,
+}
+
+Colon: Punctuation = {
+    <colon:":"> => Punctuation::Colon,
+}
+
+Semicolon: Punctuation = {
+    <semicolon:";"> => Punctuation::Semicolon,
+}
+
+PathSeparator: Punctuation = {
+    <path_separator:"::"> => Punctuation::PathSeparator,
+}
+
+RightArrow: Punctuation = {
+    <right_arrow:r"->|→"> => Punctuation::RightArrow,
+}
+
+LeftArrow: Punctuation = {
+    <left_arrow:r"<-|←"> => Punctuation::LeftArrow,
+}
+
+FatRightArrow: Punctuation = {
+    <fat_right_arrow:r"=>|⇒"> => Punctuation::FatRightArrow,
+}
+
+FatLeftArrow: Punctuation = {
+    <fat_left_arrow:r"⇐"> => Punctuation::FatLeftArrow,
+}
+
+Pound: Punctuation = {
+    <pound:"#"> => Punctuation::Pound,
+}
+
+Dollar: Punctuation = {
+    <dollar:"$"> => Punctuation::Dollar,
+}
+
+Question: Punctuation = {
+    <question:"?"> => Punctuation::Question,
+}
+
+Apostrophe: Punctuation = {
+    <apostrophe:"'"> => Punctuation::Apostrophe,
+}
+
+Quote: Punctuation = {
+    <quote:"\""> => Punctuation::Quote,
+}
+
+/////////////////////////////
+// Delimiter symbol tokens //
+/////////////////////////////
+
+pub(crate) Delimiter: Delimiter = {
+    <left_paren:LeftParen> => left_paren,
+    <right_paren:RightParen> => right_paren,
+    <left_brace:LeftBrace> => left_brace,
+    <right_brace:RightBrace> => right_brace,
+    <left_bracket:LeftBracket> => left_bracket,
+    <right_bracket:RightBracket> => right_bracket,
+}
+
+LeftParen: Delimiter = {
+    <left_paren:"("> => Delimiter::LeftParen,
+}
+RightParen: Delimiter = {
+    <right_paren:")"> => Delimiter::RightParen,
+}
+
+LeftBracket: Delimiter = {
+    <left_bracket:"["> => Delimiter::LeftBracket,
+}
+
+RightBracket: Delimiter = {
+    <right_bracket:"]"> => Delimiter::RightBracket,
+}
+
+LeftBrace: Delimiter = {
+    <left_brace:"{"> => Delimiter::LeftBrace,
+}
+
+RightBrace: Delimiter = {
+    <right_brace:"}"> => Delimiter::RightBrace,
+}
+
+////////////////
+// Whitespace //
+////////////////
+
+// <space:Space> => space,
+pub(crate) Whitespace: Whitespace = {
+    <tab:Tab> => tab,
+    <newline:Newline> => newline,
+    <carriage_return:CarriageReturn> => carriage_return,
+    <vertical_tab:VerticalTab> => vertical_tab,
+    <form_feed:FormFeed> => form_feed,
+}
+
+// Space: Whitespace = {
+//     r"\u0020" => Whitespace::Space,
+// }
+
+Tab: Whitespace = {
+    <tab:"\t"> => Whitespace::Tab,
+}
+
+Newline: Whitespace = {
+    <newline:"\n"> => Whitespace::Newline,
+}
+
+CarriageReturn: Whitespace = {
+    <carriage_return:"\r"> => Whitespace::CarriageReturn,
+}
+
+VerticalTab: Whitespace = {
+    <vertical_tab:r"\v"> => Whitespace::VerticalTab,
+}
+
+FormFeed: Whitespace = {
+    <form_feed:r"\f"> => Whitespace::FormFeed,
+}
+
+match {
+    r"\s*" => {}, // ignore whitespace
+    // r"//.*" => {}, // ignore comments
+    // This `_` means "add in all the other strings and
+    // regular expressions in the grammer here" (e.g.,
+    // `(`).
+    _
+}
+
+// match {
+//     // These items have highest precedence.
+//     // r"\p{Nd}+([[:WB=MB:][:WB=MN:]]\p{Nd}+)?",
+//     // r"[^\n\r\t'\\]"
+//     r"\p{XID_Continue}",
+//     // These items have next highest precedence.
+// } else {
+//     r"\p{XID_Start}",
+// r"0|1",
+//     r"[a-dfA-DF]",
+// } else {
+//     // These items have next highest precedence.
+//     r"\s*" => {}, // ignore whitespace
+//     // r"//.*" => {}, // ignore comments
+//     r"//[^\n\r]*[\n\r]*" => {}, // ignore comments
+//     // This `_` means "add in all the other strings and
+//     // regular expressions in the grammer here" (e.g.,
+//     // `(`).
+//     _
+// } // you can have more `else` sections if you like

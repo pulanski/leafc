@@ -72,7 +72,6 @@ pub mod regex_gen;
 pub use location::{
     FileId,
     FilePosition,
-    Locatable,
     Location,
     Span,
 };

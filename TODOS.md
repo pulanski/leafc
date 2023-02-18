@@ -78,3 +78,8 @@ pub struct CommitHash {
 language of the compiler in the config file
 
 [ ] - fix repl directory from ~, its getting annoying
+
+[ ] - general goal: remove the coupling of ungrammar from rust-analyzer, want to use ungrammar
+but not it's quite coupled with rust-analyzer - currently there is a bug where `syntax_gen` is written as a `test`. As such, when formatting is done,
+the generated files are modified, and the tests fail in ci. Instead, migrate the `syntax_gen` to a
+`bin` and run it as a `xtask` in ci or something similar

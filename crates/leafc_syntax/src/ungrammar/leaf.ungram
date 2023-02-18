@@ -1,0 +1,243 @@
+// Leaf Un-Grammar.
+//
+// This grammar specifies the structure of Leaf's concrete syntax tree.
+// It does not specify parsing rules (ambiguities, precedence, etc are out of scope).
+// Tokens are processed -- contextual keywords are recognised, compound operators glued.
+//
+// Legend:
+//
+//   //          -- comment
+//   Name =      -- non-terminal definition
+//   'ident'     -- token (terminal)
+//   A B         -- sequence
+//   A | B       -- alternation
+//   A*          -- zero or more repetition
+//   A?          -- zero or one repetition
+//   (A)         -- same as A
+//   label:A     -- suggested name for field of AST node
+
+//*************************//
+// Names, Paths and Macros //
+//*************************//
+
+Name =
+  'ident' | 'self'
+
+NameRef =
+  'ident' | 'self' | 'super' | 'pkg' | 'Self'
+//   'ident' | 'int_number' | 'self' | 'super' | 'crate' | 'Self'
+
+Path =
+  (qualifier:Path '::')? segment:PathSegment
+
+PathSegment =
+  '::'? NameRef
+// | NameRef GenericArgList?
+// | NameRef ParamList RetType?
+// | '<' PathType ('as' PathType)? '>'
+
+TokenTree =
+  '(' ')'
+| '{' '}'
+| '[' ']'
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Attr =
+  '#' '!'? '[' Meta ']'
+
+Meta =
+  Path TokenTree?
+  Path ('=' Expr | TokenTree)?
+
+//*************************//
+//          Items          //
+//*************************//
+
+SourceFile =
+  Attr*
+  Item*
+
+Item =
+//   Const
+// | Enum
+// | ExternBlock
+// | ExternCrate
+// | Fn
+// | Impl
+// | MacroCall
+// | MacroRules
+// | MacroDef
+  Module
+// | Static
+// | Struct
+// | Trait
+// | TypeAlias
+// | Union
+| Use
+
+Module =
+  Attr* Visibility?
+  'mod' Name
+  (ItemList | ';')
+
+ItemList =
+  '{' Attr* Item* '}'
+
+Rename =
+  'as' (Name | '_')
+
+Use =
+  Attr* Visibility?
+  'use' UseTree ';'
+
+UseTree =
+  (Path? '::')? ('*' | UseTreeList)
+| Path Rename?
+
+UseTreeList =
+  '{' (UseTree (',' UseTree)* ','?)? '}'
+
+// Const =
+//   Attr* Visibility?
+//   'default'?
+//   'const' (Name | '_') ':' Type
+//   ('=' body:Expr)? ';'
+
+// Struct =
+//   Attr* Visibility?
+//   'struct' Name (
+// //   'struct' Name GenericParamList? (
+//     // WhereClause?
+//     (RecordFieldList | ';')
+//   | TupleFieldList ';'
+// //   | TupleFieldList WhereClause? ';'
+//   )
+
+RecordFieldList =
+ '{' fields:(RecordField (',' RecordField)* ','?)? '}'
+
+RecordField =
+  Attr* Visibility?
+  Name ':' Type
+
+TupleFieldList =
+  '(' fields:(TupleField (',' TupleField)* ','?)? ')'
+
+TupleField =
+  Attr* Visibility?
+  Type
+
+FieldList =
+  RecordFieldList
+| TupleFieldList
+
+// Fn =
+//  Attr* Visibility?
+//  'default'? 'const'? 'async'? 'unsafe'? Abi?
+//  'fn' Name GenericParamList? ParamList RetType? WhereClause?
+//  (body:BlockExpr | ';')
+
+Visibility =
+  'pub' ('(' 'in'? Path ')')?
+
+//****************************//
+// Statements and Expressions //
+//****************************//
+
+Stmt =
+  ';'
+| ExprStmt
+| Item
+// | LetStmt
+
+ExprStmt =
+  Expr ';'?
+
+Expr =
+//   ArrayExpr
+// | AwaitExpr
+// | BinExpr
+// BlockExpr
+// | BoxExpr
+// | BreakExpr
+// | CallExpr
+// | CastExpr
+// | ClosureExpr
+// | ContinueExpr
+  FieldExpr
+// | ForExpr
+// IfExpr
+// | IndexExpr
+// | Literal
+// | LoopExpr
+// | MacroExpr
+// | MatchExpr
+// | MethodCallExpr
+// | ParenExpr
+// | PathExpr
+// | PrefixExpr
+// | RangeExpr
+// | RecordExpr
+| RefExpr
+// | ReturnExpr
+// | TryExpr
+// | TupleExpr
+// | WhileExpr
+// | YieldExpr
+// | YeetExpr
+// | LetExpr
+// | UnderscoreExpr
+
+FieldExpr =
+  Attr* Expr '.' NameRef
+
+RefExpr =
+  Attr* '&' ('mut' | 'const') Expr
+
+// StmtList =
+//   '{'
+//     Attr*
+//     statements:Stmt*
+//     tail_expr:Expr?
+//   '}'
+
+// BlockExpr =
+//   Attr* ('try' | 'unsafe' | 'async' | 'const') StmtList
+//   Attr* Label? ('try' | 'unsafe' | 'async' | 'const') StmtList
+
+// IfExpr =
+//   Attr* 'if' condition:Expr then_branch:BlockExpr
+//   ('else' else_branch:(IfExpr | BlockExpr))?
+
+//*************************//
+//          Types          //
+//*************************//
+
+Type =
+//   ArrayType
+// | DynTraitType
+// | FnPtrType
+// | ForType
+// | ImplTraitType
+// | InferType
+// | MacroType
+  NeverType
+| ParenType
+| PathType
+// | PtrType
+// | RefType
+// | SliceType
+// | TupleType
+
+ParenType =
+  '(' Type ')'
+
+NeverType =
+  '!'
+
+PathType =
+  Path
+
+// ArrayType =
+//   '[' Type ';' Expr ']'

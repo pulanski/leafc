@@ -1,3 +1,4 @@
+use leafc_errors::SyntaxError;
 // use leafc_lexer::TokenKind;
 use num_traits::{
     FromPrimitive,
@@ -11,13 +12,11 @@ use rowan::{
 
 use crate::ast::generated::kinds::SyntaxKind;
 
-// pub(crate) use rowan::{GreenNode, GreenToken, NodeOrToken};
-
 #[derive(Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]
 pub enum LeafLanguage {}
 
 impl rowan::Language for LeafLanguage {
-    type Kind = crate::ast::generated::kinds::SyntaxKind;
+    type Kind = SyntaxKind;
 
     /// Converts a generic rowan-`SyntaxKind` into a `SyntaxKind` specific to
     /// the Leaf language.
@@ -102,7 +101,7 @@ pub type PreorderWithTokens = rowan::api::PreorderWithTokens<LeafLanguage>;
 /// ```
 pub struct ConcreteSyntaxTreeBuilder {
     builder: GreenNodeBuilder<'static>,
-    // errors: Vec<SyntaxError>, // TODO: add
+    errors:  Vec<SyntaxError>, // TODO: add
 }
 
 impl ConcreteSyntaxTreeBuilder {

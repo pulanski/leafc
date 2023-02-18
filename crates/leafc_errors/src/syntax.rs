@@ -4,11 +4,10 @@ use codespan_reporting::{
         Label,
     },
     files::Files as SourceFiles,
-    term::{
-        self,
-        termcolor::StandardStream,
-        Config,
-    },
+};
+use leafc_utils::{
+    FileId,
+    Span,
 };
 // use miette::Diagnostic;
 use owo_colors::OwoColorize;
@@ -33,7 +32,7 @@ pub const SYNTAX_ERROR_PREFIX: &str = "Syntax Error";
 /// // There are x variants of the `LexicalError` enum.
 /// assert_eq!(1, SyntaxError::COUNT);
 /// ```
-#[derive(Debug, Error, EnumCountMacro, Clone)]
+#[derive(Debug, Error, EnumCountMacro, Clone, PartialEq, Eq)]
 pub enum SyntaxError {
     /// This error is returned when an **unknown token** is encountered
     /// during **lexical analysis**.
@@ -57,8 +56,27 @@ pub enum SyntaxError {
     UnknownToken(SmolStr),
 }
 
-fn foo() {
-    println!("Hello, world!");
+impl SyntaxError {
+    pub fn emit<'a, F: SourceFiles<'a>>(
+        &self,
+        _files: &F,
+        file_id: FileId,
+        span: Span,
+        errs: &mut Vec<Diagnostic<FileId>>,
+    ) {
+        let diagnostic = Diagnostic::error()
+            .with_message(self.to_string())
+            .with_labels(vec![Label::primary(file_id, span)]);
+
+        // TODO: add help messages
+        // if let Some((label, help)) = self.help() {
+        //     diagnostic =
+        //         diagnostic.with_labels(vec![Label::secondary(file_id,
+        // span).with_message(label)]);     diagnostic =
+        // diagnostic.with_notes(vec![help]); }
+
+        errs.push(diagnostic);
+    }
 }
 
 // impl From<LexicalError> for SyntaxError {

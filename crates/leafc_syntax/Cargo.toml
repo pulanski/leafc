@@ -19,6 +19,7 @@ doctest = true
 [dependencies]
 leafc_lexer = { path = "../leafc_lexer" }
 leafc_utils = { path = "../leafc_utils" }
+leafc_errors = { path = "../leafc_errors" }
 
 doc-comment = { workspace = true }
 itertools = { workspace = true }
@@ -27,5 +28,6 @@ num-traits = { workspace = true }
 proc-macro2 = { workspace = true }
 quote = { workspace = true }
 rowan = { workspace = true }
+smol_str = { workspace = true }
 ungrammar = { workspace = true }
 xshell = { workspace = true }

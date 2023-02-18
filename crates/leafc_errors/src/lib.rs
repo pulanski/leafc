@@ -7,9 +7,26 @@ pub mod repl;
 pub mod syntax;
 // pub mod parser;
 
+use codespan_reporting::diagnostic::Diagnostic;
+/* TODO: maybe use different error reporting library? */
+// use codespan_reporting::diagnostic::Diagnostic;
+use codespan_reporting::files::Files as SourceFiles;
 use derivative::Derivative;
-use leafc_utils::Locatable;
-use std::collections::VecDeque;
+use getset::{
+    Getters,
+    MutGetters,
+    Setters,
+};
+use std::{
+    collections::VecDeque,
+    ops::Range,
+};
+
+use leafc_utils::{
+    FileId,
+    Location,
+    Span,
+};
 
 pub use cfg::CfgError;
 pub use cli::CliError;
@@ -47,39 +64,24 @@ pub type Error = Locatable<LeafcError>;
 /// ```
 pub type Warning = Locatable<LeafcWarning>;
 
-/// A **diagnostic** is a message that is emitted by the compiler to inform the
-/// user of an error or warning.
+/// A **wrapper** around an **item** that also stores its **location**.
+/// An **item** can be a **token**, a **node**, or a **span**.
 ///
-/// # Examples
+/// # Example
 ///
-/// ```rust
-/// use leafc_errors::LeafcDiagnostic;
-/// // TODO: add examples
+/// ```ignore
+/// // TODO: add example
+/// use leafc_lexer::TokenStream;
+/// use leafc_utils::Locatable;
+/// use leafc_lexer::Token;
 /// ```
-#[derive(Debug, Clone)]
-pub enum LeafcDiagnostic {
-    Error(Error),
-    Warning(Warning),
-}
-
-/// The top-level **manager** for the **diagnostics** that are emitted by the
-/// compiler. This manager is used to **store** the **errors** and **warnings**
-/// that are emitted by the compiler.
-///
-/// # Examples
-///
-/// ```rust
-/// use leafc_errors::DiagnosticsManager;
-///
-/// // TODO: add examples
-/// ```
-#[derive(Debug, Clone, Derivative)]
-// #[derive(Debug, Default, Clone, Derivative, Serialize, Deserialize)]
-// // TODO: add serde support
-#[derivative(Default(new = "true"))]
-pub struct DiagnosticsManager {
-    errors:   VecDeque<Error>,
-    warnings: VecDeque<Warning>,
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, MutGetters, Setters)]
+#[getset(get = "pub", get_mut = "pub", set = "pub")]
+pub struct Locatable<T: Clone> {
+    /// The **location** of the item.
+    location: Location,
+    /// The **item** itself.
+    item:     T,
 }
 
 /// The various **kinds of errors** that can occur within the compiler. These
@@ -118,24 +120,26 @@ pub struct DiagnosticsManager {
 /// [`LogError`] - An error that occurred within the **logging system**.
 #[derive(Debug, Clone)]
 pub enum LeafcError {
+    // TODO: need to distinguish between error type (e.g. errors that use miette vs errors that
+    // use codespan)
     /// An error that occurred while **parsing the command line arguments**.
-    CliError(CliError),
+    CliError(CliError), // Miette
     /// An error that occurred while **running the driver**.
-    DriverError(DriverError),
+    DriverError(DriverError), // Miette
     /// An error that occurred while **lexing** the source code.
-    LexicalError(LexicalError),
+    LexicalError(LexicalError), // Codespan
     /// An error that occurred within the **logging system**.
-    LogError(LogError),
+    LogError(LogError), // Miette
     // /// An error that occurred while parsing the source code.
-    // ParserError(ParserError),
+    // ParserError(ParserError), // Codespan
     // /// An error that occurred while type checking the source code.
-    // TypeCheckError(TypeCheckError),
+    // TypeCheckError(TypeCheckError), // Codespan
     // /// An error that occurred while generating the output.
-    // CodegenError(CodegenError),
+    // CodegenError(CodegenError), // i don't know yet
     /// An error that occurred within the **syntax** of the source code.
-    SyntaxError(SyntaxError),
+    SyntaxError(SyntaxError), // Codespan
     /// An error that occurred while **running the repl**.
-    ReplError(ReplError),
+    ReplError(ReplError), // Miette
 }
 
 /// All possible **warnings** that can occur within the user's source code from
@@ -180,6 +184,136 @@ pub enum LeafcWarning {
     // ReplWarning(ReplError),
 }
 
+/// A **diagnostic** is a message that is emitted by the compiler to inform the
+/// user of an error or warning.
+///
+/// # Examples
+///
+/// ```rust
+/// use leafc_errors::LeafcDiagnostic;
+/// // TODO: add examples
+/// ```
+#[derive(Debug, Clone)]
+pub enum LeafcDiagnostic {
+    Error(Error),
+    Warning(Warning),
+}
+
+/// The top-level **manager** for the **diagnostics** that are emitted by the
+/// compiler. This manager is used to **store** the **errors** and **warnings**
+/// that are emitted by the compiler.
+///
+/// # Examples
+///
+/// ```rust
+/// use leafc_errors::DiagnosticsManager;
+///
+/// // TODO: add examples
+/// ```
+#[derive(Debug, Clone, Derivative)]
+// #[derive(Debug, Default, Clone, Derivative, Serialize, Deserialize)]
+// // TODO: add serde support
+#[derivative(Default(new = "true"))]
+pub struct DiagnosticsManager {
+    errors:   VecDeque<Error>,
+    warnings: VecDeque<Warning>,
+}
+
+impl<T: Clone> Locatable<T> {
+    /// Creates a new `Locatable` from the given `location` and `item`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::{
+    ///     FileId,
+    ///     Locatable,
+    ///     Location,
+    ///     Span,
+    /// };
+    ///
+    /// let location = Location::new(FileId::new(0), Span::new(0, 1));
+    /// ```
+    pub const fn new(location: Location, item: T) -> Self {
+        Self { location, item }
+    }
+
+    /// Returns the **span** of the `Locatable` item.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn span(&self) -> Span {
+        self.location.span()
+    }
+
+    /// Returns the **file** (i.e. the `FileId`) of the `Locatable` item.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn file(&self) -> FileId {
+        self.location.file()
+    }
+
+    /// Returns the **range** of the `Locatable` item.
+    /// The **range** is the **span** of the `Locatable` item, more specifically
+    /// a **tuple** of the **start** and **end** of the `Locatable` item.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn range(&self) -> Range<usize> {
+        self.location.span().range()
+    }
+
+    /// Returns the **start** of the `Locatable` item.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn start(&self) -> usize {
+        self.location.span().start()
+    }
+
+    /// Returns the **end** of the `Locatable` item.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn end(&self) -> usize {
+        self.location.span().end()
+    }
+
+    /// Maps the `Locatable` item to another item using the given `f` function.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// // TODO: add example
+    /// use leafc_utils::Locatable;
+    /// ```
+    pub fn map<U: Clone, F: FnOnce(T) -> U>(self, f: F) -> Locatable<U> {
+        Locatable::new(self.location, f(self.item))
+    }
+}
+
 impl DiagnosticsManager {
     // /// Creates a new diagnostics manager.
     // pub fn new() -> Self {
@@ -204,29 +338,30 @@ impl DiagnosticsManager {
         self.warnings.len()
     }
 
-    /// Returns `true` if the diagnostics manager has any errors.
+    /// Returns `true` if the diagnostics manager has **any** errors.
     pub fn has_errors(&self) -> bool {
         !self.errors.is_empty()
     }
 
-    /// Returns `true` if the diagnostics manager has any warnings.
+    /// Returns `true` if the diagnostics manager has **any** warnings.
     pub fn has_warnings(&self) -> bool {
         !self.warnings.is_empty()
     }
 
-    /// Returns `true` if the diagnostics manager has any errors or warnings.
+    /// Returns `true` if the diagnostics manager has collected **any** errors
+    /// or warnings.
     pub fn has_diagnostics(&self) -> bool {
         self.has_errors() || self.has_warnings()
     }
 
-    /// Returns an iterator over the errors that have been emitted by the
-    /// compiler.
+    /// Returns an **iterator** over the errors that have been collected by the
+    /// compiler during the **current compilation session**.
     pub fn errors(&self) -> impl Iterator<Item = &Locatable<LeafcError>> {
         self.errors.iter()
     }
 
-    /// Returns an iterator over the warnings that have been emitted by the
-    /// compiler.
+    /// Returns an **iterator** over the warnings that have been collected by
+    /// the compiler during the **current compilation session**.
     pub fn warnings(&self) -> impl Iterator<Item = &Locatable<LeafcWarning>> {
         self.warnings.iter()
     }
@@ -241,19 +376,69 @@ impl DiagnosticsManager {
     // LeafcDiagnostic::Warning(warning))),     )
     // }
 
-    /// Emits an error to the diagnostics manager.
-    pub fn emit_error(&mut self, error: Locatable<LeafcError>) {
+    /// **Adds** an error to the diagnostics manager.
+    pub fn add_error(&mut self, error: Error) {
         self.errors.push_back(error);
     }
 
-    /// Emits a warning to the diagnostics manager.
-    pub fn emit_warning(&mut self, warning: Locatable<LeafcWarning>) {
+    /// **Adds** a warning to the diagnostics manager.
+    pub fn add_warning(&mut self, warning: Warning) {
         self.warnings.push_back(warning);
     }
 
-    // /// Emits a diagnostic to the diagnostics manager.
-    // pub fn emit_diagnostic(&mut self, diagnostic:
+    /// **Adds** a diagnostic to the diagnostics manager. This method is a
+    /// **convenience method** that **calls** the appropriate method based on
+    /// the type of diagnostic that is being added (i.e. `add_error` or
+    /// `add_warning`)
+    pub fn add_diagnostic(&mut self, diagnostic: LeafcDiagnostic) {
+        match diagnostic {
+            LeafcDiagnostic::Error(error) => self.add_error(error),
+            LeafcDiagnostic::Warning(warning) => self.add_warning(warning),
+        }
+    }
+
+    /// **Adds** a collection of diagnostics to the diagnostics manager.
+    /// This method is a **convenience method** that **calls** the
+    /// `add_diagnostic` method for each diagnostic in the collection.
+    pub fn add_diagnostics(&mut self, diagnostics: impl IntoIterator<Item = LeafcDiagnostic>) {
+        for diagnostic in diagnostics {
+            self.add_diagnostic(diagnostic);
+        }
+    }
+
+    // pub fn emit<'a, F>(&mut self, files: &'a F, writer: &StandardStream, config:
+    // &Config) where
+    //     F: CodeFiles<'a, FileId = FileId>,
 }
+
+// error types, locatable error vs non-locatable error
+
+impl LeafcError {
+    pub fn emit<'a, F>(
+        &self,
+        files: &'a F,
+        file: FileId,
+        span: Span,
+        errs: &mut Vec<Diagnostic<FileId>>,
+    ) where
+        F: SourceFiles<'a, FileId = FileId>,
+    {
+        match self {
+            // miette style errors should not be emitted (may change in the future)
+            LeafcError::CliError(_) |
+            LeafcError::DriverError(_) |
+            LeafcError::LogError(_) |
+            LeafcError::ReplError(_) => {
+                unimplemented!()
+            }
+            LeafcError::LexicalError(_) => todo!(),
+            LeafcError::SyntaxError(syntax_err) => syntax_err.emit(files, file, span, errs),
+        }
+    }
+}
+
+// TODO: need to distinguish between miette-type errors and
+// codespan-reporting-type errors
 
 #[cfg(test)]
 mod error_test_suite {
@@ -262,7 +447,7 @@ mod error_test_suite {
 
     #[test]
     fn test_diagnostics_manager() {
-        let mut diagnostics_manager = DiagnosticsManager::new();
+        let diagnostics_manager = DiagnosticsManager::new();
 
         assert_eq!(diagnostics_manager.num_errors(), 0);
         assert_eq!(diagnostics_manager.num_warnings(), 0);

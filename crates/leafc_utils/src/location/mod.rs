@@ -10,7 +10,6 @@ use std::{
 
 use getset::{
     CopyGetters,
-    Getters,
     MutGetters,
     Setters,
 };
@@ -59,121 +58,6 @@ pub struct Location {
 
     /// The **span** of the location in the file.
     span: Span,
-}
-
-/// A **wrapper** around an **item** that also stores its **location**.
-/// An **item** can be a **token**, a **node**, or a **span**.
-///
-/// # Example
-///
-/// ```ignore
-/// // TODO: add example
-/// use leafc_lexer::TokenStream;
-/// use leafc_utils::Locatable;
-/// use leafc_lexer::Token;
-/// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, MutGetters, Setters)]
-#[getset(get = "pub", get_mut = "pub", set = "pub")]
-pub struct Locatable<T: Clone> {
-    /// The **location** of the item.
-    location: Location,
-    /// The **item** itself.
-    item:     T,
-}
-
-impl<T: Clone> Locatable<T> {
-    /// Creates a new `Locatable` from the given `location` and `item`.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::{
-    ///     FileId,
-    ///     Locatable,
-    ///     Location,
-    ///     Span,
-    /// };
-    ///
-    /// let location = Location::new(FileId::new(0), Span::new(0, 1));
-    /// ```
-    pub const fn new(location: Location, item: T) -> Self {
-        Self { location, item }
-    }
-
-    /// Returns the **span** of the `Locatable` item.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// ```
-    pub fn span(&self) -> Span {
-        self.location.span()
-    }
-
-    /// Returns the **file** (i.e. the `FileId`) of the `Locatable` item.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// ```
-    pub fn file(&self) -> FileId {
-        self.location.file()
-    }
-
-    /// Returns the **range** of the `Locatable` item.
-    /// The **range** is the **span** of the `Locatable` item, more specifically
-    /// a **tuple** of the **start** and **end** of the `Locatable` item.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// ```
-    pub fn range(&self) -> Range<usize> {
-        self.location.span().range()
-    }
-
-    /// Returns the **start** of the `Locatable` item.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// ```
-    pub fn start(&self) -> usize {
-        self.location.span().start()
-    }
-
-    /// Returns the **end** of the `Locatable` item.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// ```
-    pub fn end(&self) -> usize {
-        self.location.span().end()
-    }
-
-    /// Maps the `Locatable` item to another item using the given `f` function.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// // TODO: add example
-    /// use leafc_utils::Locatable;
-    /// ```
-    pub fn map<U: Clone, F: FnOnce(T) -> U>(self, f: F) -> Locatable<U> {
-        Locatable::new(self.location, f(self.item))
-    }
 }
 
 /// A **position** in the input string (e.g. a **line** and **offset**
@@ -240,6 +124,23 @@ impl From<FilePosition> for (usize, usize) {
 //         Self {
 //     }
 // }
+
+#[allow(clippy::from_over_into)]
+impl Into<Range<usize>> for Span {
+    /// Converts a `Span` to a `Range<usize>`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use leafc_utils::Span;
+    ///
+    /// let span = Span::new(0, 10);
+    /// let range = span.into();
+    /// ```
+    fn into(self) -> Range<usize> {
+        self.start..self.end
+    }
+}
 
 impl fmt::Debug for Span {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
