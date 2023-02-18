@@ -2,7 +2,6 @@ use crate::ast::*;
 use crate::ReservedKeyword::Crate;
 
 use crate::parser_errors::*;
-// use colored::Colorize;
 
 use lalrpop_util::ParseError;
 

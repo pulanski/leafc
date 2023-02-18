@@ -1,5 +1,5 @@
 use crate::{
-    ast,
+    cst,
     SyntaxKind,
     SyntaxNode,
 };
@@ -32,7 +32,7 @@ impl AttrKind {
     }
 }
 
-impl ast::Attr {
+impl cst::Attr {
     pub fn as_simple_atom(&self) -> Option<SmolStr> {
         let meta = self.meta()?;
         // if meta.eq_token().is_some() || meta.token_tree().is_some() {
@@ -42,7 +42,7 @@ impl ast::Attr {
         self.simple_name()
     }
 
-    pub fn as_simple_call(&self) -> Option<(SmolStr, ast::TokenTree)> {
+    pub fn as_simple_call(&self) -> Option<(SmolStr, cst::TokenTree)> {
         let tt = self.meta()?.token_tree()?;
         Some((self.simple_name()?, tt))
     }
@@ -62,20 +62,20 @@ impl ast::Attr {
         }
     }
 
-    pub fn path(&self) -> Option<ast::Path> {
+    pub fn path(&self) -> Option<cst::Path> {
         self.meta()?.path()
     }
 
-    pub fn expr(&self) -> Option<ast::Expr> {
+    pub fn expr(&self) -> Option<cst::Expr> {
         self.meta()?.expr()
     }
 
-    pub fn token_tree(&self) -> Option<ast::TokenTree> {
+    pub fn token_tree(&self) -> Option<cst::TokenTree> {
         self.meta()?.token_tree()
     }
 }
 
-impl ast::HasAttrs for ast::AnyHasDocComments {}
+impl cst::HasAttrs for cst::AnyHasDocComments {}
 
 // Stmt is the only nested enum, so it's easier to just hand-write it
 #[allow(non_snake_case, bindings_with_variant_name)]

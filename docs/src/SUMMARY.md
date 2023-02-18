@@ -11,3 +11,4 @@
         -   [Keywords](./chapter_1/lexical_structure/KEYWORDS.md)
             -   [Reserved Keywords](./chapter_1/lexical_structure/tokens/keywords/reserved/RESERVED.md)
         -   [Punctuation](./chapter_1/lexical_structure/PUNCTUATION.md)
+-   [Chapter 2: _Syntactic Analysis_](./CHAPTER_2.md)

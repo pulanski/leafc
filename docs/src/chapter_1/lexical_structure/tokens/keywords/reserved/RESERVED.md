@@ -1,17 +1,19 @@
 ## Reserved Keywords
 
-The following keywords are **reserved** for future use by the language. They are
-**currently not used** within the surface syntax of the language, but may be
-**used in the future**.
+The following keywords are **reserved** either for **future use** by the language or to **disallow** them in the surface syntax of the language. They are **currently not used** within the surface syntax of the language, but may be **used in the future**:
 
--   [Abstract](#ABSTRACT)
--   [Async](#ASYNC)
--   [Await](#AWAIT)
--   [Extern](#EXTERN)
--   [Final](#FINAL)
--   [Import](#IMPORT)
--   [Is](#IS)
--   [Let](#LET)
+<br>
+
+| Keyword                 | Description                                                          |
+| ----------------------- | -------------------------------------------------------------------- |
+| [`abstract`](#ABSTRACT) | Used to **define** an **abstract class** or **method**.              |
+| [`async`](#ASYNC)       | Used to **define** an **asynchronous function**.                     |
+| [`await`](#AWAIT)       | Used to **wait for the completion** of an **asynchronous function**. |
+| [`extern`](#EXTERN)     | Used to **define** an **external function**.                         |
+| [`final`](#FINAL)       | Used to **define** a **final variable**.                             |
+| [`import`](#IMPORT)     | Used to **import** a **module**.                                     |
+| [`is`](#IS)             | Used to **check** if a value is of a **certain type**.               |
+| [`let`](#LET)           | Used to **define** a **variable**.                                   |
 
 <br>
 

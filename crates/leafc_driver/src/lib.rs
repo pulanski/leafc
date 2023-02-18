@@ -146,6 +146,8 @@ impl LeafcDriver {
             log::info!("{tokens}");
         }
 
+        log::info!("{tokens}"); // always log the tokens (for now)
+
         Ok(())
     }
 

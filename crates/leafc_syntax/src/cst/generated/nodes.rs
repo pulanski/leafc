@@ -2,7 +2,7 @@
 
 #![allow(non_snake_case)]
 use crate::{
-    ast::{
+    cst::{
         self,
         support,
         AstChildren,
@@ -151,19 +151,19 @@ impl Meta {
 pub struct SourceFile {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for SourceFile {}
-impl ast::HasModuleItem for SourceFile {}
-impl ast::HasDocComments for SourceFile {}
+impl cst::HasAttrs for SourceFile {}
+impl cst::HasModuleItem for SourceFile {}
+impl cst::HasDocComments for SourceFile {}
 impl SourceFile {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Module {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for Module {}
-impl ast::HasName for Module {}
-impl ast::HasVisibility for Module {}
-impl ast::HasDocComments for Module {}
+impl cst::HasAttrs for Module {}
+impl cst::HasName for Module {}
+impl cst::HasVisibility for Module {}
+impl cst::HasDocComments for Module {}
 impl Module {
     pub fn mod_token(&self) -> Option<SyntaxToken> {
         support::token(&self.syntax, T![mod])
@@ -180,9 +180,9 @@ impl Module {
 pub struct Use {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for Use {}
-impl ast::HasVisibility for Use {}
-impl ast::HasDocComments for Use {}
+impl cst::HasAttrs for Use {}
+impl cst::HasVisibility for Use {}
+impl cst::HasDocComments for Use {}
 impl Use {
     pub fn use_token(&self) -> Option<SyntaxToken> {
         support::token(&self.syntax, T![use])
@@ -221,8 +221,8 @@ impl Visibility {
 pub struct ItemList {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for ItemList {}
-impl ast::HasModuleItem for ItemList {}
+impl cst::HasAttrs for ItemList {}
+impl cst::HasModuleItem for ItemList {}
 impl ItemList {
     pub fn l_curly_token(&self) -> Option<SyntaxToken> {
         support::token(&self.syntax, T!['{'])
@@ -236,7 +236,7 @@ impl ItemList {
 pub struct Rename {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasName for Rename {}
+impl cst::HasName for Rename {}
 impl Rename {
     pub fn as_token(&self) -> Option<SyntaxToken> {
         support::token(&self.syntax, T![as])
@@ -304,10 +304,10 @@ impl RecordFieldList {
 pub struct RecordField {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for RecordField {}
-impl ast::HasName for RecordField {}
-impl ast::HasVisibility for RecordField {}
-impl ast::HasDocComments for RecordField {}
+impl cst::HasAttrs for RecordField {}
+impl cst::HasName for RecordField {}
+impl cst::HasVisibility for RecordField {}
+impl cst::HasDocComments for RecordField {}
 impl RecordField {
     pub fn colon_token(&self) -> Option<SyntaxToken> {
         support::token(&self.syntax, T![:])
@@ -337,9 +337,9 @@ impl TupleFieldList {
 pub struct TupleField {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for TupleField {}
-impl ast::HasVisibility for TupleField {}
-impl ast::HasDocComments for TupleField {}
+impl cst::HasAttrs for TupleField {}
+impl cst::HasVisibility for TupleField {}
+impl cst::HasDocComments for TupleField {}
 impl TupleField {
     pub fn ty(&self) -> Option<Type> {
         support::child(&self.syntax)
@@ -363,7 +363,7 @@ impl ExprStmt {
 pub struct FieldExpr {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for FieldExpr {}
+impl cst::HasAttrs for FieldExpr {}
 impl FieldExpr {
     pub fn expr(&self) -> Option<Expr> {
         support::child(&self.syntax)
@@ -380,7 +380,7 @@ impl FieldExpr {
 pub struct RefExpr {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for RefExpr {}
+impl cst::HasAttrs for RefExpr {}
 impl RefExpr {
     pub fn amp_token(&self) -> Option<SyntaxToken> {
         support::token(&self.syntax, T![&])
@@ -437,16 +437,16 @@ pub enum Expr {
     FieldExpr(FieldExpr),
     RefExpr(RefExpr),
 }
-impl ast::HasAttrs for Expr {}
+impl cst::HasAttrs for Expr {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Item {
     Module(Module),
     Use(Use),
 }
-impl ast::HasAttrs for Item {}
-impl ast::HasDocComments for Item {}
-impl ast::HasVisibility for Item {}
+impl cst::HasAttrs for Item {}
+impl cst::HasDocComments for Item {}
+impl cst::HasVisibility for Item {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Type {
@@ -471,31 +471,31 @@ pub enum Stmt {
 pub struct AnyHasAttrs {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasAttrs for AnyHasAttrs {}
+impl cst::HasAttrs for AnyHasAttrs {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct AnyHasDocComments {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasDocComments for AnyHasDocComments {}
+impl cst::HasDocComments for AnyHasDocComments {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct AnyHasModuleItem {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasModuleItem for AnyHasModuleItem {}
+impl cst::HasModuleItem for AnyHasModuleItem {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct AnyHasName {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasName for AnyHasName {}
+impl cst::HasName for AnyHasName {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct AnyHasVisibility {
     pub(crate) syntax: SyntaxNode,
 }
-impl ast::HasVisibility for AnyHasVisibility {}
+impl cst::HasVisibility for AnyHasVisibility {}
 ///Node boilerplate
 impl AstNode for Name {
     fn can_cast(kind: SyntaxKind) -> bool {
@@ -1009,7 +1009,7 @@ impl From<Item> for Stmt {
 ///Any node boilerplate
 impl AnyHasAttrs {
     #[inline]
-    pub fn new<T: ast::HasAttrs>(node: T) -> AnyHasAttrs {
+    pub fn new<T: cst::HasAttrs>(node: T) -> AnyHasAttrs {
         AnyHasAttrs { syntax: node.syntax().clone() }
     }
 }
@@ -1036,7 +1036,7 @@ impl AstNode for AnyHasAttrs {
 }
 impl AnyHasDocComments {
     #[inline]
-    pub fn new<T: ast::HasDocComments>(node: T) -> AnyHasDocComments {
+    pub fn new<T: cst::HasDocComments>(node: T) -> AnyHasDocComments {
         AnyHasDocComments { syntax: node.syntax().clone() }
     }
 }
@@ -1053,7 +1053,7 @@ impl AstNode for AnyHasDocComments {
 }
 impl AnyHasModuleItem {
     #[inline]
-    pub fn new<T: ast::HasModuleItem>(node: T) -> AnyHasModuleItem {
+    pub fn new<T: cst::HasModuleItem>(node: T) -> AnyHasModuleItem {
         AnyHasModuleItem { syntax: node.syntax().clone() }
     }
 }
@@ -1070,7 +1070,7 @@ impl AstNode for AnyHasModuleItem {
 }
 impl AnyHasName {
     #[inline]
-    pub fn new<T: ast::HasName>(node: T) -> AnyHasName {
+    pub fn new<T: cst::HasName>(node: T) -> AnyHasName {
         AnyHasName { syntax: node.syntax().clone() }
     }
 }
@@ -1087,7 +1087,7 @@ impl AstNode for AnyHasName {
 }
 impl AnyHasVisibility {
     #[inline]
-    pub fn new<T: ast::HasVisibility>(node: T) -> AnyHasVisibility {
+    pub fn new<T: cst::HasVisibility>(node: T) -> AnyHasVisibility {
         AnyHasVisibility { syntax: node.syntax().clone() }
     }
 }

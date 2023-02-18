@@ -1,8 +1,8 @@
-use crate::ast;
+use crate::cst;
 
 use super::AstToken;
 
-impl ast::Comment {
+impl cst::Comment {
     pub fn kind(&self) -> CommentKind {
         CommentKind::from_text(self.text())
     }

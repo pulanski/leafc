@@ -7,7 +7,7 @@ use rowan::GreenNode;
 
 use leafc_errors::SyntaxError;
 use leafc_syntax::{
-    ast::{
+    cst::{
         AstNode,
         SourceFile,
     },
@@ -74,7 +74,7 @@ impl<T: AstNode> Parse<T> {
 mod api_walkthrough {
     // use crate::ast::SourceFile;
 
-    use leafc_syntax::ast::SourceFile;
+    use leafc_syntax::cst::SourceFile;
 
     #[test]
     fn parse_source_file() {

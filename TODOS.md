@@ -83,3 +83,6 @@ language of the compiler in the config file
 but not it's quite coupled with rust-analyzer - currently there is a bug where `syntax_gen` is written as a `test`. As such, when formatting is done,
 the generated files are modified, and the tests fail in ci. Instead, migrate the `syntax_gen` to a
 `bin` and run it as a `xtask` in ci or something similar
+
+[ ] - get a sense of syntactic structure using `lalrpop` and then use that to guide the
+rest of the parsing system
