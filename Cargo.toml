@@ -5,21 +5,22 @@ members = [
     # "examples/",
     # "benches/",
 
-    ############################
+    ###########################################################################
     # Binaries
-    ############################
+    ###########################################################################
     "crates/leafc",
     "crates/leafcdb",
 
-    ############################
+    ###########################################################################
     # Libraries
-    ############################
+    ###########################################################################
     "crates/leafc_build",
     "crates/leafc_cfg",
     "crates/leafc_cli",
     # "crates/leafc_codegen",
     "crates/leafc_driver",
     "crates/leafc_errors",
+    "crates/leafc_intern",
     "crates/leafc_lexer",
     "crates/leafc_log",
     # "crates/leafc_macros",
@@ -72,12 +73,15 @@ crossterm = "0.26.0"
 dirs-next = "2.0.0"
 doc-comment = "0.3.3"
 fern = "0.6.1"
+fxhash = "0.2.1"
 getset = "0.1.2"
+hashbrown = "0.13.2"
 humantime = "2.1.0"
 indexmap = "1.9.2"
 indicatif = "0.17.3"
 indoc = "2.0.0"
 itertools = "0.10.5"
+lasso = "0.6.0"
 lazy_static = "1.4.0"
 llvm-sys = "160.0.0"
 llvm-ir = "0.8.2"

@@ -41,3 +41,7 @@ parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
 typed-builder = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }
+rstest = { workspace = true }

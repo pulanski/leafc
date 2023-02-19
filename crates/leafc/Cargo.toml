@@ -35,3 +35,7 @@ num_cpus = { workspace = true }
 parking_lot = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }
+rstest = { workspace = true }

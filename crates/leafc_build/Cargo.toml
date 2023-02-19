@@ -17,3 +17,8 @@ doctest = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }
+rstest = { workspace = true }

@@ -1,8 +1,8 @@
 [package]
-name = "leafc_cli"
+name = "leafc_intern"
 version = "0.1.0"
-description = "Command line interface for Leafc (e.g. handles parsing command line arguments)"
-keywords = ["leafc", "cli", "command-line-interface"]
+description = "Leafc's interning system, which is used to intern strings and other data structures within the compiler used during the compilation lifecycle."
+keywords = ["leafc", "interning", "string", "string interning", "compiler"]
 
 categories.workspace = true
 repository.workspace = true
@@ -15,6 +15,8 @@ readme.workspace = true
 doctest = true
 
 [features]
+multi-threaded = ["lasso/multi-threaded"]
+
 # default = ["buffer_pool", "replacer", "lru_k_replacer"]
 # all = ["buffer_pool", "replacer", "lru_replacer", "lru_k_replacer", "serde"]
 # serde = ["dep:serde"]
@@ -22,19 +24,10 @@ doctest = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-leafc_cfg = { path = "../leafc_cfg" }
+leafc_utils = { path = "../leafc_utils" }
 
-atomic = { workspace = true }
-clap = { workspace = true }
-derivative = { workspace = true }
-getset = { workspace = true }
-log = { workspace = true }
-miette = { workspace = true }
-num_cpus = { workspace = true }
-parking_lot = { workspace = true }
-smartstring = { workspace = true }
-smol_str = { workspace = true }
-typed-builder = { workspace = true }
+lasso = "0.6.0"
+derive_more = { workspace = true }
 
 [dev-dependencies]
 pretty_assertions_sorted = { workspace = true }

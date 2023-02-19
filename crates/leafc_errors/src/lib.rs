@@ -226,9 +226,9 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
+    /// use leafc_errors::Locatable;
     /// use leafc_utils::{
     ///     FileId,
-    ///     Locatable,
     ///     Location,
     ///     Span,
     /// };
@@ -245,7 +245,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
+    /// use leafc_errors::Locatable;
     /// ```
     pub fn span(&self) -> Span {
         self.location.span()
@@ -257,7 +257,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
+    /// use leafc_errors::Locatable;
     /// ```
     pub fn file(&self) -> FileId {
         self.location.file()
@@ -271,7 +271,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
+    /// use leafc_errors::Locatable;
     /// ```
     pub fn range(&self) -> Range<usize> {
         self.location.span().range()
@@ -283,7 +283,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
+    /// use leafc_errors::Locatable;
     /// ```
     pub fn start(&self) -> usize {
         self.location.span().start()
@@ -295,7 +295,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
+    /// use leafc_errors::Locatable;
     /// ```
     pub fn end(&self) -> usize {
         self.location.span().end()
@@ -307,7 +307,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_utils::Locatable;
+    /// use leafc_errors::Locatable;
     /// ```
     pub fn map<U: Clone, F: FnOnce(T) -> U>(self, f: F) -> Locatable<U> {
         Locatable::new(self.location, f(self.item))

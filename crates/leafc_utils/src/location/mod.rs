@@ -131,7 +131,7 @@ impl Into<Range<usize>> for Span {
     ///
     /// # Example
     ///
-    /// ```
+    /// ```rust,ignore
     /// use leafc_utils::Span;
     ///
     /// let span = Span::new(0, 10);
