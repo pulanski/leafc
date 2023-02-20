@@ -17,9 +17,17 @@ doctest = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Vendored dependencies
+# These are vendored because they are not published on crates.io
+dupe = { path = "../../third_party/dupe" }
+
+
+allocative = { workspace = true }
+amplify = { workspace = true }
 chrono = { workspace = true }
 derive-new = { workspace = true }
 derive_more = { workspace = true }
+distance = { workspace = true }
 getset = { workspace = true }
 owo-colors = { workspace = true }
 pretty_assertions_sorted = { workspace = true }

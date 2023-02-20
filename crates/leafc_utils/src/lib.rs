@@ -6,7 +6,6 @@
     trivial_numeric_casts,
     unused_extern_crates,
     unused_import_braces,
-    unused_qualifications,
     unused_results,
     bad_style,
     dead_code,
@@ -43,7 +42,7 @@
 )]
 
 /// Defines a collection of utilities for working with the various
-/// [`String`][alloc::string::String] types (e.g. `String`, `&str`, etc.).
+/// string types (e.g. `String`, `&str`, etc.).
 pub mod string;
 
 // pub mod fs;
@@ -59,23 +58,40 @@ pub mod terminal;
 
 /// Defines a number of **more idiomatic** APIs for working with positions
 /// and spans found within the source code (e.g.
-/// [`FilePosition`][crate::location::FilePosition],
-/// [`Span`][crate::location::Span], etc.). These APIs are used to provide
+/// [`LineColumn`][crate::codemap::LineColumn],
+/// [`Span`][crate::codemap::Span], etc.). These APIs are used to provide
 /// **context** for error messages and to **highlight** the source code.
-pub mod location;
+pub mod codemap;
 
 /// Defines a collection of utilities for working with **regular expressions**.
 /// These utilities are used for generating **random strings** that match a
 /// given regular expression.
 pub mod regex_gen;
 
-pub use location::{
-    FileId,
-    FilePosition,
-    Location,
-    Span,
-};
-pub use terminal::{
-    horizontal_padding,
-    vertical_padding,
+pub use {
+    codemap::{
+        FileId,
+        LineColumn,
+        Location,
+        Span,
+        Spanned,
+    },
+    //  regex_gen::{
+    //     RegexGen,
+    //     RegexGenBuilder,
+    // }, string::{
+    //     StringExt,
+    //     StringExtMut,
+    // }, time::{
+    //     DateTimeExt,
+    //     DurationExt,
+    //     NaiveDateTimeExt,
+    //     NaiveTimeExt,
+    //     OffsetDateTimeExt,
+    //     TimeExt,
+    // },};
+    terminal::{
+        horizontal_padding,
+        vertical_padding,
+    },
 };

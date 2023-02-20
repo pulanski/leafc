@@ -64,3 +64,6 @@ Cargo.lock
 tags
 tags.lock
 tags.temp
+
+# Sapling Version Control
+.sl/

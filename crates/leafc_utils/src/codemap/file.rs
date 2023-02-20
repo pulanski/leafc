@@ -1,5 +1,15 @@
-use std::collections::VecDeque;
+use std::{
+    collections::VecDeque,
+    ops::{
+        Add,
+        AddAssign,
+        Sub,
+        SubAssign,
+    },
+};
 
+use amplify::confinement::Collection;
+use derive_more::Display;
 use derive_new::new;
 use getset::{
     CopyGetters,
@@ -10,11 +20,63 @@ use getset::{
 use smartstring::alias::String;
 use smol_str::SmolStr;
 
+use super::text::TextPosition;
+
+// impl TextPosition
+
 /// A **unique identifier** for a **file**.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new, Display)]
 #[new]
 #[allow(clippy::module_name_repetitions)]
+#[display(fmt = "{_0}")]
 pub struct FileId(pub usize);
+
+impl Add<usize> for FileId {
+    type Output = Self;
+
+    /// Adds the given `usize` to the `file_id` of this [`FileId`].
+    fn add(self, rhs: usize) -> Self::Output {
+        Self(self.0 + rhs)
+    }
+}
+
+impl Sub<usize> for FileId {
+    type Output = Self;
+
+    /// Subtracts the given `usize` from the `file_id` of this [`FileId`].
+    fn sub(self, rhs: usize) -> Self::Output {
+        Self(self.0 - rhs)
+    }
+}
+
+impl AddAssign<usize> for FileId {
+    /// Adds the given `usize` to the `file_id` of this [`FileId`].
+    fn add_assign(&mut self, rhs: usize) {
+        self.0 += rhs;
+    }
+}
+
+impl SubAssign<usize> for FileId {
+    /// Subtracts the given `usize` from the `file_id` of this [`FileId`].
+    fn sub_assign(&mut self, rhs: usize) {
+        self.0 -= rhs;
+    }
+}
+
+impl From<usize> for FileId {
+    /// Creates a new [`FileId`] from the given `usize`.
+    fn from(file_id: usize) -> Self {
+        Self(file_id)
+    }
+}
+
+impl PartialEq<usize> for FileId {
+    /// Returns `true` if the given `usize` is equal to the `file_id` of this
+    /// [`FileId`].
+    fn eq(&self, other: &usize) -> bool {
+        self.0 == *other
+    }
+}
 
 /// A **file** that is **loaded** into the compiler.
 ///
@@ -39,6 +101,11 @@ pub struct File {
     /// The **unique identifier** for the file.
     #[getset(get_copy = "pub")]
     file_id:     FileId,
+    /// The **name** of the file.
+    /// This is the name of the file used in **error messages**.
+    /// and **diagnostics**. This is **not** the **absolute path** to the file.
+    #[getset(get = "pub")]
+    name:        SmolStr,
     /// The **absolute path** to the file on the filesystem.
     #[getset(get = "pub")]
     abs_path:    SmolStr,
@@ -49,44 +116,7 @@ pub struct File {
     /// This is used to **efficiently** convert between **spans** and
     /// **line/column positions**.
     #[getset(get_mut = "pub")]
-    line_starts: VecDeque<usize>,
-}
-
-/// A **collection** of [`File`]s. This is used to **store** the **contents**
-/// of all files that are **loaded** into the compiler at once for a given
-/// program.
-///
-/// # Examples
-///
-/// ```rust,ignore
-/// use leafc_utils::location::FileSet;
-///
-/// let mut file_set = FileSet::new();
-/// let file_id = file_set.add_file("foo", "bar");
-/// let file = file_set.get_file(file_id);
-/// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, CopyGetters, MutGetters, Setters)]
-#[allow(clippy::module_name_repetitions)]
-pub struct FileSet {
-    /// The **files** that are **contained** within this [`FileSet`].
-    #[getset(get = "pub", get_mut = "pub")]
-    files: Vec<File>,
-
-    /// The **next available file identifier**.
-    #[getset(get_copy = "pub", set = "pub")]
-    next_file_id: usize,
-
-    /// The **absolute path** to the **current working directory**.
-    #[getset(get = "pub", set = "pub")]
-    cwd: SmolStr,
-}
-
-impl PartialEq<usize> for FileId {
-    /// Returns `true` if the given `usize` is equal to the `file_id` of this
-    /// [`FileId`].
-    fn eq(&self, other: &usize) -> bool {
-        self.0 == *other
-    }
+    line_starts: VecDeque<TextPosition>,
 }
 
 impl File {
@@ -114,13 +144,13 @@ impl File {
     /// ```
     pub fn new(
         file_id: usize,
-        abs_path: impl Into<SmolStr>,
+        abs_path: impl Into<SmolStr> + Clone,
         source_text: impl Into<String>,
     ) -> Self {
         let mut line_starts = VecDeque::new();
         let source_text = source_text.into();
 
-        let mut byte_count = 0;
+        let mut byte_count: TextPosition = TextPosition::new(0);
 
         for line in source_text.lines() {
             // TODO: move this to tracing
@@ -131,13 +161,22 @@ impl File {
                                           // newline character
         }
 
-        Self { file_id: FileId(file_id), abs_path: abs_path.into(), source_text, line_starts }
+        let binding = abs_path.clone().into();
+        let filename = binding.split('/').last().unwrap_or_else(|| binding.as_str());
+
+        Self {
+            file_id: FileId(file_id),
+            abs_path: abs_path.into(),
+            source_text,
+            line_starts,
+            name: filename.into(),
+        }
     }
 
     /// Returns the **starting byte index** of the given `line_index` in this
     /// [`File`].
     #[must_use]
-    pub fn line_start(&self, line_index: usize) -> Option<usize> {
+    pub fn line_start(&self, line_index: usize) -> Option<TextPosition> {
         use std::cmp::Ordering;
 
         // TODO: maybe in the future track EOF
@@ -147,6 +186,35 @@ impl File {
             Ordering::Equal | Ordering::Greater => None,
         }
     }
+}
+
+/// A **collection** of [`File`]s. This is used to **store** the **contents**
+/// of all files that are **loaded** into the compiler at once for a given
+/// program.
+///
+/// # Examples
+///
+/// ```rust,ignore
+/// use leafc_utils::location::FileSet;
+///
+/// let mut file_set = FileSet::new();
+/// let file_id = file_set.add_file("foo", "bar");
+/// let file = file_set.get_file(file_id);
+/// ```
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, CopyGetters, MutGetters, Setters)]
+#[allow(clippy::module_name_repetitions)]
+pub struct FileSet {
+    /// The **files** that are **contained** within this [`FileSet`].
+    #[getset(get = "pub", get_mut = "pub")]
+    files: VecDeque<File>,
+
+    /// The **next available file identifier**.
+    #[getset(get_copy = "pub", set = "pub")]
+    next_file_id: FileId,
+
+    /// The **absolute path** to the **current working directory**.
+    #[getset(get = "pub", set = "pub")]
+    cwd: SmolStr,
 }
 
 impl Default for FileSet {
@@ -187,8 +255,8 @@ impl FileSet {
     #[must_use]
     pub fn new() -> Self {
         Self {
-            files:        Vec::new(),
-            next_file_id: 0,
+            files:        VecDeque::new(),
+            next_file_id: FileId(0),
             cwd:          std::env::current_dir().unwrap().to_string_lossy().into_owned().into(),
         }
     }
@@ -197,16 +265,16 @@ impl FileSet {
     /// text** to this [`FileSet`].
     pub fn add_file(
         &mut self,
-        abs_path: impl Into<SmolStr>,
+        abs_path: impl Into<SmolStr> + Clone,
         source_text: impl Into<String>,
     ) -> FileId {
         let file_id = self.next_file_id;
         self.next_file_id += 1;
 
-        let file = File::new(file_id, abs_path, source_text);
+        let file = File::new(file_id.0, abs_path, source_text);
         self.files.push(file);
 
-        FileId(file_id)
+        file_id
     }
 
     /// Returns the [`File`] with the given `file_id` from this [`FileSet`].
@@ -226,7 +294,7 @@ mod file_test_suite {
     fn test_file_line_start() {
         let file_one = File::new(0, "foo", "bar");
 
-        assert_eq!(file_one.line_start(0), Some(0));
+        assert_eq!(file_one.line_start(0), Some(TextPosition::from(0)));
         assert_eq!(file_one.line_start(1), None);
 
         let file_two = File::new(
@@ -238,10 +306,10 @@ mod file_test_suite {
 8920",
         );
 
-        assert_eq!(file_two.line_start(0), Some(0));
-        assert_eq!(file_two.line_start(1), Some(7));
-        assert_eq!(file_two.line_start(2), Some(11));
-        assert_eq!(file_two.line_start(3), Some(18));
+        assert_eq!(file_two.line_start(0), Some(TextPosition::from(0)));
+        assert_eq!(file_two.line_start(1), Some(TextPosition::from(7)));
+        assert_eq!(file_two.line_start(2), Some(TextPosition::from(11)));
+        assert_eq!(file_two.line_start(3), Some(TextPosition::from(18)));
         assert_eq!(file_two.line_start(4), None);
 
         let file = File::new(
@@ -254,11 +322,11 @@ mod file_test_suite {
         baz",
         );
 
-        assert_eq!(file.line_start(0), Some(0));
-        assert_eq!(file.line_start(1), Some(4));
-        assert_eq!(file.line_start(2), Some(5));
-        assert_eq!(file.line_start(3), Some(6));
-        assert_eq!(file.line_start(4), Some(7));
+        assert_eq!(file.line_start(0), Some(TextPosition::from(0)));
+        assert_eq!(file.line_start(1), Some(TextPosition::from(4)));
+        assert_eq!(file.line_start(2), Some(TextPosition::from(5)));
+        assert_eq!(file.line_start(3), Some(TextPosition::from(6)));
+        assert_eq!(file.line_start(4), Some(TextPosition::from(7)));
         assert_eq!(file.line_start(5), None);
     }
 
@@ -289,5 +357,62 @@ mod file_test_suite {
         let file_id = file_set.add_file("baz", "qux");
 
         assert_eq!(file_set.files(), &[File::new(0, "foo", "bar"), File::new(1, "baz", "qux")]);
+    }
+}
+
+/// A combination of a **line** and **column** in a source file.
+///
+/// This is used to provide **context** for error messages and
+/// to **highlight** the source code.
+///
+/// # Example
+///
+/// ```ignore
+/// use leafc_lexer::TokenStream;
+///
+/// let input = "x := 5;";
+/// let tokens = TokenStream::new(input);
+///
+/// // TODO: add example
+/// ```
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, CopyGetters, MutGetters, Setters, new)]
+#[allow(clippy::module_name_repetitions)]
+pub struct LineColumn {
+    /// The **line** of the position.
+    line:   usize,
+    /// The **column** of the position.
+    column: usize,
+}
+
+impl From<(usize, usize)> for LineColumn {
+    /// Converts a **tuple** of the **line** and **offset** to a `LineColumn`.
+    /// The **tuple** is of the form `(line, offset)`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use leafc_utils::LineColumn;
+    ///
+    /// let (line, offset) = (0, 0);
+    /// let file_position = LineColumn::from((line, offset));
+    /// ```
+    fn from((line, offset): (usize, usize)) -> Self {
+        Self { line, column: offset }
+    }
+}
+
+impl From<LineColumn> for (usize, usize) {
+    /// Converts a `LineColumn` to a **tuple** of the **line** and **offset**.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use leafc_utils::LineColumn;
+    ///
+    /// let file_position = LineColumn::new(0, 0);
+    /// let (line, offset) = file_position.into();
+    /// ```
+    fn from(position: LineColumn) -> Self {
+        (position.line, position.column)
     }
 }

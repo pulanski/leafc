@@ -23,6 +23,7 @@ use std::{
 };
 
 use leafc_utils::{
+    codemap::TextPosition,
     FileId,
     Location,
     Span,
@@ -273,7 +274,7 @@ impl<T: Clone> Locatable<T> {
     /// // TODO: add example
     /// use leafc_errors::Locatable;
     /// ```
-    pub fn range(&self) -> Range<usize> {
+    pub fn range(&self) -> Range<TextPosition> {
         self.location.span().range()
     }
 
@@ -285,7 +286,7 @@ impl<T: Clone> Locatable<T> {
     /// // TODO: add example
     /// use leafc_errors::Locatable;
     /// ```
-    pub fn start(&self) -> usize {
+    pub fn start(&self) -> TextPosition {
         self.location.span().start()
     }
 
@@ -297,7 +298,7 @@ impl<T: Clone> Locatable<T> {
     /// // TODO: add example
     /// use leafc_errors::Locatable;
     /// ```
-    pub fn end(&self) -> usize {
+    pub fn end(&self) -> TextPosition {
         self.location.span().end()
     }
 

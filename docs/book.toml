@@ -4,3 +4,12 @@ language = "en"
 multilingual = false
 src = "src"
 title = "The Leaf Reference"
+description = "A reference for the Leafc Compiler"
+
+[output.html.print]
+enable = true
+
+[output.pdf]
+optional = true
+
+[output.html]

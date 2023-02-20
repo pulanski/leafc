@@ -4,7 +4,7 @@ use std::fmt;
 // TOOD: remove this
 use crate::token::TokenKind;
 use getset::Getters;
-use leafc_utils::location::Span;
+use leafc_utils::codemap::Span;
 use logos::Logos;
 use owo_colors::OwoColorize;
 use smol_str::SmolStr;
