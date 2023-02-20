@@ -1,1 +1,3 @@
-# SHR*EQ (\_Shift Right Equal*), `>>=`
+# SHR_EQ, `>>=`
+
+#### _Shift Right Equal_

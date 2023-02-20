@@ -1,0 +1,49 @@
+[package]
+name = "leafc_lexer"
+version = "0.1.0"
+description = "Leafc Lexer. A pushdown automaton based lexer with idiomatic data structures."
+keywords = ["leafc", "lexer", "compiler"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
+
+[features]
+# default = ["buffer_pool", "replacer", "lru_k_replacer"]
+# all = ["buffer_pool", "replacer", "lru_replacer", "lru_k_replacer", "serde"]
+# serde = ["dep:serde"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+leafc_utils = { path = "../leafc_utils" }
+
+
+atomic = { workspace = true }
+clap = { workspace = true }
+derivative = { workspace = true }
+derive_more = { workspace = true }
+getset = { workspace = true }
+log = { workspace = true }
+logos = { workspace = true }
+logos-derive = { workspace = true }
+miette = { workspace = true }
+num_cpus = { workspace = true }
+owo-colors = { workspace = true }
+parking_lot = { workspace = true }
+smartstring = { workspace = true }
+smol_str = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }
+typed-builder = { workspace = true }
+wax = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions_sorted = { workspace = true }
+rstest = { workspace = true }

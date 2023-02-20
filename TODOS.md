@@ -86,3 +86,21 @@ the generated files are modified, and the tests fail in ci. Instead, migrate the
 
 [ ] - get a sense of syntactic structure using `lalrpop` and then use that to guide the
 rest of the parsing system
+
+Goal:
+
+-   Debug print of the AST itself should be able to be used to generate the AST. That is,
+    the debug print should be a lossless representation of the original source text.
+
+Example:
+
+```rust
+
+// original source text
+let x = 1 + 2;
+
+// debug print of the AST
+let x = 1 + 2;
+
+// AST
+```

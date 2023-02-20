@@ -1,0 +1,43 @@
+[package]
+name = "leafc_repl"
+version = "0.1.0"
+description = "The REPL environment for Leafc"
+keywords = ["leafc", "repl"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+leafc_cli = { path = "../leafc_cli" }
+leafc_cfg = { path = "../leafc_cfg" }
+leafc_driver = { path = "../leafc_driver" }
+leafc_errors = { path = "../leafc_errors" }
+leafc_log = { path = "../leafc_log" }
+leafc_utils = { path = "../leafc_utils" }
+
+
+chrono = { workspace = true }
+crossterm = { workspace = true }
+derive-new = { workspace = true }
+derivative = { workspace = true }
+getset = { workspace = true }
+miette = { workspace = true }
+nu-ansi-term = { workspace = true }
+owo-colors = { workspace = true }
+reedline = { workspace = true }
+rusqlite = { workspace = true }
+pretty_assertions_sorted = { workspace = true }
+smartstring = { workspace = true }
+smol_str = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }
+typed-builder = { workspace = true }

@@ -1,8 +1,8 @@
-# Abstract, `abstract`
+## Abstract, `abstract`
 
 The `abstract` keyword is used to **declare** an **abstract type**.
 
-## Regex
+### Regex
 
 ```regex
 abstract // English, Dutch
@@ -19,7 +19,7 @@ abstract // English, Dutch
 | dhahania // Swahili
 ```
 
-## Examples
+### Examples
 
 ```leaf,ignore
 abstract type Foo

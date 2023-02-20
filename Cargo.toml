@@ -1,5 +1,5 @@
 [workspace]
-default-members = ["crates/leafc"]
+default-members = ["crates/compiler/leafc"]
 
 members = [
     # "examples/",
@@ -8,32 +8,48 @@ members = [
     ###########################################################################
     # Binaries
     ###########################################################################
-    "crates/leafc",
-    "crates/leafcdb",
+
+    # ------------------------------------------------------------------------
+    # leafc
+    # ------------------------------------------------------------------------
+    "crates/compiler/leafc",
+
+    # ------------------------------------------------------------------------
+    # leafcdb
+    # ------------------------------------------------------------------------
+    "crates/tools/leafcdb",
 
     ###########################################################################
     # Libraries
     ###########################################################################
-    "crates/leafc_build",
-    "crates/leafc_cfg",
-    "crates/leafc_cli",
+
+    # ------------------------------------------------------------------------
+    # bark (Leaf's build system)
+    # ------------------------------------------------------------------------
+    "crates/package_manager/leafc_build",
+
+    # ------------------------------------------------------------------------
+    # leafc
+    # ------------------------------------------------------------------------
+    "crates/compiler/leafc_cfg",
+    "crates/compiler/leafc_cli",
     # "crates/leafc_codegen",
-    "crates/leafc_driver",
-    "crates/leafc_errors",
-    "crates/leafc_intern",
-    "crates/leafc_lexer",
-    "crates/leafc_log",
+    "crates/compiler/leafc_driver",
+    "crates/compiler/leafc_errors",
+    "crates/compiler/leafc_intern",
+    "crates/compiler/leafc_lexer",
+    "crates/compiler/leafc_log",
     # "crates/leafc_macros",
-    "crates/leafc_parser",
-    "crates/leafc_repl",
-    "crates/leafc_syntax",
-    "crates/leafc_utils",
+    "crates/compiler/leafc_parser",
+    "crates/compiler/leafc_repl",
+    "crates/compiler/leafc_syntax",
+    "crates/compiler/leafc_utils",
 
     ###########################################################################
     # Vendored Third-Party Libraries
     ###########################################################################
-    "third_party/dupe",
-    "third_party/dupe_derive",
+    "crates/third_party/dupe",
+    "crates/third_party/dupe_derive",
 ]
 
 [workspace.package]
@@ -83,6 +99,7 @@ distance = "0.4.0"
 doc-comment = "0.3.3"
 fern = "0.6.1"
 fxhash = "0.2.1"
+gazebo = "0.8.1"
 getset = "0.1.2"
 hashbrown = "0.13.2"
 humantime = "2.1.0"
@@ -94,6 +111,7 @@ lasso = "0.6.0"
 lazy_static = "1.4.0"
 llvm-sys = "160.0.0"
 llvm-ir = "0.8.2"
+load_file = "1.0.1"
 log = "0.4.17"
 logos = "0.12.1"
 logos-derive = "0.12.1"

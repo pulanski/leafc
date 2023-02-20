@@ -1,1 +1,3 @@
-# SHL*EQ (\_Shift Left Equal*), `<<=`
+# SHL_EQ, `<<=`
+
+#### _Shift Left Equal_

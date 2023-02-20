@@ -1,0 +1,40 @@
+[package]
+name = "leafc_utils"
+version = "0.1.0"
+description = "Utilities for leafc and leafc plugins (e.g. location tracking, string utilities, etc.)"
+keywords = ["leafc", "utils", "string", "location", "error", "error-handling"]
+
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# Vendored dependencies
+# These are vendored because they are not published on crates.io
+dupe = { path = "../../third_party/dupe" }
+
+
+allocative = { workspace = true }
+amplify = { workspace = true }
+chrono = { workspace = true }
+derive-new = { workspace = true }
+derive_more = { workspace = true }
+distance = { workspace = true }
+gazebo = { workspace = true }
+getset = { workspace = true }
+owo-colors = { workspace = true }
+pretty_assertions_sorted = { workspace = true }
+smartstring = { workspace = true }
+smol_str = { workspace = true }
+
+rand_regex = { workspace = true }
+regex_generate = "0.2.1"
+rand = "0.8.5"
