@@ -29,6 +29,7 @@ members = [
     # "crates/leafc_codegen",
     "crates/compiler/leafc_driver",
     "crates/compiler/leafc_errors",
+    "crates/compiler/leafc_hir",
     "crates/compiler/leafc_intern",
     "crates/compiler/leafc_lexer",
     "crates/compiler/leafc_log",
@@ -87,6 +88,7 @@ clap = { version = "4.1.6", features = ["derive"] }
 codespan-reporting = "0.11.1"
 config = "0.13.3"
 crossterm = "0.26.0"
+dashmap = "5.4.0"
 derivative = "2.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"

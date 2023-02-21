@@ -1,7 +1,7 @@
 [package]
-name = "leafcdb"
-description = "Debugger for Leafc built within a TUI environment"
-keywords = ["compiler", "debugger", "tui"]
+name = "leafc_hir"
+description = "The **HIR** (High-level Intermediate Representation) of the Leaf compiler."
+keywords = ["compiler", "leaf", "hir", "intermediate representation", "ir"]
 
 version.workspace = true
 authors.workspace = true

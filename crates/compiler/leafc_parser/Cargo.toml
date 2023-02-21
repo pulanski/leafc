@@ -1,9 +1,9 @@
 [package]
 name = "leafc_parser"
-version = "0.1.0"
 description = "A recursive descent parser for the Leaf programming language based on Red-Green Syntax Trees"
 keywords = ["leafc", "parser", "recursive descent"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

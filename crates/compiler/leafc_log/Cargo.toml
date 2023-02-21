@@ -1,9 +1,9 @@
 [package]
 name = "leafc_log"
-version = "0.1.0"
 description = "Logging facilities for Leafc (both user-facing and internal)"
 keywords = ["leafc", "logging"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

@@ -1,9 +1,9 @@
 [package]
 name = "leafc_utils"
-version = "0.1.0"
 description = "Utilities for leafc and leafc plugins (e.g. location tracking, string utilities, etc.)"
 keywords = ["leafc", "utils", "string", "location", "error", "error-handling"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

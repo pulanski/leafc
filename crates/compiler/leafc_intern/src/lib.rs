@@ -48,4 +48,8 @@ pub mod string;
 /// [`Hash`], [`Hasher`][crate::hash::LeafcHasher], etc.).
 pub mod hash;
 
-// TODO: add generic support for interned values (e.g. `Interned<T>`)
+/// Supports **generic** interning, that is, interning of **any type**, `T`.
+/// This is done by using a **hash map** to store the interned values. This
+/// can be used to intern **any type** in either a **multi-threaded** or
+/// **single-threaded** environment with the same API.
+pub mod generic;

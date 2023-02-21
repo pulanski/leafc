@@ -113,6 +113,14 @@ of the function that is being called. This will be useful for debugging and trac
 [ ] - Extract the `arena` crate into an external `stampede` crate: generic typed, thread-safe arena for low-level allcation features along with high-level APIs for managing memory - [ ] `stampede` - [ ] **Typed** indices into the arena
 
 -   [ ] Figure out how shared contexts will work
+
     -   References:
         -   https://tmandry.gitlab.io/blog/posts/2021-12-21-context-capabilities/
         -   https://jam1.re/blog/thoughts-on-contexts-and-capabilities-in-rust
+
+-   [ ] Generic Interning, similar to `internment` crate, but with a more generic API
+        and more features (i.e. `Arc` and `Rc` support, etc.). Same API exposed for
+        both **multi-threaded** and **single-threaded** contexts.
+
+-   [ ] Automate versioning / tagging and general release cycle to a certain extent (i.e. have cadence
+        of releases)

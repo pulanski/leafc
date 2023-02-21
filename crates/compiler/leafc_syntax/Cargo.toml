@@ -1,9 +1,9 @@
 [package]
 name = "leafc_syntax"
-version = "0.1.0"
 description = "Defines lossless concrete syntax trees for Leaf, based on rowan"
 keywords = ["leafc", "syntax", "rowan", "red-green", "concrete-syntax-tree"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

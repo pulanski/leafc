@@ -1,9 +1,9 @@
 [package]
 name = "leafc_repl"
-version = "0.1.0"
 description = "The REPL environment for Leafc"
 keywords = ["leafc", "repl"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

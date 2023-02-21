@@ -1,9 +1,9 @@
 [package]
 name = "leafc_cfg"
-version = "0.1.0"
 description = "Configuration for Leafc (e.g. \"emit-llvm\",\"emit-asm\", O-level, etc.)"
 keywords = ["leafc", "configuration"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

@@ -1,9 +1,9 @@
 [package]
 name = "leafc_intern"
-version = "0.1.0"
 description = "Leafc's interning system, which is used to intern strings and other data structures within the compiler used during the compilation lifecycle."
 keywords = ["leafc", "interning", "string", "string interning", "compiler"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true
@@ -24,6 +24,7 @@ serde = ["dep:serde"]
 [dependencies]
 aquamarine = { workspace = true }
 blake3 = { workspace = true }
+dashmap = { workspace = true }
 derive_more = { workspace = true }
 fxhash = { workspace = true }
 hashbrown = { workspace = true }

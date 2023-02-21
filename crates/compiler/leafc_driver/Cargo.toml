@@ -1,9 +1,9 @@
 [package]
 name = "leafc_driver"
-version = "0.1.0"
-description = "A buffer pool for storing data in memory. Handles **reading pages from disk into the in-memory buffer pool**, and **writing pages from the buffer pool to disk**."
-keywords = ["buffer", "pool", "memory", "disk", "page", "storage", "database"]
+description = "The main driver for Leafc, the Leaf compiler. Used in both the REPL context and the build context."
+keywords = ["leaf", "compiler", "driver"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

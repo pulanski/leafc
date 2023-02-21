@@ -1,9 +1,9 @@
 [package]
 name = "leafc_lexer"
-version = "0.1.0"
 description = "Leafc Lexer. A pushdown automaton based lexer with idiomatic data structures."
 keywords = ["leafc", "lexer", "compiler"]
 
+version.workspace = true
 categories.workspace = true
 repository.workspace = true
 license.workspace = true

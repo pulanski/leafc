@@ -1,9 +1,9 @@
 [package]
 name = "leafc"
-version = "0.1.0"
 description = "Leafc is a simple, fast, and safe incremental compiler written in Rust."
 keywords = ["compiler", "incremental", "rust"]
 
+version.workspace = true
 authors.workspace = true
 categories.workspace = true
 edition.workspace = true
