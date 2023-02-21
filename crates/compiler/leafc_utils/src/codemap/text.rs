@@ -39,7 +39,6 @@ use std::ops::{
     Ord,
     Debug,
     Default,
-    Allocative,
     new,
     Add,
     Sub,
@@ -52,6 +51,7 @@ use std::ops::{
 #[allow(clippy::module_name_repetitions)]
 #[display(fmt = "{_0}")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "allocative", derive(Allocative))]
 #[repr(transparent)]
 pub struct TextPosition(usize);
 

@@ -15,8 +15,8 @@ readme.workspace = true
 doctest = true
 
 [features]
-# default = []
-default = ["allocative", "serde", "multi-threaded"]
+default = []
+# default = ["allocative", "serde", "multi-threaded"]
 all = ["allocative", "serde", "multi-threaded"]
 allocative = []
 serde = ["dep:serde"]

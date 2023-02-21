@@ -27,13 +27,14 @@ members = [
     "crates/compiler/leafc_cfg",
     "crates/compiler/leafc_cli",
     # "crates/leafc_codegen",
+    "crates/compiler/leafc_data_structures",
     "crates/compiler/leafc_driver",
     "crates/compiler/leafc_errors",
     "crates/compiler/leafc_hir",
     "crates/compiler/leafc_intern",
     "crates/compiler/leafc_lexer",
     "crates/compiler/leafc_log",
-    # "crates/leafc_macros",
+    "crates/compiler/leafc_macros",
     "crates/compiler/leafc_parser",
     "crates/compiler/leafc_repl",
     "crates/compiler/leafc_syntax",
@@ -73,7 +74,18 @@ categories = ["compiler"]
 exclude = ["**/tests/**", "**/benches/**"]
 include = ["**/README.md", "**/LICENSE", "**/Cargo.toml", "**/Cargo.lock"]
 
+[workspace.badges]
+
+# appveyor = { repository = "pulanski/leafc" }
+# travis-ci = { repository = "pulanski/leafc" }
+# coveralls = { repository = "pulanski/leafc" }
+
+is-it-maintained-issue-resolution = { repository = "pulanski/leafc" }
+is-it-maintained-open-issues = { repository = "pulanski/leafc" }
+maintenance = { status = "actively-developed" }
+
 [workspace.dependencies]
+ahash = "0.8.3"
 allocative = "0.2.0"
 amplify = "3.14.1"
 anyhow = "1.0.68"
@@ -83,12 +95,13 @@ blake3 = "1.3.3"
 bincode = "1.3"
 bumpalo = "3.9.0"
 bytes = "1.3.0"
+cfg-if = "1.0.0"
 chrono = "0.4"
 clap = { version = "4.1.6", features = ["derive"] }
 codespan-reporting = "0.11.1"
 config = "0.13.3"
 crossterm = "0.26.0"
-dashmap = "5.4.0"
+dashmap = { version = "5.4.0", features = ["serde", "rayon", "raw-api"] }
 derivative = "2.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"
@@ -146,6 +159,7 @@ smartstring = "1.0.1"
 smol_str = "0.1.24"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
+syn = "1.0.107"
 sys-locale = "0.2.3"
 test-context = "0.1.4"
 thiserror = "1.0.38"

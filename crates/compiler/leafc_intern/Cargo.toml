@@ -15,15 +15,21 @@ readme.workspace = true
 doctest = true
 
 [features]
-default = []
+default = ["multi-threaded"]
 multi-threaded = ["lasso/multi-threaded"]
-serde = ["dep:serde"]
+serde = ["dep:serde", "lasso/serde"]
+no-std = ["lasso/no-std"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+leafc_data_structures = { path = "../leafc_data_structures" }
+leafc_macros = { path = "../leafc_macros" }
+
+ahash = { workspace = true }
 aquamarine = { workspace = true }
 blake3 = { workspace = true }
+cfg-if = { workspace = true }
 dashmap = { workspace = true }
 derive_more = { workspace = true }
 fxhash = { workspace = true }

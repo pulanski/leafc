@@ -9,16 +9,20 @@ use serde::{
     Serialize,
 };
 
-use crate::hash::InsecureHasher;
+use leafc_data_structures::hash::InsecureHasher;
 
+#[cfg(not(feature = "multi-threaded"))]
 use std::{
     cell::RefCell,
+    rc::Rc,
+};
+
+use std::{
     fmt::{
         Debug,
         Display,
     },
     mem,
-    rc::Rc,
 };
 
 use lasso::{
@@ -144,7 +148,7 @@ impl StringId {
 #[cfg(feature = "multi-threaded")]
 #[derive(Debug, Clone)]
 #[repr(transparent)]
-pub struct StringInterner(Arc<ThreadedRodeo<Spur, Hasher>>);
+pub struct StringInterner(Arc<ThreadedRodeo<Spur, InsecureHasher>>);
 
 /// A **single-threaded** string interner. This allows multiple strings to be
 /// stored in a single location, and allows for fast comparisons between
@@ -163,7 +167,7 @@ impl StringInterner {
     pub fn new() -> Self {
         Self(Arc::new(ThreadedRodeo::with_capacity_and_hasher(
             Capacity::for_strings(DEFAULT_CAPACITY),
-            Hasher::default(),
+            InsecureHasher::default(),
         )))
     }
 

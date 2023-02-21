@@ -30,7 +30,7 @@ use std::{
 
 #[cfg(feature = "allocative")]
 use allocative::Allocative;
-use leafc_intern::string::StringId;
+
 #[cfg(feature = "serde")]
 use serde::{
     Deserialize,
@@ -51,14 +51,17 @@ use getset::{
 use smartstring::alias::String;
 use smol_str::SmolStr;
 
+use leafc_intern::string::StringId;
+
 use super::text::TextPosition;
 
 /// A **unique identifier** for a **file**.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new, Display, Allocative)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new, Display)]
 #[new]
 #[allow(clippy::module_name_repetitions)]
 #[display(fmt = "{_0}")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "allocative", derive(Allocative))]
 #[repr(transparent)]
 pub struct FileId(pub usize);
 

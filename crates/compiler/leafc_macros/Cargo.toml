@@ -1,0 +1,21 @@
+[package]
+name = "leafc_macros"
+description = "Macros used by leafc, both procedural and declarative"
+keywords = ["leafc", "macros", "declarative", "procedural", "proc-macro"]
+
+version.workspace = true
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+authors.workspace = true
+readme.workspace = true
+
+[lib]
+doctest = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+proc-macro2 = { workspace = true }
+syn = { workspace = true }

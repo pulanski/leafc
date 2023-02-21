@@ -1,2 +1,2 @@
 # Minimum support Rust version
-msrv = "1.68"
+msrv = "1.67.1" # TODO: auto-update this when new Rust versions are released

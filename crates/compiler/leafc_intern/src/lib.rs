@@ -1,5 +1,8 @@
+#![doc = CRATE_README!()]
 #![feature(proc_macro_hygiene)]
 #![feature(type_alias_impl_trait)]
+
+use leafc_macros::CRATE_README;
 
 #[cfg_attr(doc, aquamarine::aquamarine)]
 /// Provides support for **interning strings**. This allows for strings to be
@@ -44,12 +47,34 @@
 /// ```
 pub mod string;
 
-/// Defines a collection of utilities for working with **hashes** (e.g.
-/// [`Hash`], [`Hasher`][crate::hash::LeafcHasher], etc.).
-pub mod hash;
-
 /// Supports **generic** interning, that is, interning of **any type**, `T`.
 /// This is done by using a **hash map** to store the interned values. This
 /// can be used to intern **any type** in either a **multi-threaded** or
 /// **single-threaded** environment with the same API.
 pub mod generic;
+
+#[doc(hidden)]
+mod hasher {
+    use leafc_data_structures::compile;
+
+    compile! {
+        if #[feature = "ahasher"] {
+            pub use ahash::RandomState;
+        } else {
+            pub use std::collections::hash_map::RandomState;
+        }
+    }
+}
+
+#[doc(hidden)]
+mod locks {
+    use leafc_data_structures::compile;
+
+    compile! {
+        if #[feature = "no-std"] {
+            pub use alloc::sync::Arc;
+        } else {
+            pub use std::sync::Arc;
+        }
+    }
+}

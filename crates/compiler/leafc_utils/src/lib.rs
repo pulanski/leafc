@@ -39,6 +39,7 @@
 #![allow(
     dead_code, unused_variables, // TODO: temporary
     clippy::multiple_crate_versions, // required for transitive dependencies
+    clippy::negative_feature_names, // required for `feature = "no-std"`
 )]
 
 /// Defines a collection of utilities for working with the various
@@ -67,10 +68,6 @@ pub mod codemap;
 /// These utilities are used for generating **random strings** that match a
 /// given regular expression.
 pub mod regex_gen;
-
-/// Defines a collection of utilities for working with **collections** (e.g.
-/// [`Vec`], [`HashMap`][crate::collections::HashMap], etc.).
-pub mod collections;
 
 pub use {
     codemap::{

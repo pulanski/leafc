@@ -1,16 +1,12 @@
-// #![feature(proc_macro_hygiene)]
 #![allow(mixed_script_confusables)]
 #![feature(proc_macro_hygiene)]
 
 /// The **READ-ME** file for the lexer.
-// #[macro_export]
 macro_rules! LEXER_README {
     () => {
         include_str!("../LEXER.md")
     };
 }
-
-// use crate::LEXER_README;
 
 #[cfg_attr(doc, aquamarine::aquamarine)]
 #[doc = LEXER_README!()]
