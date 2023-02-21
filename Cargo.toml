@@ -133,7 +133,7 @@ reedline = { version = "0.15.0", features = ["sqlite"] }
 regex = "1.7.1"
 rowan = "0.15.10"
 rstest = "0.16.0"
-rug = "1.19.0"
+rug = "1.19.1"
 rust-i18n = "1.1.1"
 rusty_ulid = "2.0.0"
 rusqlite = "0.28.0"
