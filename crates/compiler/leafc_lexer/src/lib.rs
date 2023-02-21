@@ -1,16 +1,35 @@
+// #![feature(proc_macro_hygiene)]
 #![allow(mixed_script_confusables)]
-//! The lexer for Leaf.
-//!
-//! This module contains the lexer for Leaf, which is used to tokenize
-//! Leaf source code into a stream of tokens.
+#![feature(proc_macro_hygiene)]
+
+/// The **READ-ME** file for the lexer.
+// #[macro_export]
+macro_rules! LEXER_README {
+    () => {
+        include_str!("../LEXER.md")
+    };
+}
+
+// use crate::LEXER_README;
+
+#[cfg_attr(doc, aquamarine::aquamarine)]
+#[doc = LEXER_README!()]
+/// ```mermaid
+/// graph LR
+///     s([Source]) --> a[[aquamarine]]
+///     r[[rustdoc]] --> f([Docs w/ Mermaid!])
+///     subgraph rustc[Rust Compiler]
+///     a -. inject mermaid.js .-> r
+///     end
+/// ```
+pub mod lexer;
 
 pub mod token;
 
-pub mod lexer;
-
-pub use token::TokenKind;
-
-pub use lexer::{
-    lossless_lex,
-    lossy_lex,
+pub use {
+    lexer::{
+        lossless_lex,
+        lossy_lex,
+    },
+    token::TokenKind,
 };

@@ -6,10 +6,39 @@ use std::{
         Sub,
         SubAssign,
     },
-    sync::Arc,
 };
 
+// TODO: source text string in general should be interned within data structures
+// that use it across the compiler.
+
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::atomic::AtomicCell;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::atomic::Ordering;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::queue::SegQueue;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::queue::SegQueueError;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::queue::SegQueueIter;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::queue::SegQueueIterMut;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::queue::SegQueuePeek;
+// #[cfg(feature = "multi-threaded")]
+// use crossbeam::queue::SegQueuePeekMut;
+
+#[cfg(feature = "allocative")]
 use allocative::Allocative;
+use leafc_intern::string::StringId;
+#[cfg(feature = "serde")]
+use serde::{
+    Deserialize,
+    Serialize,
+};
+#[cfg(feature = "multi-threaded")]
+use std::sync::Arc;
+
 use amplify::confinement::Collection;
 use derive_more::Display;
 use derive_new::new;
@@ -24,13 +53,13 @@ use smol_str::SmolStr;
 
 use super::text::TextPosition;
 
-// impl TextPosition
-
 /// A **unique identifier** for a **file**.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new, Display, Allocative)]
 #[new]
 #[allow(clippy::module_name_repetitions)]
 #[display(fmt = "{_0}")]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[repr(transparent)]
 pub struct FileId(pub usize);
 
 impl Add<usize> for FileId {
@@ -97,8 +126,9 @@ impl PartialEq<usize> for FileId {
 /// assert_eq!(file.source_text(), "bar");
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, CopyGetters, MutGetters, Setters)]
-// #[derive(Debug, Clone, PartialEq, Eq, Hash, new)]
+// #[derive(new)]
 #[getset(get_mut = "pub", set = "pub")]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[allow(clippy::module_name_repetitions)]
 pub struct FileData {
     /// The **unique identifier** for the file.
@@ -114,7 +144,7 @@ pub struct FileData {
     abs_path:    SmolStr,
     /// The **source text** contained within the file.
     #[getset(get = "pub")]
-    source_text: String,
+    source_text: StringId,
     /// The **start indices** of each line in the file.
     /// This is used to **efficiently** convert between **spans** and
     /// **line/column positions**.
@@ -132,7 +162,8 @@ impl FileData {
     ///
     /// * `abs_path` - The **absolute path** to the file on the filesystem.
     ///
-    /// * `source_text` - The **source text** contained within the file.
+    /// * `source_text` - An **interned string** containing the **source text**
+    ///  contained within the file.
     ///
     /// # Examples
     ///
@@ -150,18 +181,22 @@ impl FileData {
         abs_path: impl Into<SmolStr> + Clone,
         source_text: impl Into<String>,
     ) -> Self {
+        // with ctxt: Ctxt {
         let mut line_starts = VecDeque::new();
-        let source_text = source_text.into();
+        let source_text: String = source_text.into();
         line_starts.push_back(TextPosition::new(0));
         line_starts.extend(source_text.match_indices('\n').map(|(i, _)| TextPosition::new(i + 1)));
 
         let path = abs_path.clone().into();
         let filename = path.split('/').last().unwrap_or_else(|| path.as_str());
 
+        // let source_text = StringId::intern(source_text);
+
         Self {
             file_id: file_id.into(),
             abs_path: abs_path.into(),
-            source_text,
+            source_text: StringId::new(0),
+            // source_text,
             line_starts,
             name: filename.into(),
         }
@@ -184,8 +219,30 @@ impl FileData {
 
 /// A **thread-safe** reference to a [`FileData`]. This is used to **share**
 /// a **file** between **threads**.
+#[cfg(feature = "multi-threaded")]
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct File(Arc<FileData>);
+
+/// A **reference** to an inner [`FileData`]. This is used to **share** the same
+/// interface as [`File`] as it's used in a **multi-threaded** context but
+/// without the **thread-safety**.
+#[cfg(not(feature = "multi-threaded"))]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct File(FileData);
+
+// #[cfg(not(feature = "multi-threaded"))]
+// #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+// pub struct File(FileData);
+
+impl From<FileData> for File {
+    fn from(file_data: FileData) -> Self {
+        #[cfg(feature = "multi-threaded")]
+        return Self(Arc::new(file_data));
+
+        #[cfg(not(feature = "multi-threaded"))]
+        return Self(file_data);
+    }
+}
 
 impl File {
     /// Creates a new [`File`] from the given [`FileData`].
@@ -202,16 +259,23 @@ impl File {
     ///     FileData,
     /// };
     ///
-    /// let file_data = FileData::new(0, "foo", "bar");
-    /// let file = File::new(file_data);
+    /// let file = File::new(0, "foo", "bar");
     ///
     /// assert_eq!(file.file_id(), 0);
     /// assert_eq!(file.abs_path(), "foo");
     /// assert_eq!(file.source_text(), "bar");
     /// ```
     #[must_use]
-    pub fn new(file_data: FileData) -> Self {
-        Self(Arc::new(file_data))
+    pub fn new(
+        file_id: impl Into<FileId>,
+        abs_path: impl Into<SmolStr> + Clone,
+        source_text: impl Into<String>,
+    ) -> Self {
+        #[cfg(feature = "multi-threaded")]
+        return Self(Arc::new(FileData::new(file_id, abs_path, source_text)));
+
+        #[cfg(not(feature = "multi-threaded"))]
+        Self(FileData::new(file_id, abs_path, source_text))
     }
 
     /// Returns the **unique identifier** for the file.
@@ -228,8 +292,11 @@ impl File {
 
     /// Returns the **source text** contained within the file.
     #[must_use]
-    pub fn source_text(&self) -> &str {
-        self.0.source_text()
+    pub const fn source_text(&self) -> &str {
+        "" // TODO: implement
+           // self.0.source_text()
+           // self.0.source_text()
+           // interner.get(self.0.source_text())
     }
 
     /// Returns the **starting byte index** of the given `line_index` in this

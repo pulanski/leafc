@@ -23,14 +23,7 @@ members = [
     # Libraries
     ###########################################################################
 
-    # ------------------------------------------------------------------------
-    # bark (Leaf's build system)
-    # ------------------------------------------------------------------------
-    "crates/package_manager/leafc_build",
-
-    # ------------------------------------------------------------------------
-    # leafc
-    # ------------------------------------------------------------------------
+    "crates/compiler/leafc_arena",
     "crates/compiler/leafc_cfg",
     "crates/compiler/leafc_cli",
     # "crates/leafc_codegen",
@@ -84,7 +77,10 @@ allocative = "0.2.0"
 amplify = "3.14.1"
 anyhow = "1.0.68"
 atomic = "0.5"
+aquamarine = "0.3.0"
+blake3 = "1.3.3"
 bincode = "1.3"
+bumpalo = "3.9.0"
 bytes = "1.3.0"
 chrono = "0.4"
 clap = { version = "4.1.4", features = ["derive"] }
@@ -127,9 +123,10 @@ parking_lot = { version = "0.12.1", features = ["serde"] }
 pretty_assertions_sorted = "1.2.1"
 proc-macro2 = "1.0.51"
 quote = "1.0.23"
+rand = "0.8.5"
 rand_regex = "0.15.1"
 rayon = "1.6.1"
-reedline = { version = "0.15.0", features = ["sqlite"] }
+reedline = { version = "0.16.0", features = ["sqlite"] }
 regex = "1.7.1"
 rowan = "0.15.10"
 rstest = "0.16.0"
@@ -149,9 +146,9 @@ strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 sys-locale = "0.2.3"
 test-context = "0.1.4"
-# text-size = "1.1.0"
 thiserror = "1.0.38"
 threadpool = "1.8"
+tracing = "0.1.37"
 typed-builder = "0.12.0"
 # tokio = { version = "1.25.0", features = ["full"] }
 ungrammar = "1.16.1"

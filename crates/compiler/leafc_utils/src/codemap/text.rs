@@ -1,4 +1,12 @@
+#[cfg(feature = "allocative")]
 use allocative::Allocative;
+
+#[cfg(feature = "serde")]
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use derive_more::{
     Add,
     AddAssign,
@@ -43,6 +51,8 @@ use std::ops::{
 )]
 #[allow(clippy::module_name_repetitions)]
 #[display(fmt = "{_0}")]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[repr(transparent)]
 pub struct TextPosition(usize);
 
 impl Add<usize> for TextPosition {

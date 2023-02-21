@@ -68,6 +68,10 @@ pub mod codemap;
 /// given regular expression.
 pub mod regex_gen;
 
+/// Defines a collection of utilities for working with **collections** (e.g.
+/// [`Vec`], [`HashMap`][crate::collections::HashMap], etc.).
+pub mod collections;
+
 pub use {
     codemap::{
         FileId,

@@ -1,13 +1,16 @@
-#![allow(dead_code, unused)]
-use std::fmt;
+// #[cfg_attr(aquamarine, doc)]
+// #![doc = include_str!("../LEXER.md")]
 
-// TOOD: remove this
-use crate::token::TokenKind;
 use getset::Getters;
 use leafc_utils::codemap::Span;
 use logos::Logos;
-use owo_colors::OwoColorize;
 use smol_str::SmolStr;
+use std::fmt;
+
+use crate::token::{
+    Token,
+    TokenKind,
+};
 
 /// Performs a **lossy** lexing of the input string (i.e. a **minimal
 /// representation** of the input text source).
@@ -112,56 +115,6 @@ impl fmt::Display for TokenStream {
     }
 }
 
-/// ## [**`Token`**][Token]
-///
-/// A **token** is a **lexical unit** of the source code. It is a **minimal
-/// unit** of the language that has **meaning**. Tokens are **generated** by
-/// the **lexer** and are **consumed** by the **parser**.
-///
-/// Tokens are **immutable** and **non-owning**. They are **copied** by the
-/// parser and **moved** by the compiler.
-///
-/// # Example:
-///
-/// ```rust
-/// use std::fmt;
-/// //       ^  ^  ^ ^  ^
-/// //       |  |  | |  |
-/// //       |  |  | |  +-> `;`   is a  `SEMICOLON` token
-/// //       |  |  | +----> `fmt` is an `IDENTIFIER` token
-/// //       |  |  +------> `::`  is a  `PATH` token
-/// //       |  +---------> `std` is an `IDENTIFIER` token
-/// //       +------------> `use` is a  `USE_KW` token
-/// ```
-#[derive(Debug, PartialEq, Eq, Hash)]
-pub struct Token {
-    /// The **kind** of the token (i.e. `WHITESPACE`, `IDENTIFIER`, etc.)
-    kind: TokenKind,
-
-    /// The **lexeme** of the token (i.e. the **text** that the token
-    /// represents)
-    lexeme: SmolStr,
-
-    /// The **span** of the token (i.e. the **location** of the token in the
-    /// input string)
-    span: Span,
-}
-
-impl fmt::Display for Token {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{} {} {}{}{} {}",
-            self.kind.cyan(),
-            "@".black().italic(),
-            "[".red().bold(),
-            self.span,
-            "]".red().bold(),
-            self.lexeme,
-        )
-    }
-}
-
 impl TokenStream {
     pub fn new(input: &str, lossless: bool) -> Self {
         let mut lex = TokenKind::lexer(input);
@@ -173,11 +126,11 @@ impl TokenStream {
                 continue;
             }
 
-            tokens.push(Token {
-                kind:   token,
-                lexeme: SmolStr::new(lex.slice()),
-                span:   Span::new(lex.span().start, lex.span().end),
-            });
+            tokens.push(Token::new(
+                token,
+                SmolStr::new(lex.slice()),
+                Span::new(lex.span().start, lex.span().end),
+            ));
         }
 
         Self { tokens, curr_line: None, curr_offset: None, lossless }

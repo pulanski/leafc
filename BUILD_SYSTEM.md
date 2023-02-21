@@ -82,3 +82,5 @@ The `BuildPlanKind` enum can be one of the following:
 -   `BuildPlanKind::LeafcLib`: This describes the build process of the leafc library.
 
 -   `BuildPlanKind::LeafcLibTest`: This describes the build process of the leafc library tests.
+
+TODO: This is a placeholder. The actual build infrastructure and code will be implemented in a separate repository.

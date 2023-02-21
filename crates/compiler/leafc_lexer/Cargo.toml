@@ -26,9 +26,11 @@ leafc_utils = { path = "../leafc_utils" }
 
 
 atomic = { workspace = true }
+aquamarine = { workspace = true }
 clap = { workspace = true }
 derivative = { workspace = true }
 derive_more = { workspace = true }
+derive-new = { workspace = true }
 getset = { workspace = true }
 log = { workspace = true }
 logos = { workspace = true }

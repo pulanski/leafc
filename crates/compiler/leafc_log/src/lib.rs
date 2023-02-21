@@ -1,5 +1,4 @@
 pub mod macros;
-pub mod topic;
 pub mod utils;
 
 use fern::{
@@ -62,3 +61,19 @@ pub fn init(verbosity: LogLevel) -> Result<(), LogError> {
 
     Ok(())
 }
+
+pub use tracing::{
+    debug,
+    debug_span,
+    error,
+    error_span,
+    event,
+    info,
+    info_span,
+    instrument,
+    span,
+    trace,
+    trace_span,
+    warn,
+    warn_span,
+};

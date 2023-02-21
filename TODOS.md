@@ -104,3 +104,15 @@ let x = 1 + 2;
 
 // AST
 ```
+
+[ ] - Create a proc macro within the log crate that will log the function name, file name, and line number
+of the function that is being called. This will be useful for debugging and tracing the execution of
+
+[ ] - choose between `tracing` and `log` for logging
+
+[ ] - Extract the `arena` crate into an external `stampede` crate: generic typed, thread-safe arena for low-level allcation features along with high-level APIs for managing memory - [ ] `stampede` - [ ] **Typed** indices into the arena
+
+-   [ ] Figure out how shared contexts will work
+    -   References:
+        -   https://tmandry.gitlab.io/blog/posts/2021-12-21-context-capabilities/
+        -   https://jam1.re/blog/thoughts-on-contexts-and-capabilities-in-rust
