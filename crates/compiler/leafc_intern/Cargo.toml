@@ -15,10 +15,12 @@ readme.workspace = true
 doctest = true
 
 [features]
-default = ["multi-threaded"]
+default = []
+all = ["multi-threaded", "serde", "allocative", "no-std"]
 multi-threaded = ["lasso/multi-threaded"]
 serde = ["dep:serde", "lasso/serde"]
 no-std = ["lasso/no-std"]
+allocative = ["dep:allocative"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -27,6 +29,7 @@ leafc_data_structures = { path = "../leafc_data_structures" }
 leafc_macros = { path = "../leafc_macros" }
 
 ahash = { workspace = true }
+allocative = { workspace = true, optional = true }
 aquamarine = { workspace = true }
 blake3 = { workspace = true }
 cfg-if = { workspace = true }

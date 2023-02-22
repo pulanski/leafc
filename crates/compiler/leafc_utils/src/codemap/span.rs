@@ -97,7 +97,7 @@ impl From<Range<usize>> for Span {
     /// assert_eq!(span, Span::new(0, 10));
     /// ```
     fn from(range: Range<usize>) -> Self {
-        Self::new(range.start, range.end)
+        Self::new(range.start..range.end)
     }
 }
 
@@ -109,10 +109,12 @@ impl From<RangeInclusive<usize>> for Span {
     /// ```rust
     /// use leafc_utils::Span;
     ///
-    /// assert_eq!(Span::new(0, 10), Span::from(0..=9));
+    /// assert_eq!(Span::new(0..10), Span::from(0..=9));
     /// ```
+    #[allow(clippy::range_plus_one)] // RangeInclusive and Range are different data types
     fn from(range: RangeInclusive<usize>) -> Self {
-        Self::new(*range.start(), *range.end() + 1)
+        let (range_start, range_end) = range.into_inner();
+        Self::new(range_start..range_end + 1)
     }
 }
 
@@ -149,27 +151,35 @@ impl Span {
     /// ```
     /// use leafc_utils::codemap::Span;
     ///
-    /// let span = Span::new(0, 10);
+    /// let span = Span::new(0..10);
     ///
     /// assert_eq!(0, span.start());
     /// assert_eq!(10, span.end());
     ///
-    /// let span = Span::new(0, 0);
+    /// let span = Span::new(0..0);
     ///
     /// assert_eq!(0, span.start());
     /// assert_eq!(0, span.end());
     ///
     /// // This will panic in debug builds
     ///
-    /// // let span = Span::new(10, 0);
+    /// // let span = Span::new(10..0);
     /// ```
     #[must_use]
-    pub fn new<T: Into<TextPosition>>(start: T, end: T) -> Self {
+    pub fn new<T: Into<TextPosition>>(Range { start, end }: Range<T>) -> Self {
         let (start, end) = (start.into(), end.into());
         debug_assert!(start <= end, "start must be <= end");
 
         Self { start, end }
     }
+
+    // #[must_use]
+    // pub fn new<T: Into<TextPosition>>(start: T, end: T) -> Self {
+    //     let (start, end) = (start.into(), end.into());
+    //     debug_assert!(start <= end, "start must be <= end");
+
+    //     Self { start, end }
+    // }
 
     /// Sets the **start** of the span.
     ///
@@ -355,7 +365,7 @@ mod span_test_suite {
 
     #[test]
     fn test_span_new() {
-        let span = Span::new(0, 10);
+        let span = Span::new(0..10);
 
         assert_eq!(TextPosition::new(0), span.start());
         assert_eq!(TextPosition::new(10), span.end());
@@ -363,36 +373,36 @@ mod span_test_suite {
 
     #[test]
     fn test_span_len() {
-        let span = Span::new(0, 10);
+        let span = Span::new(0..10);
 
         assert_eq!(10, span.len());
     }
 
     #[test]
     fn test_span_is_empty() {
-        let span = Span::new(0, 10);
+        let span = Span::new(0..10);
 
         assert!(!span.is_empty());
 
-        let span = Span::new(0, 0);
+        let span = Span::new(0..0);
 
         assert!(span.is_empty());
     }
 
     #[test]
     fn test_span_contains() {
-        let span = Span::new(0, 10);
+        let span = Span::new(0..10);
 
-        assert!(span.contains(&Span::new(0, 10)));
-        assert!(span.contains(&Span::new(0, 5)));
+        assert!(span.contains(&Span::new(0..10)));
+        assert!(span.contains(&Span::new(0..5)));
 
-        assert!(!span.contains(&Span::new(0, 15)));
-        assert!(!span.contains(&Span::new(5, 15)));
+        assert!(!span.contains(&Span::new(0..15)));
+        assert!(!span.contains(&Span::new(5..15)));
     }
 
     #[test]
     fn test_span_contains_index() {
-        let span = Span::new(0, 10);
+        let span = Span::new(0..10);
 
         assert!(span.contains_index(5));
         assert!(!span.contains_index(15));
@@ -400,16 +410,16 @@ mod span_test_suite {
 
     #[test]
     fn test_span_range() {
-        let span = Span::new(0, 10);
+        let span = Span::new(0..10);
 
         assert_eq!(TextPosition::new(0)..TextPosition::new(10), span.range());
     }
 
     #[test]
     fn test_span_merge() {
-        let mut span = Span::new(0, 10);
+        let mut span = Span::new(0..10);
 
-        span.merge(&Span::new(5, 15));
+        span.merge(&Span::new(5..15));
 
         assert_eq!(TextPosition::new(0)..TextPosition::new(15), span.range());
     }

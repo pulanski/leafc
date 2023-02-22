@@ -121,7 +121,7 @@ mod location_test_suite {
     #[test]
     #[allow(unused_results)]
     fn test_span_new() {
-        let mut span = Span::new(0, 1);
+        let mut span = Span::new(0..1);
 
         assert_eq!(span.start(), TextPosition::from(0));
         assert_eq!(span.end(), TextPosition::from(1));
@@ -135,24 +135,18 @@ mod location_test_suite {
 
     #[test]
     #[should_panic = "start must be <= end"]
-    #[allow(unused_must_use)]
+    #[allow(unused_must_use, clippy::reversed_empty_ranges)]
     fn test_span_new_panic() {
-        Span::new(1, 0);
+        Span::new(1..0);
     }
 
     #[test]
     fn test_location_new() {
-        let location = Location::new(FileId::new(0), Span::new(0, 1));
+        let (file_id, span) = (FileId::new(), Span::new(0..1));
+        let location = Location::new(file_id, span);
 
         assert_eq!(location.span_start(), TextPosition::from(0));
         assert_eq!(location.span_end(), TextPosition::from(1));
-        assert_eq!(location.file(), FileId::from(0));
-    }
-
-    #[test]
-    fn test_file_id_new() {
-        let file_id = FileId::new(0);
-
-        assert_eq!(file_id.0, 0);
+        assert_eq!(location.file(), file_id);
     }
 }

@@ -9,5 +9,3 @@ pub mod collections;
 /// [`Hash`], [`SecureHasher`][crate::hash::SecureHasher],
 /// [`InsecureHasher`][crate::hash::InsecureHasher], etc).
 pub mod hash;
-
-pub mod algo;

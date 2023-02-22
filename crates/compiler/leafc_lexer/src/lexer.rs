@@ -126,11 +126,7 @@ impl TokenStream {
                 continue;
             }
 
-            tokens.push(Token::new(
-                token,
-                SmolStr::new(lex.slice()),
-                Span::new(lex.span().start, lex.span().end),
-            ));
+            tokens.push(Token::new(token, SmolStr::new(lex.slice()), Span::new(lex.span())));
         }
 
         Self { tokens, curr_line: None, curr_offset: None, lossless }

@@ -1,8 +1,9 @@
 use std::collections::VecDeque;
 
+use leafc_macros::LEAFC_FEATURE_USE_DECLS;
+
 // use config::{Config, Environment, File};
 // use miette::Result;
-// use serde::Deserialize;
 pub use {
     self::log::leafc::{
         LogLevel,
@@ -16,6 +17,11 @@ pub use {
         TargetTripleData,
     },
 };
+
+LEAFC_FEATURE_USE_DECLS!();
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+struct Foo;
 
 /// Defines the **kinds** of output to emit from the compiler (e.g. the `AST`,
 /// `LLVM IR`, etc.).

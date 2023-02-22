@@ -124,3 +124,149 @@ of the function that is being called. This will be useful for debugging and trac
 
 -   [ ] Automate versioning / tagging and general release cycle to a certain extent (i.e. have cadence
         of releases)
+
+-   [ ] Add support for compiling to wasm/wasi
+-   [ ] grammar correctness via LALRPOP
+-   [ ] transition from `lalrpop` to `ungrammar`
+
+<!-- language scope syntax for interop with other languages, defines cross-language boundary -->
+<!-- the variables within the _language scope_ are visible to the above module -->
+
+-   [ ] Idea: language interop is very declarative and simple (i.e. `c { ... }`), but
+        the actual implementation of the interop is very complex. This is because the interop
+        is implemented in the compiler itself. Instead, the interop should be implemented
+        in a separate crate, and the compiler should be able to use that crate to implement
+        the interop. This will make the compiler much more modular and easier to maintain.
+
+-   interesting idea maybe, not sure how to deal with types across boundaries though
+    along with a number of other issues
+
+# Example of language interop
+
+```rust
+// File: sort.leaf
+
+// language interop
+c {
+    // C code
+    // quicksort
+    int quicksort(int *arr, int left, int right) {
+        int i = left, j = right;
+        int tmp;
+        int pivot = arr[(left + right) / 2];
+
+        /* partition */
+        while (i <= j) {
+            while (arr[i] < pivot)
+                i++;
+            while (arr[j] > pivot)
+                j--;
+            if (i <= j) {
+                tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
+                i++;
+                j--;
+            }
+        };
+
+        /* recursion */
+        if (left < j)
+            quicksort(arr, left, j);
+        if (i < right)
+            quicksort(arr, i, right);
+    }
+} // end of language interop
+
+// language interop
+rust {
+    // Rust code
+    fn sort(sort_type: &str, arr: &mut [i32]) {
+        match sort_type {
+            "quicksort" => quicksort(arr, 0, arr.len() - 1), // calls C function
+            "mergesort" => mergesort(arr, 0, arr.len() - 1), // calls Rust function
+            "bubblesort" => bubblesort(arr), // calls Python function
+            _ => panic!("Invalid sort type"),
+        }
+    }
+}
+
+python {
+    // import from above scope
+    import sort.SortKind as sort_kind;
+
+    // Python code
+    def bubblesort(arr):
+        n = len(arr)
+
+        # Traverse through all array elements
+        for i in range(n):
+            # Last i elements are already in place
+            for j in range(0, n - i - 1):
+                # traverse the array from 0 to n-i-1
+                # Swap if the element found is greater
+                # than the next element
+                if arr[j] > arr[j + 1]:
+                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+}
+
+// #[derive(Debug, Clone, Copy)]
+// trait as a first class feature in language
+
+// Example of a trait
+
+// #[derive(Debug, Clone, Copy)] // derive is a macro, not sure about this
+trait Sort {
+    fn sort(&mut self);
+}
+
+// Example of a struct
+
+#[derive(Debug, Clone, Copy)]
+pub enum SortKind {
+    QuickSort,
+    MergeSort,
+    BubbleSort,
+}
+
+// use the language interop...
+fn main() {
+    // insertion sort is fairly fast on sorted inputs
+    arr /* (inferred) : [i32] */ := [1, 2, 3, 4, 5, 6, 10, 9, 8, 7];
+
+    // quicksort (implemented in C)
+    println!("quicksort implemented in C")
+    sort("quicksort", &mut arr.clone())
+    println!("{:?}", arr)
+
+    // mergesort (implemented in Rust)
+    println!("mergesort implemented in Rust")
+    sort("mergesort", &mut arr.clone())
+
+    // bubblesort (implemented in Python)
+    println!("bubblesort implemented in Python")
+    sort("bubblesort", &mut arr.clone())
+}
+```
+
+# Goal: Really good dependency analysis and management
+
+Inspired by Go, no need to have a `Cargo.toml` file, just have a `go.mod` like file. The `go.mod` file
+looks like this:
+
+`leaf.pkg`
+
+```mod
+pkg github.com/leaf-lang/leaf
+
+leaf 0.34.3 // version of the leaf compiler
+
+// dependencies
+// these are the dependencies of the current package
+// the dependencies are specified by their name and version
+// the version can be a specific version, or a range of versions
+// the version can be a git commit hash, or a git tag
+// the version can be a local path to a directory
+
+dep github.com/leaf-lang/leaf-stdlib 0.23.4 // direct
+```

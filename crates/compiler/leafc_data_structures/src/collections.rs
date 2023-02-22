@@ -6,7 +6,7 @@ use cfg_if::cfg_if;
 
 cfg_if! {
     if #[cfg(feature = "multi-threaded")] {
-        use dashmap::DashMap;
+        use dashmap::{DashMap, DashSet};
 
         /// A **thread-safe hash map** that uses the compiler's **insecure** hasher.
         ///
@@ -39,6 +39,11 @@ cfg_if! {
         /// **NOTE**: This is **secure**, and should be used for anything that needs to
         /// be **secure** (e.g. **user** data in a build system context).
         pub type SecureHashSet<K> = DashSet<K, SecureHasher>;
+        // TODO: refactor to this
+        // #[derive(Debug, Clone)] // allow for deriving traits (i.e. Debug, Clone, Allocative, Send, Sync, etc.)
+        // pub struct SecureHashSet<K> {
+        //     map: DashSet<K, SecureHasher>,
+        // }
     } else {
         /// A **hash map** that uses the compiler's **insecure** hasher.
         ///

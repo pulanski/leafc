@@ -16,18 +16,23 @@ doctest = true
 
 [features]
 default = []
+all = ["multi-threaded", "serde", "allocative", "no-std"]
+multi-threaded = []
+# multi-threaded = ["dep:atomic", "dep:parking_lot", "dep:crossbeam_utils"]
 serde = ["dep:serde"]
-# default = ["buffer_pool", "replacer", "lru_k_replacer"]
-# all = ["buffer_pool", "replacer", "lru_replacer", "lru_k_replacer", "serde"]
-# serde = ["dep:serde"]
+no-std = []
+allocative = ["dep:allocative"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# multi-threaded = ["dep:parking_lot"]
+leafc_macros = { path = "../leafc_macros" }
 leafc_errors = { path = "../leafc_errors" }
 leafc_utils = { path = "../leafc_utils" }
 
 
+allocative = { workspace = true, optional = true }
 atomic = { workspace = true }
 clap = { workspace = true }
 config = { workspace = true }

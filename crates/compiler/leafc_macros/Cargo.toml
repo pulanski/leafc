@@ -14,8 +14,25 @@ readme.workspace = true
 [lib]
 doctest = true
 
+[features]
+default = ["multi-threaded", "serde", "allocative"]
+all = ["multi-threaded", "serde", "allocative", "no-std"]
+multi-threaded = []
+# multi-threaded = ["dep:atomic", "dep:parking_lot", "dep:crossbeam_utils"]
+serde = ["dep:serde"]
+no-std = []
+allocative = ["dep:allocative"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+ahash = { workspace = true }
+allocative = { workspace = true, optional = true }
+cfg-if = { workspace = true }
 proc-macro2 = { workspace = true }
+serde = { workspace = true, optional = true }
+serde_bytes = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
 syn = { workspace = true }
+quote = { workspace = true }

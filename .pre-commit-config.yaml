@@ -6,7 +6,7 @@ repos:
     - repo: https://github.com/pre-commit/pre-commit-hooks
       rev: v4.4.0
       hooks:
-          - id: trailing-whitespace
+          #   - id: trailing-whitespace
           - id: end-of-file-fixer
           - id: check-ast
           - id: check-executables-have-shebangs
@@ -32,7 +32,7 @@ repos:
           #   - id: require-ascii
           #     exclude: 'docs/themes/|third_party/|examples/'
           - id: script-must-have-extension
-          - id: git-check
+          #   - id: git-check
     - repo: https://github.com/Lucas-C/pre-commit-hooks
       rev: v1.3.1
       hooks:

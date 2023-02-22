@@ -21,4 +21,7 @@ leafc_errors = { path = "../leafc_errors" }
 leafc_syntax = { path = "../leafc_syntax" }
 
 rowan = { workspace = true }
-# lalrpop = { workspace = true }
+
+[build-dependencies]
+lalrpop = { workspace = true }
+cargo-emit = { workspace = true }

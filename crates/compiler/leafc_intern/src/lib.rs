@@ -1,6 +1,7 @@
 #![doc = CRATE_README!()]
 #![feature(proc_macro_hygiene)]
 #![feature(type_alias_impl_trait)]
+#![feature(once_cell)]
 
 use leafc_macros::CRATE_README;
 
@@ -54,27 +55,39 @@ pub mod string;
 pub mod generic;
 
 #[doc(hidden)]
-mod hasher {
-    use leafc_data_structures::compile;
+mod sync {
+    pub use cfg_if::cfg_if;
 
-    compile! {
-        if #[feature = "ahasher"] {
-            pub use ahash::RandomState;
+    // Arc and Weak primitives
+
+    cfg_if! {
+        if #[cfg(feature = "no-std")] {
+            pub use alloc::sync::Arc;
         } else {
-            pub use std::collections::hash_map::RandomState;
+            pub use std::sync::Arc;
+        }
+    }
+
+    cfg_if! {
+        if #[cfg(feature = "no-std")] {
+            pub use alloc::sync::Weak;
+        } else {
+            pub use std::sync::Weak;
         }
     }
 }
 
 #[doc(hidden)]
-mod locks {
-    use leafc_data_structures::compile;
+mod vec {
+    pub use cfg_if::cfg_if;
 
-    compile! {
-        if #[feature = "no-std"] {
-            pub use alloc::sync::Arc;
+    // Vec primitives
+
+    cfg_if! {
+        if #[cfg(feature = "no-std")] {
+            pub use alloc::vec::Vec;
         } else {
-            pub use std::sync::Arc;
+            pub use std::vec::Vec;
         }
     }
 }

@@ -196,6 +196,40 @@ impl LeafcDriver {
 /// the particular error. These errors can be found in the `leafc_errors`
 /// crate.
 pub fn batch_run(cli: &LeafcCli) -> Result<ExitCode> {
+    // TODO: this should be a work stealing thread pool in the multithreaded
+    // version (i.e. a thread from the threadpool can be used to run the associated
+    // phase of the compilation pipeline)
+
+    // iterate through the files and then request a thread at each phase of the
+    // compilation pipeline to complete the given task
+
+    // TODO: the compiler should be built in a way that allows for the
+    // compilation pipeline to be run in parallel (i.e. the compiler should
+    // be able to break down the compilation pipeline into a **Directed Acyclic
+    // Graph** (DAG) of tasks, then use a **topological sort** to determine
+    // the order in which the tasks should be run, and then use a **work stealing
+    // thread pool** to execute the tasks concurrently.
+    //
+    // Of course, the entire pipeline should be incremental, so that if a file
+    // is changed, then only the tasks that depend on that file should be
+    // re-run.
+    //
+    // The build system should also be able to **cache** the results of the
+    // compilation pipeline, so that if the user runs the compiler again, then
+    // the compiler can **skip** the tasks that have already been completed
+    // (i.e. the compiler should be able to **incrementally** build the
+    // project).
+    //
+    // The build system will be built with the **Bazel/Buck2** build system in
+    // mind, so that the compiler can be used as a **Bazel rule** (i.e. the
+    // compiler can be used as a **Bazel rule** to compile the source code
+    // for a **polyglot** project housed in a **Bazel/Buck2 workspace**).
+    //
+    // The plan for the build system is try to get the compiler building on Buck2
+    // once it's more mature, and then try to get work done on the native
+    // build system (i.e. the `cargo/rustup`-`pnpm`-`pip`-`pnpm`-`julia`-`go`
+    // equivalent for **Leaf**).
+
     // create a new driver
     let driver = LeafcDriver::new();
 

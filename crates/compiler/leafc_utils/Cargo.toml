@@ -16,24 +16,25 @@ doctest = true
 
 [features]
 default = []
-# default = ["allocative", "serde", "multi-threaded"]
-all = ["allocative", "serde", "multi-threaded"]
-allocative = []
+all = ["allocative", "serde", "multi-threaded", "no-std"]
+allocative = ["dep:allocative"]
 serde = ["dep:serde"]
 multi-threaded = []
-
+no-std = []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-leafc_intern = { path = "../leafc_intern", features = ["serde"] }
+leafc_intern = { path = "../leafc_intern", features = ["serde", "allocative"] }
+leafc_macros = { path = "../leafc_macros", features = ["serde", "allocative"] }
 
 # Vendored dependencies
 # These are vendored because they are not published on crates.io
 dupe = { path = "../../third_party/dupe" }
 
-allocative = { workspace = true }
+allocative = { workspace = true, optional = true }
 amplify = { workspace = true }
+cfg-if = { workspace = true }
 chrono = { workspace = true }
 derive-new = { workspace = true }
 derive_more = { workspace = true }
@@ -45,6 +46,7 @@ hashbrown = { workspace = true }
 owo-colors = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 rand = { workspace = true }
+rusty_ulid = { workspace = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
 serde = { workspace = true, features = ["derive"], optional = true }
