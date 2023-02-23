@@ -1,38 +1,41 @@
 // #[macro_use]
 // mod serde;
 
+mod syntax;
+
 // TODO: get this working more
 
 /// [`serde`] feature declaration, which is used to enable the
 /// [`Serialize`] and [`Deserialize`] traits.
+// #[macro_export]
+// macro_rules! SERDE_FEATURE_USE_DECL {
+//     // take a list of strings like `"json", "yaml"`, convert them to types, and then use that
+// type     // in the `use` statement.
+//     () => {
+//         // check if the "json" feature is enabled
+//         #[cfg(all(feature = "serde", feature = "json"))]
+//         {
+//             // use the `serde_json` crate
+//             use serde_json::*;
+//         }
+
+//         #[cfg(all(feature = "serde", feature = "yaml"))]
+//         {
+//             // use the `serde_yaml` crate
+//             use serde_yaml::*;
+//         }
+
+//         #[cfg(all(feature = "serde", feature = "bytes"))]
+//         {
+//             // use the `serde_bytes` crate
+//             use serde_bytes::*;
+//         }
+
+//         SERDE_FEATURE_USE_DECL_BASE!();
+//     };
+// }
+
 #[macro_export]
-macro_rules! SERDE_FEATURE_USE_DECL {
-    // take a list of strings like `"json", "yaml"`, convert them to types, and then use that type
-    // in the `use` statement.
-    () => {
-        // check if the "json" feature is enabled
-        #[cfg(all(feature = "serde", feature = "json"))]
-        {
-            // use the `serde_json` crate
-            use serde_json::*;
-        }
-
-        #[cfg(all(feature = "serde", feature = "yaml"))]
-        {
-            // use the `serde_yaml` crate
-            use serde_yaml::*;
-        }
-
-        #[cfg(all(feature = "serde", feature = "bytes"))]
-        {
-            // use the `serde_bytes` crate
-            use serde_bytes::*;
-        }
-
-        SERDE_FEATURE_USE_DECL_BASE!();
-    };
-}
-
 macro_rules! SERDE_FEATURE_USE_DECL_BASE {
     () => {
         #[cfg(feature = "serde")]

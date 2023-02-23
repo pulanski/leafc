@@ -18,10 +18,12 @@ doctest = true
 
 [dependencies]
 leafc_lexer = { path = "../leafc_lexer" }
+leafc_macros = { path = "../leafc_macros" }
 leafc_utils = { path = "../leafc_utils" }
 leafc_errors = { path = "../leafc_errors" }
 
-
+cfg-if = { workspace = true }
+cstree = { workspace = true }
 doc-comment = { workspace = true }
 itertools = { workspace = true }
 num-derive = { workspace = true }

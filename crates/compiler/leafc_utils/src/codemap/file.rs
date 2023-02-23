@@ -14,11 +14,14 @@ use smartstring::alias::String;
 use smol_str::SmolStr;
 
 use leafc_intern::string::StringId;
-use leafc_macros::LEAFC_FEATURE_USE_DECLS;
+use leafc_macros::SERDE_FEATURE_USE_DECL_BASE; // Temporary
+
+// use leafc_macros::LEAFC_FEATURES_USE_DECLS; // TODO: move to this macro
 
 use super::text::TextPosition;
 
-LEAFC_FEATURE_USE_DECLS!();
+SERDE_FEATURE_USE_DECL_BASE!();
+// LEAFC_FEATURES_USE_DECLS!();
 
 // TODO: refactor to encapsulated abstraction for multi-threaded and
 // single-threaded use cases

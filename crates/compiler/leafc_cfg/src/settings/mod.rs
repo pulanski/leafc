@@ -1,6 +1,9 @@
 use std::collections::VecDeque;
 
-use leafc_macros::LEAFC_FEATURE_USE_DECLS;
+use leafc_macros::{
+    LEAFC_FEATURE_USE_DECLS,
+    SERDE_FEATURE_USE_DECL_BASE,
+};
 
 // use config::{Config, Environment, File};
 // use miette::Result;
@@ -18,10 +21,48 @@ pub use {
     },
 };
 
-LEAFC_FEATURE_USE_DECLS!();
+// EXAMPLE USAGE:
+//
+// // this works currently
+// SERDE_FEATURE_USE_DECL_BASE!();
+//
+// // want to move to this
+// LEAFC_FEATURE_USE_DECLS!();
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-struct Foo;
+// this works currently
+// #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+// struct Foo;
+//
+// want to move to this
+// #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+// #[leafc_macros::serde_feature_impl]
+// or more generally,
+// #[leafc_macros::feature_impl]
+
+// // TODO: also have a base derive for dependency injection patterns
+// #[leafc_macros::component]
+// // derives `Debug, Clone, Copy, PartialEq, Eq, Hash`
+// struct Foo;
+//
+// `Foo` is then a "component" that can be used to build other components which
+// have the same characteristics as `Foo` (e.g. `#[derive(Debug, Clone, Copy,
+// PartialEq, Eq, Hash)]`).
+//
+// For this to work, every field or type parameter of `Foo` must also be a
+// component or a type that derives the same traits as the component.
+//
+// we could go further and implement compile time checks to ensure that every
+// field or type parameter of `Foo` is a component or a type that derives the
+// same traits as the component using the
+//
+// Or more complex components can be built from `Foo`
+// that derive additional traits (e.g. `#[derive(Debug, Clone, Copy, PartialEq,
+// Eq, Hash, Serialize, Deserialize)]`).
+//
+// `Foo` would have the following characteristics:
+//
+// 1. `Foo` would be `#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]` if
+//    `serde` is not enabled.
 
 /// Defines the **kinds** of output to emit from the compiler (e.g. the `AST`,
 /// `LLVM IR`, etc.).

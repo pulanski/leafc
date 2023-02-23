@@ -6,8 +6,8 @@ This was taken from the [VSCode Remote Containers documentation](https://code.vi
 
 ## Requirements
 
-- [Docker](https://docs.docker.com/get-docker/)
-- [VSCode](https://code.visualstudio.com/download)
+-   [Docker](https://docs.docker.com/get-docker/)
+-   [VSCode](https://code.visualstudio.com/download)
 
 ## How to use
 

@@ -1,7 +1,7 @@
 use cargo_emit::rerun_if_changed;
 
 fn main() {
-    lalrpop();
+    // lalrpop();
 }
 
 /// The **LALRPOP** grammar file.

@@ -4,10 +4,10 @@ use getset::{
     Setters,
 };
 
-use leafc_macros::SERDE_FEATURE_USE_DECL;
+use leafc_macros::SERDE_FEATURE_USE_DECL_BASE;
 use typed_builder::TypedBuilder;
 
-SERDE_FEATURE_USE_DECL!();
+SERDE_FEATURE_USE_DECL_BASE!();
 
 /// The **name** of the compiler from the command line.
 pub const EXE_NAME: &str = "leafc";

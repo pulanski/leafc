@@ -15,7 +15,7 @@ readme.workspace = true
 doctest = true
 
 [features]
-default = []
+default = ["serde"]
 all = ["multi-threaded", "serde", "allocative", "no-std"]
 multi-threaded = []
 # multi-threaded = ["dep:atomic", "dep:parking_lot", "dep:crossbeam_utils"]
