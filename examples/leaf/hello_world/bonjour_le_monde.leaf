@@ -1,0 +1,4 @@
+fonction main() {
+    🦀ferris_le_crabe := "🦀 une fonctionnalité de Rust 🦀"
+    ligne_d'impression!("Bonjour, {🦀ferris_le_crabe}!")
+}

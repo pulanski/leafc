@@ -32,5 +32,7 @@ proc-macro2 = { workspace = true }
 quote = { workspace = true }
 rowan = { workspace = true }
 smol_str = { workspace = true }
+strum = { workspace = true }
+strum_macros = { workspace = true }
 ungrammar = { workspace = true }
 xshell = { workspace = true }

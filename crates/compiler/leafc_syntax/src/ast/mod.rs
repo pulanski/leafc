@@ -26,7 +26,13 @@ use std::marker::PhantomData;
 
 use itertools::Either;
 
-use self::generated::kinds::SyntaxKind;
+// use self::generated::kinds::SyntaxKind;
+pub use self::generated::{
+    kinds::*,
+    nodes::*,
+    tokens::*,
+};
+
 use crate::{
     syntax_tree::{
         SyntaxNode,

@@ -12,7 +12,7 @@ use {
     leafc_macros::SYNTAX_TREE_FEATURE_USE_DECLS,
 };
 
-use crate::cst::generated::kinds::SyntaxKind;
+use crate::ast::SyntaxKind;
 
 // TODO: create an generic experimental_note macro that prints a note about the
 // feature being experimental
@@ -85,8 +85,6 @@ cfg_if! {
     // cstree-based syntax tree (experimental)
     // ------------------------------------------------------------------------
     if #[cfg(feature = "cstree")] {
-        use cstree::Language;
-
         impl cstree::Language for LeafLanguage {
             type Kind = SyntaxKind;
 

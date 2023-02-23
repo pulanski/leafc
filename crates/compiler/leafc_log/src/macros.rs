@@ -1,3 +1,4 @@
+#![allow(unused_macros)]
 use leafc_cfg::settings::LogLevel;
 
 macro_rules! trace {

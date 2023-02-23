@@ -9,7 +9,7 @@ use rowan::GreenNode;
 
 use leafc_errors::SyntaxError;
 use leafc_syntax::{
-    cst::{
+    ast::{
         AstNode,
         SourceFile,
     },

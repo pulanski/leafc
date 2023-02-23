@@ -48,7 +48,7 @@ use crate::syntax_gen::input::{
 };
 use crate::syntax_gen::utils;
 
-const SYNTAX_KINDS_FILE: &str = "crates/leafc_syntax/src/ast/generated/kinds.rs";
+const SYNTAX_KINDS_FILE: &str = "crates/compiler/leafc_syntax/src/ast/generated/kinds.rs";
 
 fn update_syntax_kinds_if_necessary() {
     let (new_syntax_kinds, syntax_kinds_path) = create_syntax_kinds();
@@ -78,9 +78,9 @@ fn create_syntax_kinds() -> (String, PathBuf) {
 fn sourcegen_ast() {
     use super::input::KINDS_SRC;
 
-    const TOKENS_FILE: &str = "crates/leafc_syntax/src/ast/generated/tokens.rs";
-    const NODES_FILE: &str = "crates/leafc_syntax/src/ast/generated/nodes.rs";
-    const GRAMMAR_FILE: &str = "crates/leafc_syntax/src/ungrammar/leaf.ungram";
+    const TOKENS_FILE: &str = "crates/compiler/leafc_syntax/src/ast/generated/tokens.rs";
+    const NODES_FILE: &str = "crates/compiler/leafc_syntax/src/ast/generated/nodes.rs";
+    const GRAMMAR_FILE: &str = "crates/compiler/leafc_syntax/src/ungrammar/leaf.ungram";
 
     // make sure syntax kinds are up to date
     update_syntax_kinds_if_necessary();
@@ -486,7 +486,8 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
     let ast = quote! {
         #![allow(bad_style, missing_docs, unreachable_pub)]
         #[allow(clippy::manual_non_exhaustive, non_snake_case, non_camel_case_types)]
-        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug, FromPrimitive, ToPrimitive)]
+        // #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug, FromPrimitive, ToPrimitive)]
+        #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug, FromPrimitive, ToPrimitive, EnumCount)]
         #[repr(u16)]
         pub enum SyntaxKind {
             // Technical SyntaxKinds: they appear temporally during parsing,
@@ -514,6 +515,7 @@ fn generate_syntax_kinds(grammar: SyntaxKinds<'_>) -> String {
         use self::SyntaxKind::*;
         use leafc_lexer::TokenKind;
         use num_derive::{FromPrimitive, ToPrimitive};
+        use strum_macros::EnumCount;
 
         impl SyntaxKind {
             pub fn is_keyword(self) -> bool {

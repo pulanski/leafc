@@ -151,6 +151,8 @@ pub fn reformat(text: String) -> String {
     let sh = Shell::new().unwrap();
     ensure_rustfmt(&sh);
     let rustfmt_toml = project_root().join("rustfmt.toml");
+    // FIXME: this is a bit of a hack, need to get to parent dir
+    let rustfmt_toml = rustfmt_toml.parent().unwrap().join("rustfmt.toml");
     let mut stdout = cmd!(
         sh,
         "rustup run stable rustfmt --config-path {rustfmt_toml} --config fn_single_line=true"
@@ -268,6 +270,7 @@ fn normalize_newlines(s: &str) -> String {
 
 pub fn project_root() -> PathBuf {
     let dir = env!("CARGO_MANIFEST_DIR");
-    let res = PathBuf::from(dir).parent().unwrap().parent().unwrap().to_owned();
+    let res = PathBuf::from(dir).parent().unwrap().parent().unwrap().parent().unwrap().to_owned();
+    println!("project root: {res:?}");
     res
 }

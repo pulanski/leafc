@@ -4,7 +4,7 @@
 use itertools::Either;
 
 use crate::{
-    cst::{
+    ast::{
         self,
         support,
         AstChildren,
@@ -18,13 +18,13 @@ use crate::{
 };
 
 pub trait HasName: AstNode {
-    fn name(&self) -> Option<cst::Name> {
+    fn name(&self) -> Option<ast::Name> {
         support::child(self.syntax())
     }
 }
 
 pub trait HasVisibility: AstNode {
-    fn visibility(&self) -> Option<cst::Visibility> {
+    fn visibility(&self) -> Option<ast::Visibility> {
         support::child(self.syntax())
     }
 }
@@ -48,7 +48,7 @@ pub trait HasVisibility: AstNode {
 // }
 
 pub trait HasModuleItem: AstNode {
-    fn items(&self) -> AstChildren<cst::Item> {
+    fn items(&self) -> AstChildren<ast::Item> {
         support::children(self.syntax())
     }
 }
@@ -76,7 +76,7 @@ pub trait HasModuleItem: AstNode {
 // ----
 
 pub trait HasAttrs: AstNode {
-    fn attrs(&self) -> AstChildren<cst::Attr> {
+    fn attrs(&self) -> AstChildren<ast::Attr> {
         support::children(self.syntax())
     }
     fn has_atom_attr(&self, atom: &str) -> bool {
@@ -94,7 +94,7 @@ pub trait HasDocComments: HasAttrs {
 }
 
 impl DocCommentIter {
-    pub fn from_syntax_node(syntax_node: &cst::SyntaxNode) -> DocCommentIter {
+    pub fn from_syntax_node(syntax_node: &ast::SyntaxNode) -> DocCommentIter {
         DocCommentIter { iter: syntax_node.children_with_tokens() }
     }
 
@@ -117,10 +117,10 @@ pub struct DocCommentIter {
 }
 
 impl Iterator for DocCommentIter {
-    type Item = cst::Comment;
-    fn next(&mut self) -> Option<cst::Comment> {
+    type Item = ast::Comment;
+    fn next(&mut self) -> Option<ast::Comment> {
         self.iter.by_ref().find_map(|el| {
-            el.into_token().and_then(cst::Comment::cast).filter(cst::Comment::is_doc)
+            el.into_token().and_then(ast::Comment::cast).filter(ast::Comment::is_doc)
         })
     }
 }
@@ -130,18 +130,18 @@ pub struct AttrDocCommentIter {
 }
 
 impl AttrDocCommentIter {
-    pub fn from_syntax_node(syntax_node: &cst::SyntaxNode) -> AttrDocCommentIter {
+    pub fn from_syntax_node(syntax_node: &ast::SyntaxNode) -> AttrDocCommentIter {
         AttrDocCommentIter { iter: syntax_node.children_with_tokens() }
     }
 }
 
 impl Iterator for AttrDocCommentIter {
-    type Item = Either<cst::Attr, cst::Comment>;
+    type Item = Either<ast::Attr, ast::Comment>;
     fn next(&mut self) -> Option<Self::Item> {
         self.iter.by_ref().find_map(|el| match el {
-            SyntaxElement::Node(node) => cst::Attr::cast(node).map(Either::Left),
+            SyntaxElement::Node(node) => ast::Attr::cast(node).map(Either::Left),
             SyntaxElement::Token(tok) => {
-                cst::Comment::cast(tok).filter(cst::Comment::is_doc).map(Either::Right)
+                ast::Comment::cast(tok).filter(ast::Comment::is_doc).map(Either::Right)
             }
         })
     }
