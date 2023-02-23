@@ -6,7 +6,7 @@ use fern::{
     Dispatch,
 };
 use leafc_cfg::settings::LogLevel;
-use leafc_errors::log::LogError;
+use leafc_diagnostics::errors::log::LogError;
 use miette::IntoDiagnostic;
 
 pub use utils::{

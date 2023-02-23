@@ -4,8 +4,8 @@ use smol_str::SmolStr;
 use strum_macros::EnumCount as EnumCountMacro;
 use thiserror::Error;
 
-/// Prefix appended to all `CliError` messages.
-pub const CLI_ERROR_PREFIX: &str = "CLI Error";
+/// Prefix appended to all `LexicalError` messages.
+pub const LEXICAL_ERROR_PREFIX: &str = "Lexical Error";
 
 /// All possible errors that can occur during the **lexical analysis** phase of
 /// the compiler.
@@ -13,40 +13,39 @@ pub const CLI_ERROR_PREFIX: &str = "CLI Error";
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::lexer::LexicalError;
+/// use leafc_diagnostics::errors::lexer::LexicalError;
 /// use strum::EnumCount;
 ///
 /// // There are x variants of the `LexicalError` enum.
 /// assert_eq!(1, LexicalError::COUNT);
 /// ```
 #[derive(Debug, Error, EnumCountMacro, Diagnostic, Clone)]
-pub enum CliError {
+pub enum LexicalError {
     /// This error is returned when an **unknown token** is encountered
     /// during **lexical analysis**.
     ///
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_errors::lexer::LexicalError;
+    /// use leafc_diagnostics::errors::lexer::LexicalError;
     ///
     /// // The error is returned when an unknown token is encountered.
     /// let error = LexicalError::UnknownToken("".into());
     /// ```
     #[error(
         "{} {} {}{} {}",
-        CLI_ERROR_PREFIX.blue(),
+        LEXICAL_ERROR_PREFIX.blue(),
         "-".black(),
-        "File not found: ".red(),
+        "Unknown token".red(),
         ":".black(),
         .0.yellow().italic()
     )]
     #[diagnostic(
-        code(leafc::cli::file_not_found),
+        code(leafc::lexer::unknown_token),
         url(docsrs),
         help(
-            "The file could not be found. Please check that the file exists and that you have \
-             permission to access it."
+            "The token you've entered is not valid (contained within the grammar of the language)."
         )
     )]
-    FileNotFound(SmolStr),
+    UnknownToken(SmolStr),
 }

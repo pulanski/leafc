@@ -20,7 +20,7 @@ doctest = true
 leafc_cli = { path = "../leafc_cli" }
 leafc_cfg = { path = "../leafc_cfg" }
 leafc_driver = { path = "../leafc_driver" }
-leafc_errors = { path = "../leafc_errors" }
+leafc_diagnostics = { path = "../leafc_diagnostics" }
 leafc_log = { path = "../leafc_log" }
 leafc_utils = { path = "../leafc_utils" }
 

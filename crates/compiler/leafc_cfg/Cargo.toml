@@ -28,7 +28,7 @@ allocative = ["dep:allocative"]
 [dependencies]
 # multi-threaded = ["dep:parking_lot"]
 leafc_macros = { path = "../leafc_macros" }
-leafc_errors = { path = "../leafc_errors" }
+leafc_diagnostics = { path = "../leafc_diagnostics" }
 leafc_utils = { path = "../leafc_utils" }
 
 

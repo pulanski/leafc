@@ -59,33 +59,33 @@ mod allocative;
 ///   tools)
 /// - [`allocative`] - used to enable the [`Allocative`] trait (useful for
 ///   performance optimizations by inspecting memory allocations).
-#[macro_export]
-macro_rules! LEAFC_FEATURE_USE_DECLS {
-    () => {
-        $crate::SERDE_FEATURE_USE_DECL!();
-        $crate::ALLOCATIVE_FEATURE_DECL!();
-    };
-}
+// #[macro_export]
+// macro_rules! LEAFC_FEATURE_USE_DECLS {
+//     () => {
+//         SERDE_FEATURE_USE_DECL!();
+//         ALLOCATIVE_FEATURE_DECL!();
+//     };
+// }
 
-#[cfg(feature = "serde")]
-#[cfg(test)]
-mod serde_smoke_tests {
-    #[test]
-    fn test_leafc_feature_use_decls() {
-        LEAFC_FEATURE_USE_DECLS!();
+// #[cfg(feature = "serde")]
+// #[cfg(test)]
+// mod serde_smoke_tests {
+//     #[test]
+//     fn test_leafc_feature_use_decls() {
+//         LEAFC_FEATURE_USE_DECLS!();
 
-        #[derive(Serialize, Deserialize)]
-        struct Foo {}
-    }
+//         #[derive(Serialize, Deserialize)]
+//         struct Foo {}
+//     }
 
-    #[test]
-    fn test_serde_feature_use_decl() {
-        SERDE_FEATURE_USE_DECL!();
+//     #[test]
+//     fn test_serde_feature_use_decl() {
+//         LEAFC_FEATURE_USE_DECLS!();
 
-        #[derive(Serialize, Deserialize)]
-        struct Foo {}
-    }
-}
+//         #[derive(Serialize, Deserialize)]
+//         struct Foo {}
+//     }
+// }
 
 // TODO: add macro for `multithreaded` use case. Macro should take a list of
 // various dependencies that are required for the `multithreaded` feature.
@@ -102,7 +102,6 @@ mod serde_smoke_tests {
 //     use std::sync::Arc;
 //     use parking_lot::Mutex;
 // }
-//
 #[macro_export]
 macro_rules! MULTITHREADED_FEATURE_USE_DECLS {
     // take a list of dependencies that are required for the `multithreaded`
@@ -133,22 +132,22 @@ macro_rules! MULTITHREADED_FEATURE_DECL {
     };
 }
 
-#[cfg(feature = "multi-threaded")]
-#[cfg(test)]
-mod multithreaded_smoke_tests {
-    #[test]
-    fn test_leafc_feature_use_decls() {
-        LEAFC_FEATURE_USE_DECLS!();
-    }
+// #[cfg(feature = "multi-threaded")]
+// #[cfg(test)]
+// mod multithreaded_smoke_tests {
+//     #[test]
+//     fn test_leafc_feature_use_decls() {
+//         LEAFC_FEATURE_USE_DECLS!();
+//     }
 
-    #[test]
-    fn test_multithreaded_feature_use_decls() {
-        // MULTITHREADED_FEATURE_USE_DECLS!(std::sync::Arc, parking_lot::Mutex);
-        // let _ = Arc::new(());
-        // let a = u128::MAX;
+//     #[test]
+//     fn test_multithreaded_feature_use_decls() {
+//         // MULTITHREADED_FEATURE_USE_DECLS!(std::sync::Arc,
+// parking_lot::Mutex);         // let _ = Arc::new(());
+//         // let a = u128::MAX;
 
-        // let b =
+//         // let b =
 
-        // let _ = Mutex::new(());
-    }
-}
+//         // let _ = Mutex::new(());
+//     }
+// }

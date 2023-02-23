@@ -70,7 +70,7 @@ use leafc_cfg::{
     settings::EmitKind,
 };
 use leafc_cli::LeafcCli;
-use leafc_errors::{
+use leafc_diagnostics::errors::{
     cli::CliError,
     driver::DriverError,
 };

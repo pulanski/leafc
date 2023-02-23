@@ -24,7 +24,7 @@ doctest = true
 [dependencies]
 leafc_cli = { path = "../leafc_cli" }
 leafc_cfg = { path = "../leafc_cfg" }
-leafc_errors = { path = "../leafc_errors" }
+leafc_diagnostics = { path = "../leafc_diagnostics" }
 leafc_lexer = { path = "../leafc_lexer" }
 leafc_log = { path = "../leafc_log" }
 

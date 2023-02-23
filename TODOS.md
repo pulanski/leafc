@@ -1,8 +1,10 @@
 # TODOS
 
 -   [ ] In the future, look into creating a version crate
-    -   [ ] Version crate should be able to parse version strings of different formats
-        -   [ ] SemVer (https://semver.org/) (e.g. 1.0.0 or 1.0.0-alpha.1 or >=1.0.0 <2.0.4)
+    -   [ ] Version crate should be able to parse version strings of different
+            formats
+        -   [ ] SemVer (https://semver.org/) (e.g. 1.0.0 or 1.0.0-alpha.1 or >=1.0.0
+                <2.0.4)
         -   [ ] Commit hash (e.g. 1234567890abcdef1234567890abcdef12345678)
 
 ```rust
@@ -67,35 +69,38 @@ pub struct SemVer {
 pub struct CommitHash {
     hash: String,
 }
-
 ```
 
-[ ] - need to change repl config file to use `dirs` crate or something else to find config
+[ ] - need to change repl config file to use `dirs` crate or something else to
+find config
 
-[ ] - create a `generate_summary` xtask for generating the summary for the `docs`
+[ ] - create a `generate_summary` xtask for generating the summary for the
+`docs`
 
-[ ] - auto get the user's language using their ip address, however, user's can specify the
-language of the compiler in the config file
+[ ] - auto get the user's language using their ip address, however, user's can
+specify the language of the compiler in the config file
 
 [ ] - fix repl directory from ~, its getting annoying
 
-[ ] - general goal: remove the coupling of ungrammar from rust-analyzer, want to use ungrammar
-but not it's quite coupled with rust-analyzer - currently there is a bug where `syntax_gen` is written as a `test`. As such, when formatting is done,
-the generated files are modified, and the tests fail in ci. Instead, migrate the `syntax_gen` to a
-`bin` and run it as a `xtask` in ci or something similar
+[ ] - general goal: remove the coupling of ungrammar from rust-analyzer, want to
+use ungrammar but not it's quite coupled with rust-analyzer - currently there is
+a bug where `syntax_gen` is written as a `test`. As such, when formatting is
+done, the generated files are modified, and the tests fail in ci. Instead,
+migrate the `syntax_gen` to a `bin` and run it as a `xtask` in ci or something
+similar
 
-[ ] - get a sense of syntactic structure using `lalrpop` and then use that to guide the
-rest of the parsing system
+[ ] - get a sense of syntactic structure using `lalrpop` and then use that to
+guide the rest of the parsing system
 
 Goal:
 
--   Debug print of the AST itself should be able to be used to generate the AST. That is,
-    the debug print should be a lossless representation of the original source text.
+-   Debug print of the AST itself should be able to be used to generate the AST.
+    That is, the debug print should be a lossless representation of the original
+    source text.
 
 Example:
 
 ```rust
-
 // original source text
 let x = 1 + 2;
 
@@ -105,12 +110,15 @@ let x = 1 + 2;
 // AST
 ```
 
-[ ] - Create a proc macro within the log crate that will log the function name, file name, and line number
-of the function that is being called. This will be useful for debugging and tracing the execution of
+[ ] - Create a proc macro within the log crate that will log the function name,
+file name, and line number of the function that is being called. This will be
+useful for debugging and tracing the execution of
 
 [ ] - choose between `tracing` and `log` for logging
 
-[ ] - Extract the `arena` crate into an external `stampede` crate: generic typed, thread-safe arena for low-level allcation features along with high-level APIs for managing memory - [ ] `stampede` - [ ] **Typed** indices into the arena
+[ ] - Extract the `arena` crate into an external `stampede` crate: generic
+typed, thread-safe arena for low-level allcation features along with high-level
+APIs for managing memory - [ ] `stampede` - [ ] **Typed** indices into the arena
 
 -   [ ] Figure out how shared contexts will work
 
@@ -118,12 +126,12 @@ of the function that is being called. This will be useful for debugging and trac
         -   https://tmandry.gitlab.io/blog/posts/2021-12-21-context-capabilities/
         -   https://jam1.re/blog/thoughts-on-contexts-and-capabilities-in-rust
 
--   [ ] Generic Interning, similar to `internment` crate, but with a more generic API
-        and more features (i.e. `Arc` and `Rc` support, etc.). Same API exposed for
-        both **multi-threaded** and **single-threaded** contexts.
+-   [ ] Generic Interning, similar to `internment` crate, but with a more generic
+        API and more features (i.e. `Arc` and `Rc` support, etc.). Same API
+        exposed for both **multi-threaded** and **single-threaded** contexts.
 
--   [ ] Automate versioning / tagging and general release cycle to a certain extent (i.e. have cadence
-        of releases)
+-   [ ] Automate versioning / tagging and general release cycle to a certain
+        extent (i.e. have cadence of releases)
 
 -   [ ] Add support for compiling to wasm/wasi
 -   [ ] grammar correctness via LALRPOP
@@ -132,14 +140,15 @@ of the function that is being called. This will be useful for debugging and trac
 <!-- language scope syntax for interop with other languages, defines cross-language boundary -->
 <!-- the variables within the _language scope_ are visible to the above module -->
 
--   [ ] Idea: language interop is very declarative and simple (i.e. `c { ... }`), but
-        the actual implementation of the interop is very complex. This is because the interop
-        is implemented in the compiler itself. Instead, the interop should be implemented
-        in a separate crate, and the compiler should be able to use that crate to implement
-        the interop. This will make the compiler much more modular and easier to maintain.
+-   [ ] Idea: language interop is very declarative and simple (i.e. `c { ... }`),
+        but the actual implementation of the interop is very complex. This is
+        because the interop is implemented in the compiler itself. Instead, the
+        interop should be implemented in a separate crate, and the compiler should
+        be able to use that crate to implement the interop. This will make the
+        compiler much more modular and easier to maintain.
 
--   interesting idea maybe, not sure how to deal with types across boundaries though
-    along with a number of other issues
+-   interesting idea maybe, not sure how to deal with types across boundaries
+    though along with a number of other issues
 
 # Example of language interop
 
@@ -251,8 +260,8 @@ fn main() {
 
 # Goal: Really good dependency analysis and management
 
-Inspired by Go, no need to have a `Cargo.toml` file, just have a `go.mod` like file. The `go.mod` file
-looks like this:
+Inspired by Go, no need to have a `Cargo.toml` file, just have a `go.mod` like
+file. The `go.mod` file looks like this:
 
 `leaf.pkg`
 
@@ -270,3 +279,10 @@ leaf 0.34.3 // version of the leaf compiler
 
 dep github.com/leaf-lang/leaf-stdlib 0.23.4 // direct
 ```
+
+Create build script to auto increment state of how many builds have occurred.
+
+Auto-update minor every x number of builds. start at 100-1000 range and tune
+accordingly. Want avg cadence of two-three weeks.
+
+TODO: add snapshotting for dep-graph (i.e. auto update) via `cargo-make`

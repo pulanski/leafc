@@ -12,7 +12,7 @@ pub const REPL_ERROR_PREFIX: &str = "REPL Error";
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::repl::ReplError;
+/// use leafc_diagnostics::errors::repl::ReplError;
 /// use strum::EnumCount;
 ///
 /// // There are x variants of the `ReplError` enum.

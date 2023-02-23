@@ -176,7 +176,18 @@ impl LanguageConfiguration {
 /// are currently supported by the compiler and could always be extended
 /// in the future.
 #[derive(
-    Clone, Copy, Debug, Default, Display, Eq, Hash, PartialEq, EnumString, EnumVariantNames,
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Display,
+    Eq,
+    Hash,
+    PartialEq,
+    EnumString,
+    EnumVariantNames,
+    PartialOrd,
+    Ord,
 )]
 pub enum LanguageKind {
     /// The **English** language.

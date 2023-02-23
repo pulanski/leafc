@@ -1,5 +1,10 @@
 use smartstring::alias::String;
 
+/// Defines a collection of utilities for **string matching algorithms** using
+/// **Levenshtein distance**, **Damerau-Levenshtein distance**, **Hamming
+/// distance**, and **Sift3 distance**.
+pub mod distance;
+
 /// Removes all occurrences of a substring from a string.
 ///
 /// # Examples

@@ -20,7 +20,7 @@ doctest = true
 leafc_lexer = { path = "../leafc_lexer" }
 leafc_macros = { path = "../leafc_macros" }
 leafc_utils = { path = "../leafc_utils" }
-leafc_errors = { path = "../leafc_errors" }
+leafc_diagnostics = { path = "../leafc_diagnostics" }
 
 cfg-if = { workspace = true }
 cstree = { workspace = true }

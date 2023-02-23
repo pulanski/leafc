@@ -26,7 +26,7 @@ pub const SYNTAX_ERROR_PREFIX: &str = "Syntax Error";
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::syntax::SyntaxError;
+/// use leafc_diagnostics::errors::syntax::SyntaxError;
 /// use strum::EnumCount;
 ///
 /// // There are x variants of the `LexicalError` enum.
@@ -40,7 +40,7 @@ pub enum SyntaxError {
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_errors::syntax::SyntaxError;
+    /// use leafc_diagnostics::errors::syntax::SyntaxError;
     ///
     /// // The error is returned when an unknown token is encountered.
     /// let error = SyntaxError::UnknownToken("".into());
@@ -93,7 +93,7 @@ impl SyntaxError {
 // /// # Examples
 // ///
 // /// ```rust
-// /// use leafc_errors::syntax::SyntaxError;
+// /// use leafc_diagnostics::errors::syntax::SyntaxError;
 // ///
 // /// // The error is returned when an unknown token is encountered.
 // /// let error = SyntaxError::UnknownToken("".into());

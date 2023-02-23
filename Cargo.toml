@@ -10,12 +10,12 @@ members = [
     ###########################################################################
 
     # ------------------------------------------------------------------------
-    # leafc
+    # leafc (compiler)
     # ------------------------------------------------------------------------
     "crates/compiler/leafc",
 
     # ------------------------------------------------------------------------
-    # leafcdb
+    # leafcdb (TUI debugger)
     # ------------------------------------------------------------------------
     "crates/tools/leafcdb",
 
@@ -23,13 +23,17 @@ members = [
     # Libraries
     ###########################################################################
 
+    # ------------------------------------------------------------------------
+    # compiler-specific libraries
+    # ------------------------------------------------------------------------
+
     "crates/compiler/leafc_arena",
     "crates/compiler/leafc_cfg",
     "crates/compiler/leafc_cli",
     # "crates/leafc_codegen",
     "crates/compiler/leafc_data_structures",
     "crates/compiler/leafc_driver",
-    "crates/compiler/leafc_errors",
+    "crates/compiler/leafc_diagnostics",
     "crates/compiler/leafc_hir",
     "crates/compiler/leafc_intern",
     "crates/compiler/leafc_lexer",
@@ -39,6 +43,18 @@ members = [
     "crates/compiler/leafc_repl",
     "crates/compiler/leafc_syntax",
     "crates/compiler/leafc_utils",
+
+    # ------------------------------------------------------------------------
+    # ide-specific libraries
+    # ------------------------------------------------------------------------
+
+    "crates/ide/leafc_lsp",
+    "crates/ide/leafc_assists",
+    "crates/ide/leafc_completions",
+
+    # ------------------------------------------------------------------------
+    # shared libraries
+    # ------------------------------------------------------------------------
 
     ###########################################################################
     # Vendored Third-Party Libraries
@@ -107,7 +123,6 @@ derivative = "2.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"
 dirs-next = "2.0.0"
-distance = "0.4.0"
 doc-comment = "0.3.3"
 cargo-emit = "0.2.1"
 fern = "0.6.1"
@@ -161,6 +176,7 @@ serde_repr = "0.1.10"
 serde_yaml = "0.9.17"
 smartstring = "1.0.1"
 smol_str = "0.1.24"
+str_sim = "0.1.2"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 syn = "1.0.108"

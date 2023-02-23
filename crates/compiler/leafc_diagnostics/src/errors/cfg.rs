@@ -13,7 +13,7 @@ pub const CFG_ERROR_PREFIX: &str = "Config Error";
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::CfgError;
+/// use leafc_diagnostics::errors::CfgError;
 /// use strum::EnumCount;
 ///
 /// // There are x variants of the `CfgError` enum.
@@ -27,7 +27,7 @@ pub enum CfgError {
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_errors::CfgError;
+    /// use leafc_diagnostics::errors::CfgError;
     ///
     /// // The error is returned when an error occurs while initializing the compiler.
     /// let error = CfgError::Initialization("".into());

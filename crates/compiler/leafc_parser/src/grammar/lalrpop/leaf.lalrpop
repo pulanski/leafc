@@ -1,7 +1,18 @@
-use crate::codemap::CodeMap;
-use crate::codemap::Spanned;
-use crate::syntax::lexer;
-use crate::syntax::dialect::Dialect;
-use crate::syntax::ast::*;
+// use crate::codemap::CodeMap;
+// use crate::codemap::Spanned;
+// use crate::syntax::lexer;
+// use crate::syntax::ast::*;
+// use crate::
 
-grammar(codemap: &CodeMap, dialect: &Dialect);
+use leafc_intern::StringInterner;
+use leafc_intern::FileId;
+
+// errors: &'err mut Vec<ErrorRecovery<usize, Token<'input>, ParseError>>,
+// grammar<'string_interner>(str_interner: &'string_interner mut StringInterner, file_interner: FileInterner);
+
+grammar<'input, 'string_interner, 'err,'er>(
+    src_file: FileId,
+    str_interner: &'string_interner mut StringInterner,
+    errs: &'err mut Vec<ErrorRecovery<usize, Token<'input>, SyntaxError>>,
+    // ast_arena: &mut AstArena<'ar>, // TODO: add arena support
+);

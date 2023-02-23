@@ -47,7 +47,7 @@ pub use syntax::SyntaxError;
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::Error;
+/// use leafc_diagnostics::errors::Error;
 /// ```
 pub type Error = Locatable<LeafcError>;
 
@@ -61,7 +61,7 @@ pub type Error = Locatable<LeafcError>;
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::Warning;
+/// use leafc_diagnostics::errors::Warning;
 /// ```
 pub type Warning = Locatable<LeafcWarning>;
 
@@ -149,7 +149,7 @@ pub enum LeafcError {
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::LeafcWarning;
+/// use leafc_diagnostics::errors::LeafcWarning;
 /// // TODO: add examples
 /// ```
 #[derive(Debug, Clone)]
@@ -191,7 +191,7 @@ pub enum LeafcWarning {
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::LeafcDiagnostic;
+/// use leafc_diagnostics::errors::LeafcDiagnostic;
 /// // TODO: add examples
 /// ```
 #[derive(Debug, Clone)]
@@ -207,7 +207,7 @@ pub enum LeafcDiagnostic {
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::DiagnosticsManager;
+/// use leafc_diagnostics::errors::DiagnosticsManager;
 ///
 /// // TODO: add examples
 /// ```
@@ -227,7 +227,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// use leafc_utils::{
     ///     FileId,
     ///     Location,
@@ -246,7 +246,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn span(&self) -> Span {
         self.location.span()
@@ -258,7 +258,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn file(&self) -> FileId {
         self.location.file()
@@ -272,7 +272,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn range(&self) -> Range<TextPosition> {
         self.location.span().range()
@@ -284,7 +284,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn start(&self) -> TextPosition {
         self.location.span().start()
@@ -296,7 +296,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn end(&self) -> TextPosition {
         self.location.span().end()
@@ -308,7 +308,7 @@ impl<T: Clone> Locatable<T> {
     ///
     /// ```
     /// // TODO: add example
-    /// use leafc_errors::Locatable;
+    /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn map<U: Clone, F: FnOnce(T) -> U>(self, f: F) -> Locatable<U> {
         Locatable::new(self.location, f(self.item))
@@ -327,7 +327,7 @@ impl DiagnosticsManager {
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_errors::DiagnosticsManager;
+    /// use leafc_diagnostics::errors::DiagnosticsManager;
     /// // TODO: add examples
     /// ```
     pub fn num_errors(&self) -> usize {

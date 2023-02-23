@@ -14,7 +14,7 @@ pub const DRIVER_ERROR_PREFIX: &str = "Driver Error";
 /// # Examples
 ///
 /// ```rust
-/// use leafc_errors::DriverError;
+/// use leafc_diagnostics::errors::DriverError;
 /// use strum::EnumCount;
 ///
 /// // There are x variants of the `DriverError` enum.
@@ -28,7 +28,7 @@ pub enum DriverError {
     /// # Examples
     ///
     /// ```rust
-    /// use leafc_errors::DriverError;
+    /// use leafc_diagnostics::errors::DriverError;
     ///
     /// // The error is returned when an error occurs while initializing the compiler.
     /// let error = DriverError::Initialization("".into());

@@ -176,7 +176,6 @@ use num_derive::{
     ToPrimitive,
 };
 use strum_macros::EnumCount;
-
 impl SyntaxKind {
     pub fn is_keyword(self) -> bool {
         matches!(

@@ -12,7 +12,7 @@ use std::{
 
 pub use ast::generated::kinds::SyntaxKind;
 use ast::AstNode;
-use leafc_errors::SyntaxError;
+use leafc_diagnostics::errors::SyntaxError;
 use rowan::GreenNode;
 pub use syntax_tree::{
     PreorderWithTokens,

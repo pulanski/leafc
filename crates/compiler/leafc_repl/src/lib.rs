@@ -46,8 +46,8 @@ use smartstring::alias::String;
 use typed_builder::TypedBuilder;
 
 use leafc_cli::LeafcCli;
+use leafc_diagnostics::errors::repl::ReplError;
 use leafc_driver::LeafcDriver;
-use leafc_errors::repl::ReplError;
 use smol_str::SmolStr;
 use strum::IntoEnumIterator;
 

@@ -18,7 +18,7 @@ doctest = true
 
 [dependencies]
 leafc_cfg = { path = "../leafc_cfg" }
-leafc_errors = { path = "../leafc_errors" }
+leafc_diagnostics = { path = "../leafc_diagnostics" }
 
 chrono = { workspace = true }
 dirs-next = { workspace = true }

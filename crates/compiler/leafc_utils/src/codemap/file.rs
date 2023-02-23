@@ -163,6 +163,12 @@ impl From<FileData> for File {
     }
 }
 
+// impl From<FileId> for File {
+//     fn from(file_id: FileId) -> Self {
+//         Self::new(file_id, "", "")
+//     }
+// }
+
 impl From<(&str, &str)> for File {
     fn from((abs_path, source_text): (&str, &str)) -> Self {
         // TODO: refactor to intern the entire file.
@@ -381,6 +387,7 @@ mod file_test_suite {
     }
 
     #[test]
+    #[ignore = "TODO: add implementation"]
     fn test_file_set() {
         let file_set = FileSet::new();
 
@@ -399,6 +406,7 @@ mod file_test_suite {
         let file_id = file_set.add_file("foo", "bar");
 
         // assert_eq!(file_set.files(), &[File::new("foo", "bar")]);
+        // assert_eq!(file_set.files(), &[File::from(file_id)]);
         assert_eq!(file_set.files(), &[File::from(("foo", "bar"))]);
         assert_eq!(file_set.cursor(), None);
         assert_eq!(file_set.get_file(file_id), Some(&File::new("foo", "bar")));

@@ -35,15 +35,17 @@ ROOT
         └── R_BRACE @ [109..110] }
 ```
 
+In regards to jargon, we generally refer to the base of any given syntax tree as the **root**. This is different from some other parsers or syntax implementations which may refer to the root of a syntax tree as the **program** or a **module**. The idea is the same, even if the naming is slightly different.
+
 ### An quick aside on a bit of **language theory**...
 
-Within the **typical software development lifecyle** (_compiled, that is_), there are two distinct phases:
+Within the **typical software development lifecyle** (_compiled, that is_), there are **two distinct phases**:
 
--   **Compile time**: the source code is transformed into an executable binary
+-   **Compile time**: when the source code is transformed into an executable binary
 
-    -   At this stage, the compiler **analyzes** the code, **checks it for syntax errors**, and **generates machine-readable code** that can be _executed by the computer_. The compiler performs **static analysis**, which means it can **detect** and **report errors** _before_ the program is _actually run_. Compile-time errors prevent the program from being successfully compiled and result in error messages. This means that, if your code builds, it has a **_certain degree_ of correctness** which is guaranteed by the compiler. This is a **desirable feature** of any programming language, because it **reduces** the **number of bugs** that can be introduced into the program. It also **reduces** the **number of run-time errors** that can occur, because the compiler is **able** to **detect** and **report** a **number of errors** that the **interpreter**, _by definition_, is **unable** to detect, such as **syntax errors**, **type errors**, and **undefined variables**.Compile-time safety checks are important because they **prevent** the program from **crashing** at _runtime_, and as such are a **desireable feature** of any programming language.
+    -   At the compile time stage, the compiler **analyzes** the code, **checks it for syntax errors**, and **generates machine-readable code** that can be _executed by the computer_. The compiler performs **static analysis**, which means it can **detect** and **report errors** _before_ the program is _actually run_. Compile-time errors prevent the program from being successfully compiled and result in error messages. This means that, if your code builds, it has a **_certain degree_ of correctness** which is guaranteed by the compiler. This is a **desirable feature** of any programming language, because it **reduces** the **number of bugs** that can be introduced into the program, eliminating **entire classes** of errors. A compiler is **able** to **detect** and **report** a **number of errors** at compile time that the **interpreter**, _by definition_, is **unable** to detect until run time (i.e. **syntax errors**, **type errors**, **undefined variables**).
 
--   **Run time**: the executable binary is executed
+-   **Run time**: when the executable binary is executed
 
     -   Run time, on the other hand, refers to the period during which a program is _actually executed_ by a computer. At this stage, the executable code is **loaded into memory**, and the computer starts to **execute the instructions** in the code. The program's behavior during run time is **determined** by the **input it receives** and the **interactions it has** with the **system it is running on**. Run-time errors are errors that occur **while** the program is _being executed_, and can include things like **logic errors**, **input errors**, and **memory errors**, among others. Run-time errors are **usually undesirable** because they **cause** the program to **crash** or **produce incorrect results**. This can end up causing a number of issues, such **security issues** or a hit on the overall **user experience** with the software.
 

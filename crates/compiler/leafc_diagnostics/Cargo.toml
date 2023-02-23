@@ -1,6 +1,6 @@
 [package]
-name = "leafc_errors"
-description = "Error handling for the different subsystems of leafc (e.g. lexer, parser, syntax tree, type checker, etc.)"
+name = "leafc_diagnostics"
+description = "Diagnostics (warnings/error handling) for the different subsystems of leafc (e.g. lexer, parser, syntax tree, type checker, etc.)"
 keywords = ["leafc", "errors", "error handling"]
 
 version.workspace = true

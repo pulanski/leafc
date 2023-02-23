@@ -7,6 +7,7 @@ pub mod span;
 /// Contains information about a **text slice**.
 pub mod text;
 
+/// TODO: document this
 pub mod cursor;
 
 use getset::{
