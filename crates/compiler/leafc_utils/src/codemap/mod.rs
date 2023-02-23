@@ -7,6 +7,8 @@ pub mod span;
 /// Contains information about a **text slice**.
 pub mod text;
 
+pub mod cursor;
+
 use getset::{
     CopyGetters,
     MutGetters,
@@ -27,8 +29,13 @@ pub use {
     text::TextPosition,
 };
 
+// pub enum Item {
+//     Module,
+// }
+
 /// Used to store information about the **location** of an **item in a file**.
-/// An **item** can be a **token**, a **node**, or a **span**.
+/// An **item** can be a **token**, a **node**, a
+/// **statement**, etc.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, CopyGetters, MutGetters, Setters)]
 #[getset(get_copy = "pub", get_mut = "pub", set = "pub")]
 pub struct Location {

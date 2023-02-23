@@ -557,6 +557,26 @@ mod keyword_test_suite {
     }
 
     #[rstest]
+    #[case("isn't")] // English
+    #[case("no es")] // Spanish
+    #[case("n'est pas")] // French
+    #[case("is niet")] // Dutch
+    #[case("är inte")] // Swedish
+    #[case("er ikke")] // Danish, Norwegian
+    #[case("ei ole")] // Finnish
+    #[case("не")] // Russian
+    #[case("ではない")] // Japanese
+    #[case("不是")] // Chinese
+    #[case("아니야")] // Korean
+    #[case("si siyo")] // Swahili
+    fn test_isn_t_keyword(#[case] raw_token: &str) {
+        let mut token = TokenKind::lexer(raw_token);
+
+        assert_eq!(token.next(), Some(TokenKind::ISNT_KW));
+        assert_eq!(token.slice(), raw_token);
+    }
+
+    #[rstest]
     #[case("let")] // English
     #[case("dejar")] // Spanish
     #[case("laisser")] // French
@@ -735,7 +755,7 @@ mod keyword_test_suite {
     #[case("non")] // Italian
     #[case("não")] // Portuguese
     #[case("ei")] // Finnish
-    #[case("не")] // Russian
+    #[case("нет")] // Russian
     #[case("ない")] // Japanese
     #[case("不")] // Chinese
     #[case("아니")] // Korean

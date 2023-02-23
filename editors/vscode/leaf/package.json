@@ -1,25 +1,35 @@
 {
-  "name": "leaf",
-  "displayName": "Leaf",
-  "description": "The official VSCode extension for the Leaf Programming Language",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.75.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "contributes": {
-    "languages": [{
-      "id": "leaf",
-      "aliases": ["Leaf", "leaf"],
-      "extensions": [".leaf",".lf"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "leaf",
-      "scopeName": "source.leaf",
-      "path": "./syntaxes/leaf.tmLanguage.json"
-    }]
-  }
+    "name": "leaf",
+    "displayName": "Leaf",
+    "description": "The official VSCode extension for the Leaf Programming Language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "leaf",
+                "aliases": [
+                    "Leaf",
+                    "leaf"
+                ],
+                "extensions": [
+                    ".leaf",
+                    ".lf"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "leaf",
+                "scopeName": "source.leaf",
+                "path": "./syntaxes/leaf.tmLanguage.json"
+            }
+        ]
+    }
 }

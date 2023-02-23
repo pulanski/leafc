@@ -2,6 +2,7 @@
 
 use std::fmt;
 
+use leafc_cfg::lang::LanguageKind;
 use leafc_data_structures::collections::HashSet;
 
 use derive_new::new;
@@ -163,6 +164,14 @@ trait Checker {
 pub struct TokenSet {
     pub tokens: HashSet<Token>,
 }
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub struct LanguageToken {
+    pub token: Token,
+    pub lang:  Option<LanguageKind>,
+}
+
+// TODO: intern language token via generic interner
 
 #[cfg(feature = "multi-threaded")]
 pub struct LanguageTokens {

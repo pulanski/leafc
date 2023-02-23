@@ -32,7 +32,7 @@ Then install VSCode by switching to the Extensions section on the left, then the
 
 In the settings for `leaf` under **Preferences: Open Settings (UI)** from the command palate (`cmd/ctrl + shift + p`), set the **Leaf Compiler: Executable Path** to your configured `/path/to/bin/leafc`. This must be an absolute path, you cannot use `$LEAFC_INSTALL` here.
 
-Alternatively, modify the ``.vscode/settings.json`` file to have an entry similar to the following:
+Alternatively, modify the `.vscode/settings.json` file to have an entry similar to the following:
 
 ```
 "leafLanguageServer.compiler.executablePath": "/path/to/leaf-install/bin/leafc"

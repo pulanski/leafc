@@ -279,23 +279,6 @@ pub enum TokenKind {
     #[token("kuagiza")] // Swahili
     IMPORT_KW,
 
-    #[doc = RESERVED_KEYWORDS!("IS")]
-    #[token("is")] // English, Dutch
-    #[token("es")] // Spanish
-    #[token("est")] // French
-    #[token("lst")] // German
-    #[token("é")] // Portuguese
-    #[token("è")] // Italian
-    #[token("er")] // Danish, Norwegian
-    #[token("är")] // Swedish
-    #[token("on")] // Finnish
-    #[token("является")] // Russian
-    #[token("は")] // Japanese
-    #[token("是")] // Chinese
-    #[token("~이다")] // Korean
-    #[token("ni")] // Swahili
-    IS_KW,
-
     #[doc = RESERVED_KEYWORDS!("LET")]
     #[token("let")] // English
     #[token("dejar")] // Spanish
@@ -398,6 +381,26 @@ pub enum TokenKind {
     #[token("계속")] // Korean
     #[token("kuendelea")] // Swahili
     CONTINUE_KW,
+
+    #[doc = KEYWORDS!("DEFAULT")]
+    #[token("default")]
+    // English
+    // #[token("aplazar")] // Spanish
+    // #[token("reporter")] // French
+    // #[token("verschieben")] // German
+    #[token("valor normal")] // Portuguese
+    #[token("valore normale")] // Italian
+    #[token("normale waarde")] // Dutch
+    #[token("normalvärde")] // Swedish
+    #[token("normalverdi")] // Danish
+    #[token("misligholde")] // Norwegian
+    #[token("oletuksena")] // Finnish
+    #[token("по умолчанию")] // Russian
+    #[token("デフォルト")] // Japanese
+    #[token("默认")] // Chinese
+    #[token("기본")] // Korean
+    #[token("chaguo-msingi")] // Swahili
+    DEFAULT_KW,
 
     #[doc = KEYWORDS!("DEFER")]
     #[token("defer")] // English
@@ -597,6 +600,38 @@ pub enum TokenKind {
     #[token("ndani")] // Swahili
     IN_KW,
 
+    #[doc = KEYWORDS!("IS")]
+    #[token("is")] // English, Dutch
+    #[token("es")] // Spanish
+    #[token("est")] // French
+    #[token("lst")] // German
+    #[token("é")] // Portuguese
+    #[token("è")] // Italian
+    #[token("er")] // Danish, Norwegian
+    #[token("är")] // Swedish
+    #[token("on")] // Finnish
+    #[token("является")] // Russian
+    #[token("は")] // Japanese
+    #[token("是")] // Chinese
+    #[token("~이다")] // Korean
+    #[token("ni")] // Swahili
+    IS_KW,
+
+    #[doc = KEYWORDS!("ISNT")]
+    #[token("isn't")] // English
+    #[token("no es")] // Spanish
+    #[token("n'est pas")] // French
+    #[token("is niet")] // Dutch
+    #[token("är inte")] // Swedish
+    #[token("er ikke")] // Danish, Norwegian
+    #[token("ei ole")] // Finnish
+    #[token("не")] // Russian
+    #[token("ではない")] // Japanese
+    #[token("不是")] // Chinese
+    #[token("아니야")] // Korean
+    #[token("si siyo")] // Swahili
+    ISNT_KW,
+
     #[doc = KEYWORDS!("LOOP")]
     #[token("loop")] // English
     #[token("bucle")] // Spanish
@@ -710,7 +745,7 @@ pub enum TokenKind {
     #[token("non")] // Italian
     #[token("não")] // Portuguese
     #[token("ei")] // Finnish
-    #[token("не")] // Russian
+    #[token("нет")] // Russian
     #[token("ない")] // Japanese
     #[token("不")] // Chinese
     #[token("아니")] // Korean

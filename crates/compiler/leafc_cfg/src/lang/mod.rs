@@ -78,9 +78,9 @@ use typed_builder::TypedBuilder;
 /// // The default language is retrieved (will vary depending on the user's
 /// // system locale and language preferences).
 /// let language: Language = default_language();
-pub fn default_language() -> Language {
+pub fn default_language() -> LanguageKind {
     let lang_code = get_locale().unwrap_or_default();
-    Language::from_str(&lang_code).unwrap_or(Language::English)
+    LanguageKind::from_str(&lang_code).unwrap_or(LanguageKind::English)
 }
 
 // TODO: when instantiating the LanguageConfiguration, check and see if it is
@@ -123,7 +123,7 @@ pub struct LanguageConfiguration {
     #[getset(get_copy = "pub", get_mut, set)]
     #[builder(default = vec![default_language()])]
     #[derivative(Default(value = "vec![default_language()]"))]
-    pub supported_languages: Vec<Language>,
+    pub supported_languages: Vec<LanguageKind>,
 
     /// The **current language** that the project is using. This means that
     /// the compiler will be use the specified language for emitting
@@ -132,7 +132,7 @@ pub struct LanguageConfiguration {
     #[getset(get = "pub", get_mut, set)]
     #[builder(default = default_language())]
     #[derivative(Default(value = "default_language()"))]
-    pub current_language: Language,
+    pub current_language: LanguageKind,
 }
 
 impl LanguageConfiguration {
@@ -156,7 +156,7 @@ impl LanguageConfiguration {
     /// lang_cfg.add_language("en").unwrap();
     /// ```
     pub fn add_language(&mut self, lang: &str) -> Result<(), String> {
-        let lang = Language::from_str(lang).map_err(|_| format!("invalid language: {lang}"))?;
+        let lang = LanguageKind::from_str(lang).map_err(|_| format!("invalid language: {lang}"))?;
 
         // if self.supported_languages.contains(&lang) {
         //     return Err(format!("language already supported: {}", lang));
@@ -168,16 +168,17 @@ impl LanguageConfiguration {
     }
 }
 
-/// All possible languages that the compiler is able to support as well as
-/// be configured to use.
+/// All possible kinds of languages that the compiler is **able to support** as
+/// well as be **configured to use** (i.e. the compiler will be able to
+/// **compile** and **emit diagnostics**)
 ///
 /// **NOTE**: This list is not exhaustive. It is only a list of languages that
-/// are currently supported by the compiler and could always be exptended
+/// are currently supported by the compiler and could always be extended
 /// in the future.
 #[derive(
     Clone, Copy, Debug, Default, Display, Eq, Hash, PartialEq, EnumString, EnumVariantNames,
 )]
-pub enum Language {
+pub enum LanguageKind {
     /// The **English** language.
     ///
     /// This includes the following **language tags**:
@@ -284,6 +285,17 @@ fn english() -> String {
     t!("leafc_cfg.lang.en").into()
 }
 
+// t!("en", "English") <-- This is the correct way to do it.
+// will look into the language table in the en bucket and get the English key.
+// this will return an Option<String>.
+
+// the formatter for the type represented by the t! macro will implement the
+// default Display for the token to be similar to `DANISH TOKEN STREAM [(english
+// token kind here)] - NOT YET IMPLEMENTED. (Feel free to submit a PR here to
+// help the language grow!) <-- links to the specific locacales config file and
+// tells the user how to add the key along with the translation if they'd like
+// to help the project out.
+
 // #[derive(Debug, PartialEq, EnumString)]
 // pub enum LanguageTag {
 //     /// The **English** language.
@@ -319,20 +331,20 @@ mod language_test_suite {
     use crate::lang::{
         default_language,
         english,
-        Language,
+        LanguageKind,
     };
 
     use super::LanguageConfiguration;
 
     #[test]
     fn smoke_default_language() {
-        assert_eq!(default_language(), Language::English);
+        assert_eq!(default_language(), LanguageKind::English);
     }
 
     #[test]
     fn smoke_locale_change() {
         let lang = default_language();
-        assert_eq!(lang, Language::English);
+        assert_eq!(lang, LanguageKind::English);
 
         // Tests that the various references are in the current execution language.
         assert_eq!(english(), "English");
@@ -345,25 +357,25 @@ mod language_test_suite {
     }
 
     #[rstest]
-    #[case::english(Language::English, "en")]
-    #[case::english_australia(Language::English, "en-AU")]
-    #[case::english_canada(Language::English, "en-CA")]
-    #[case::english_united_kingdom(Language::English, "en-GB")]
-    #[case::english_ireland(Language::English, "en-IE")]
-    #[case::english_india(Language::English, "en-IN")]
-    #[case::english_new_zealand(Language::English, "en-NZ")]
-    #[case::english_united_states(Language::English, "en-US")]
-    #[case::english_south_africa(Language::English, "en-ZA")]
-    #[case::english_default(Language::English, "foo bar baz")]
-    fn smoke_lang_string(#[case] language: Language, #[case] tag: &str) {
-        let language_tag: Language = Language::from_str(tag).unwrap_or_default();
+    #[case::english(LanguageKind::English, "en")]
+    #[case::english_australia(LanguageKind::English, "en-AU")]
+    #[case::english_canada(LanguageKind::English, "en-CA")]
+    #[case::english_united_kingdom(LanguageKind::English, "en-GB")]
+    #[case::english_ireland(LanguageKind::English, "en-IE")]
+    #[case::english_india(LanguageKind::English, "en-IN")]
+    #[case::english_new_zealand(LanguageKind::English, "en-NZ")]
+    #[case::english_united_states(LanguageKind::English, "en-US")]
+    #[case::english_south_africa(LanguageKind::English, "en-ZA")]
+    #[case::english_default(LanguageKind::English, "foo bar baz")]
+    fn smoke_lang_string(#[case] language: LanguageKind, #[case] tag: &str) {
+        let language_tag: LanguageKind = LanguageKind::from_str(tag).unwrap_or_default();
 
         assert_eq!(language, language_tag);
     }
 
     #[test]
     fn smoke_enum_variants() {
-        assert_eq!(Language::VARIANTS, vec![
+        assert_eq!(LanguageKind::VARIANTS, vec![
             "English",
             "Spanish",
             "French",
@@ -385,9 +397,10 @@ mod language_test_suite {
 
     #[test]
     fn test_config_builder() {
-        let lang_cfg = LanguageConfiguration::builder().current_language(Language::English).build();
+        let lang_cfg =
+            LanguageConfiguration::builder().current_language(LanguageKind::English).build();
 
-        assert_eq!(lang_cfg.current_language, Language::English);
-        assert_eq!(lang_cfg.supported_languages, vec![Language::English]);
+        assert_eq!(lang_cfg.current_language, LanguageKind::English);
+        assert_eq!(lang_cfg.supported_languages, vec![LanguageKind::English]);
     }
 }

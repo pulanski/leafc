@@ -1,0 +1,29 @@
+"match": "\\b(println|print|printerr|readln|read|readerr|exit|assert|asserteq|assertneq|assertlt|assertgt|assertlteq|assertgteq|asserttrue|assertfalse|assertmissing|assertnotmissing|assertcontains|assertnotcontains|assertstartswith|assertendswith|assertmatches|assertnotmatches|assertthrows|assertnotthrows|assertthrowserror|assertnotthrowserror|assertthrowserrorwithmessage|assertnotthrowserrorwithmessage|assertthrowserrorwithcode|assertnotthrowserrorwithcode|assertthrowserrorwithcodeandmessage|assertnotthrowserrorwithcodeandmessage|assertthrowserrorwithcodeandmessageandinfo|assertnotthrowserrorwithcodeandmessageandinfo|assertthrowserrorwithcodeandmessageandinfoandhelp|assertnotthrowserrorwithcodeandmessageandinfoandhelp|assertthrowserrorwithcodeandmessageandinfoandhelpanddata|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddata|assertthrowserrorwithcodeandmessageandinfoandhelpanddataandreason|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddataandreason|assertthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadata|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadata|assertthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcause|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcause|assertthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcauseandmetadata|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcauseandmetadata|assertthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcauseandmetadataandmetadata|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcauseandmetadataandmetadata|assertthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcauseandmetadataandmetadataandmetadata|assertnotthrowserrorwithcodeandmessageandinfoandhelpanddataandreasonandmetadataandcauseandmetadataandmetadataandmetadata|assertthrowserrorwithcodeandmessageandinfoandhelpanddataand
+
+
+"keywords": {
+			"patterns": [{
+				"name": "keyword.control.leaf",
+				"match": "\\b(if|while|for|return)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.leaf",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.leaf",
+					"match": "\\\\."
+				}
+			]
+		}
+
+
+
+override|init|deinit|mutating|nonmutating|static|class|final|convenience|required|inout|rethrows|throws|open|public|internal|fileprivate|private|get|set|willSet|didSet|lazy|weak|unowned|unowned(safe|unsafe)|dynamic|optional|required|convenience|override|mutating|nonmutating|static|class|final|open|public|internal|fileprivate|private|get|set|willSet|didSet|lazy|weak|unowned|unowned(safe|unsafe)|dynamic|optional|required|convenience|override|mutating|nonmutating|static|class|final|open|public|internal|fileprivate|private|get|set|willSet|didSet|lazy|weak|unowned|unowned(safe|unsafe)|dynamic|optional|required|convenience|override|mutating|nonmutating|static|class|final|open|public|internal|fileprivate|private|get|set|willSet|didSet|lazy|weak|unowned|unowned(safe|unsafe)|dynamic|optional|required|convenience|override|mutating|nonmutating|static|class|final|open|public|internal|fileprivate|private|get|set|willSet|didSet|lazy|weak|unowned|unowned(safe|unsafe)|dynamic|optional|required|convenience|override|mutating|nonmutating|static|class|final|open|public|internal|fileprivate|private|get|set|willSet|didSet|lazy|weak|unowned|unowned(safe|unsafe)|dynamic|optional|required|convenience|override|mutating|nonmutating|static|class|final|open|public|internal|fileprivate|
+
+
+support functions
+
+   "match": "\\b(append|remove|insert|contains|count|keys|values|sort|reverse|join|split|trim|trimleft|trimright|lowercase|uppercase|capitalize|titlecase|camelcase|snakecase|kebabcase|contains|startswith|endswith|indexof|lastindexof|replace|replacen|repeat|format|formatdate|formatnumber|formatcurrency|formatbytes|formatduration|formatordinal|formatpercent|formatscientific|formatspellout|formatphonetic|formatuuid|formatbase64|formathex|formatbinary|formatoctal|formatcustom|formatjson|formatxml|formatyaml|formatcsv|formathtml|formaturl|formaturi|formatquery|formatmarkdown)\\b"

@@ -2,16 +2,11 @@
 
 In regards to **lexical structure**, the Leaf language has an interesting feature:
 **polyglot syntax**. This means that the source language itself can be written
-in and translated between **multiple spoken languages**. The **default language**
-is determined based on the **locale** of the system on which the Leaf compiler,
-`leafc`, is running. For example, if the system's locale is set to `en_US.UTF-8`,
-the default language is **English**. On the other hand, if the system's locale is
-set to `fr_FR.UTF-8`, the default language is **French**. This setting can be
-overridden via a number of different methods including _command line flag_,
-_environment variable_, _configuration file_. The **default language** is used
-to determine both the **legal syntax** of the source code as well as the
-language used within the compiler's **error messages**. For example, if the
-default language is **English**, the following code is valid:
+in and translated between **multiple spoken languages**.
+
+> **NOTE**: The **default language** is determined based on the **locale** of the system on which the Leaf compiler is being run. The **locale** may also be determined by the `LANG` environment variable. For example, if the `LANG` environment variable is set to `en_US.UTF-8`, the **default language** is **English**. On the other hand, if the `LANG` environment variable is set to `fr_FR.UTF-8`, the **default language** is **French**. This setting can be overridden via a number of different methods including _command line flag_, _environment variable_, _configuration file_.
+
+The **default language** is used to determine both the **legal syntax** of the source code as well as the language used within the compiler's **error messages**. For example, if the default language is **English**, the following code is valid:
 
 ```rust
 fn main() {
@@ -35,7 +30,7 @@ fn principal() {
 }
 ```
 
-If the default language was **French**, the **inverse** would be **true**.
+On the other hand, if the current language was **French**, the **inverse** would be **true**.
 
 ## Token Groups
 
