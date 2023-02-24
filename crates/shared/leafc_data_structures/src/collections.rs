@@ -14,6 +14,10 @@ cfg_if! {
         ///
         /// **NOTE**: This is **not** secure, and should **not** be used for anything
         /// other than **internal** compiler data structures.
+        // #[derive(Debug, Clone)] // allow for deriving traits (i.e. Debug, Clone, Allocative, Send, Sync, etc.)
+        // pub struct HashMap<K, V> {
+        //     inner: DashMap<K, V, InsecureHasher>,
+        // }
         pub type HashMap<K, V> = DashMap<K, V, InsecureHasher>;
 
         /// A **thread-safe hash set** that uses the compiler's **insecure** hasher.
@@ -42,7 +46,7 @@ cfg_if! {
         // TODO: refactor to this
         // #[derive(Debug, Clone)] // allow for deriving traits (i.e. Debug, Clone, Allocative, Send, Sync, etc.)
         // pub struct SecureHashSet<K> {
-        //     map: DashSet<K, SecureHasher>,
+        //     hash_set: DashSet<K, SecureHasher>,
         // }
     } else {
         /// A **hash map** that uses the compiler's **insecure** hasher.

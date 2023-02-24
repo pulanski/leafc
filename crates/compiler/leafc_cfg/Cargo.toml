@@ -27,9 +27,9 @@ allocative = ["dep:allocative"]
 
 [dependencies]
 # multi-threaded = ["dep:parking_lot"]
-leafc_macros = { path = "../leafc_macros" }
+leafc_macros = { path = "../../shared/leafc_macros" }
 leafc_diagnostics = { path = "../leafc_diagnostics" }
-leafc_utils = { path = "../leafc_utils" }
+leafc_utils = { path = "../../shared/leafc_utils" }
 
 
 allocative = { workspace = true, optional = true }

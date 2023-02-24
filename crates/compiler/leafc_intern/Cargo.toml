@@ -25,8 +25,8 @@ allocative = ["dep:allocative"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-leafc_data_structures = { path = "../leafc_data_structures" }
-leafc_macros = { path = "../leafc_macros" }
+leafc_data_structures = { path = "../../shared/leafc_data_structures" }
+leafc_macros = { path = "../../shared/leafc_macros" }
 
 ahash = { workspace = true }
 allocative = { workspace = true, optional = true }

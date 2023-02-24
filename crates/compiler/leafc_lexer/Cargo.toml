@@ -26,8 +26,8 @@ no-std = ["dep:atomic"]
 
 [dependencies]
 leafc_cfg = { path = "../leafc_cfg" }
-leafc_data_structures = { path = "../leafc_data_structures" }
-leafc_utils = { path = "../leafc_utils" }
+leafc_data_structures = { path = "../../shared/leafc_data_structures" }
+leafc_utils = { path = "../../shared/leafc_utils" }
 
 atomic = { workspace = true, optional = true }
 allocative = { workspace = true, optional = true }

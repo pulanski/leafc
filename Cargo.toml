@@ -31,18 +31,18 @@ members = [
     "crates/compiler/leafc_cfg",
     "crates/compiler/leafc_cli",
     # "crates/leafc_codegen",
-    "crates/compiler/leafc_data_structures",
+    # "crates/compiler/leafc_data_structures",
     "crates/compiler/leafc_driver",
     "crates/compiler/leafc_diagnostics",
     "crates/compiler/leafc_hir",
     "crates/compiler/leafc_intern",
     "crates/compiler/leafc_lexer",
     "crates/compiler/leafc_log",
-    "crates/compiler/leafc_macros",
+    # "crates/compiler/leafc_macros",
     "crates/compiler/leafc_parser",
     "crates/compiler/leafc_repl",
     "crates/compiler/leafc_syntax",
-    "crates/compiler/leafc_utils",
+    # "crates/compiler/leafc_utils",
 
     # ------------------------------------------------------------------------
     # ide-specific libraries
@@ -55,6 +55,10 @@ members = [
     # ------------------------------------------------------------------------
     # shared libraries
     # ------------------------------------------------------------------------
+
+    "crates/shared/leafc_data_structures",
+    "crates/shared/leafc_macros",
+    "crates/shared/leafc_utils",
 
     ###########################################################################
     # Vendored Third-Party Libraries
@@ -144,6 +148,7 @@ load_file = "1.0.1"
 log = "0.4.17"
 logos = "0.12.1"
 logos-derive = "0.12.1"
+lsp-types = "0.94.0"
 miette = { version = "5.5.0", features = ["fancy"] }
 mime = "0.3.16"
 num_cpus = "1.15.0"

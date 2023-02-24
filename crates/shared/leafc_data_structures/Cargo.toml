@@ -22,8 +22,14 @@ multi-threaded = ["dep:dashmap"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+dupe = { path = "../../third_party/dupe" }
+
 blake3 = { workspace = true }
 cfg-if = { workspace = true }
 dashmap = { workspace = true, optional = true }
+derivative = { workspace = true }
+derive-new = { workspace = true }
 fxhash = { workspace = true }
 hashbrown = { workspace = true }
+typed-builder = { workspace = true }
+getset = { workspace = true }

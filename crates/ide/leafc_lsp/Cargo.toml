@@ -39,6 +39,7 @@ fxhash = { workspace = true }
 gazebo = { workspace = true }
 getset = { workspace = true }
 hashbrown = { workspace = true }
+lsp-types = { workspace = true }
 owo-colors = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 rand = { workspace = true }
@@ -47,3 +48,5 @@ smartstring = { workspace = true }
 smol_str = { workspace = true }
 str_sim = { workspace = true }
 serde = { workspace = true, features = ["derive"], optional = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

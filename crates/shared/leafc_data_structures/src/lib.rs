@@ -9,3 +9,7 @@ pub mod collections;
 /// [`Hash`], [`SecureHasher`][crate::hash::SecureHasher],
 /// [`InsecureHasher`][crate::hash::InsecureHasher], etc).
 pub mod hash;
+
+/// Defines an implementation of a **trie** (e.g. [`Trie`][crate::trie::Trie]).
+/// which works in both single-threaded and multi-threaded contexts.
+pub mod trie;

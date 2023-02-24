@@ -6,7 +6,7 @@
     trivial_numeric_casts,
     unused_extern_crates,
     unused_import_braces,
-    unused_results,
+    // unused_results,
     bad_style,
     dead_code,
     improper_ctypes,

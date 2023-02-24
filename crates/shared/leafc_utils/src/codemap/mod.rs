@@ -62,16 +62,16 @@ impl Location {
     /// # Example
     ///
     /// ```
-    /// use leafc_utils::location::{
+    /// use leafc_utils::codemap::{
     ///     FileId,
     ///     Location,
     ///     Span,
     /// };
     ///
-    /// let location = Location::new(FileId::new(0), Span::new(0, 10));
+    /// let location = Location::new(FileId::new(0), Span::from(0..10));
     ///
-    /// assert_eq!(0, location.span().start());
-    /// assert_eq!(10, location.span().end());
+    /// assert_eq!(0, location.span_start());
+    /// assert_eq!(10, location.span_end());
     /// ```
     pub fn new<F: Into<FileId>, S: Into<Span>>(file: F, span: S) -> Self {
         Self { file: file.into(), span: span.into() }
@@ -90,7 +90,7 @@ impl Location {
     ///     Span,
     /// };
     ///
-    /// let location = Location::new(FileId::new(0), Span::new(0, 10));
+    /// let location = Location::new(FileId::new(0), Span::from(0..10));
     ///
     /// assert_eq!(0, location.span_start());
     /// ```
@@ -112,7 +112,7 @@ impl Location {
     ///     Span,
     /// };
     ///
-    /// let location = Location::new(FileId::new(0), Span::new(0, 10));
+    /// let location = Location::new(FileId::new(0), Span::from(0..10));
     ///
     /// assert_eq!(10, location.span_end());
     /// ```
@@ -129,7 +129,7 @@ mod location_test_suite {
     #[test]
     #[allow(unused_results)]
     fn test_span_new() {
-        let mut span = Span::new(0..1);
+        let mut span = Span::from(0..1);
 
         assert_eq!(span.start(), TextPosition::from(0));
         assert_eq!(span.end(), TextPosition::from(1));
@@ -150,11 +150,13 @@ mod location_test_suite {
 
     #[test]
     fn test_location_new() {
-        let (file_id, span) = (FileId::new(), Span::new(0..1));
+        let (file_id, span) = (FileId::new(), Span::from(0..1));
         let location = Location::new(file_id, span);
 
-        assert_eq!(location.span_start(), TextPosition::from(0));
-        assert_eq!(location.span_end(), TextPosition::from(1));
+        assert_eq!(
+            (location.span_start(), location.span_end()),
+            (TextPosition::from(0), TextPosition::from(1))
+        );
         assert_eq!(location.file(), file_id);
     }
 }

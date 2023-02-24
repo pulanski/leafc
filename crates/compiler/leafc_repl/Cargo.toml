@@ -22,7 +22,7 @@ leafc_cfg = { path = "../leafc_cfg" }
 leafc_driver = { path = "../leafc_driver" }
 leafc_diagnostics = { path = "../leafc_diagnostics" }
 leafc_log = { path = "../leafc_log" }
-leafc_utils = { path = "../leafc_utils" }
+leafc_utils = { path = "../../shared/leafc_utils" }
 
 
 chrono = { workspace = true }

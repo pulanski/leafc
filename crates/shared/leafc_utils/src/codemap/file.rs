@@ -13,7 +13,10 @@ use rusty_ulid::Ulid;
 use smartstring::alias::String;
 use smol_str::SmolStr;
 
-use leafc_intern::string::StringId;
+use leafc_intern::string::{
+    StringId,
+    StringInterner,
+};
 use leafc_macros::SERDE_FEATURE_USE_DECL_BASE; // Temporary
 
 // use leafc_macros::LEAFC_FEATURES_USE_DECLS; // TODO: move to this macro
@@ -196,7 +199,7 @@ impl File {
     /// # Examples
     ///
     /// ```
-    /// use leafc_utils::codemap::{
+    /// use leafc_utils::codemap::file::{
     ///     File,
     ///     FileData,
     /// };
@@ -227,13 +230,31 @@ impl File {
         self.0.abs_path()
     }
 
-    /// Returns the **source text** contained within the file.
+    /// Returns the **source text** contained within the file. This comes
+    /// from the **string interner** and is **interned** to reduce the
+    /// **memory footprint** of the compiler.
+    ///
+    /// # Arguments
+    ///
+    /// * `str_interner` - The **string interner** used to **intern** the
+    /// **source text** of the file.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,ignore
+    /// use leafc_utils::codemap::file::{
+    ///    File,
+    ///   FileData,
+    /// };
+    ///
+    /// let file = File::new("foo", "bar");
+    ///
+    /// assert_eq!(file.source_text(), "bar");
+    /// ```
+    #[inline]
     #[must_use]
-    pub const fn source_text(&self) -> &str {
-        "" // TODO: implement
-           // self.0.source_text()
-           // self.0.source_text()
-           // interner.get(self.0.source_text())
+    pub fn source_text<'a>(&'a self, str_interner: &'a StringInterner) -> &str {
+        str_interner.lookup(*self.0.source_text())
     }
 
     /// Returns the **starting byte index** of the given `line_index` in this
