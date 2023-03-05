@@ -8,8 +8,6 @@ pub mod syntax;
 // pub mod parser;
 
 use codespan_reporting::diagnostic::Diagnostic;
-/* TODO: maybe use different error reporting library? */
-// use codespan_reporting::diagnostic::Diagnostic;
 use codespan_reporting::files::Files as SourceFiles;
 use derivative::Derivative;
 use getset::{
@@ -76,7 +74,7 @@ pub type Warning = Locatable<LeafcWarning>;
 /// use leafc_utils::Locatable;
 /// use leafc_lexer::Token;
 /// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, MutGetters, Setters)]
+#[derive(Debug, Clone, PartialEq, Getters, MutGetters, Setters)]
 #[getset(get = "pub", get_mut = "pub", set = "pub")]
 pub struct Locatable<T: Clone> {
     /// The **location** of the item.
@@ -85,6 +83,7 @@ pub struct Locatable<T: Clone> {
     item:     T,
 }
 
+// TODO: refactor
 /// The various **kinds of errors** that can occur within the compiler. These
 /// include errors that occur while **parsing the command line arguments**
 /// ([`CliError`]), that occur while **lexing the source code**
@@ -96,9 +95,6 @@ pub struct Locatable<T: Clone> {
 /// implement the [`IntoDiagnostic`] trait for the [`LeafcError`] type, which
 /// allows for the errors to be converted into a **human-readable diagnostic
 /// message**.
-///
-/// // TODO: refactor the lexical error and parser error types to a single
-/// // syntax error type (more relevant to the user).
 ///
 /// ## Error variants include:
 ///
@@ -121,27 +117,76 @@ pub struct Locatable<T: Clone> {
 /// [`LogError`] - An error that occurred within the **logging system**.
 #[derive(Debug, Clone)]
 pub enum LeafcError {
-    // TODO: need to distinguish between error type (e.g. errors that use miette vs errors that
-    // use codespan)
+    /// An error that occurred within the **source code**. These errors are
+    /// emitted to the user via the [`codespan`] crate.
+    Locatable(LocatableError),
+    /// An error not associated with a specific location within the source code
+    /// (i.e. an error that occurred while **parsing the command line
+    /// arguments** or an error that occurred while **running the repl**). These
+    /// errors are emitted to the user via the [`miette`] crate.
+    NonLocatable(NonLocatableError),
+}
+
+/// All possible **errors** that can occur within the user's source code from
+/// the perspective of the compiler (i.e. errors that occur while **parsing**,
+/// **type-checking**, etc.).
+///
+/// These errors use the [`codespan`] crate to **highlight** the error within
+/// the source code when the error is emitted to the user. An example of an
+/// error that uses the [`codespan`] crate is the following:
+///
+/// ```
+/// error[E0432]: unresolved import `token::TokenKind`
+///   --> crates/compiler/leafc_lexer/src/lib.rs:30:5
+///    |
+/// 30 |     token::TokenKind,
+///    |     ^^^^^^^^^^^^^^^^ no `TokenKind` in `token`
+/// ```
+#[derive(Debug, Clone)]
+pub enum LocatableError {
+    /// An error that occurred while **lexing** the source code.
+    LexicalError(Locatable<LexicalError>), // Codespan
+    // TypeCheckError(Locatable<TypeCheckError>),
+    SyntaxError(Locatable<SyntaxError>), /* Codespan */
+
+                                         /* An error that occurred while parsing the source
+                                          * code.
+                                          * ParserError(Locatable<ParserError>), // Codespan
+                                          * /// An error that occurred while type checking the source code.
+                                          * TypeCheckError(TypeCheckError), // Codespan */
+}
+
+/// All possible **errors** which do not have a **location** within the source
+/// code. These errors are emitted to the user via the [`miette`] crate.
+///
+/// # Examples
+///
+/// ```text
+/// Error: leafc::cli::file_not_found (https://docs.rs/leafc_diagnostics/0.1.0/leafc_diagnostics/enum.CliError.html#variant.FileNotFound)
+///
+///   × CLI Error - File not found: : "foo.leaf": No such file or directory (os
+/// error 2)
+///  help: The file could not be found. Please check that the file
+/// exists and that you have permission to access it.
+/// ```
+#[derive(Debug, Clone)]
+pub enum NonLocatableError {
     /// An error that occurred while **parsing the command line arguments**.
     CliError(CliError), // Miette
     /// An error that occurred while **running the driver**.
     DriverError(DriverError), // Miette
-    /// An error that occurred while **lexing** the source code.
-    LexicalError(LexicalError), // Codespan
     /// An error that occurred within the **logging system**.
-    LogError(LogError), // Miette
-    // /// An error that occurred while parsing the source code.
-    // ParserError(ParserError), // Codespan
-    // /// An error that occurred while type checking the source code.
-    // TypeCheckError(TypeCheckError), // Codespan
-    // /// An error that occurred while generating the output.
-    // CodegenError(CodegenError), // i don't know yet
-    /// An error that occurred within the **syntax** of the source code.
-    SyntaxError(SyntaxError), // Codespan
+    LogError(LogError), /* Miette
+                         * /// An error that occurred while generating the output.
+                         * CodegenError(CodegenError), // Miette */
     /// An error that occurred while **running the repl**.
     ReplError(ReplError), // Miette
 }
+
+// pub enum LocatableWarning {
+//     // TypeCheckError(Locatable<TypeCheckError>),
+//     SyntaxWarning(Locatable<SyntaxWarning>),
+// }
 
 /// All possible **warnings** that can occur within the user's source code from
 /// the perspective of the compiler.
@@ -261,7 +306,7 @@ impl<T: Clone> Locatable<T> {
     /// use leafc_diagnostics::errors::Locatable;
     /// ```
     pub fn file(&self) -> FileId {
-        self.location.file()
+        self.location.file_id()
     }
 
     /// Returns the **range** of the `Locatable` item.
@@ -415,27 +460,27 @@ impl DiagnosticsManager {
 // error types, locatable error vs non-locatable error
 
 impl LeafcError {
-    pub fn emit<'a, F>(
-        &self,
-        files: &'a F,
-        file: FileId,
-        span: Span,
-        errs: &mut Vec<Diagnostic<FileId>>,
-    ) where
-        F: SourceFiles<'a, FileId = FileId>,
-    {
-        match self {
-            // miette style errors should not be emitted (may change in the future)
-            LeafcError::CliError(_) |
-            LeafcError::DriverError(_) |
-            LeafcError::LogError(_) |
-            LeafcError::ReplError(_) => {
-                unimplemented!()
-            }
-            LeafcError::LexicalError(_) => todo!(),
-            LeafcError::SyntaxError(syntax_err) => syntax_err.emit(files, file, span, errs),
-        }
-    }
+    // pub fn emit<'a, F>(
+    //     &self,
+    //     files: &'a F,
+    //     file: FileId,
+    //     span: Span,
+    //     errs: &mut Vec<Diagnostic<FileId>>,
+    // ) where
+    //     F: SourceFiles<'a, FileId = FileId>,
+    // {
+    //     match self {
+    //         // miette style errors should not be emitted (may change in the
+    // future)         LeafcError::CliError(_) |
+    //         LeafcError::DriverError(_) |
+    //         LeafcError::LogError(_) |
+    //         LeafcError::ReplError(_) => {
+    //             unimplemented!()
+    //         }
+    //         LeafcError::LexicalError(_) => todo!(),
+    //         LeafcError::SyntaxError(syntax_err) => syntax_err.emit(files, file,
+    // span, errs),     }
+    // }
 }
 
 // TODO: need to distinguish between miette-type errors and

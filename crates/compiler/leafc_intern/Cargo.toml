@@ -33,13 +33,15 @@ allocative = { workspace = true, optional = true }
 aquamarine = { workspace = true }
 blake3 = { workspace = true }
 cfg-if = { workspace = true }
-dashmap = { workspace = true }
 derive_more = { workspace = true }
 fxhash = { workspace = true }
-hashbrown = { workspace = true }
 lasso = { workspace = true, features = ["serialize"] }
 serde = { workspace = true, optional = true }
 smartstring = { workspace = true }
+
+dashmap = { version = "=5.4.0", features = ["raw-api"] }
+hashbrown = { version = "0.12.1", default-features = false }
+once_cell = "1.17.0"
 
 [dev-dependencies]
 pretty_assertions_sorted = { workspace = true }

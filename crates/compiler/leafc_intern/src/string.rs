@@ -154,7 +154,7 @@ pub struct StringInterner(Arc<ThreadedRodeo<Spur, InsecureHasher>>);
 /// stored in a single location, and allows for fast comparisons between
 /// strings.
 #[cfg(not(feature = "multi-threaded"))]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[repr(transparent)]
 pub struct StringInterner(Rc<RefCell<Rodeo<Spur, InsecureHasher>>>);
 
@@ -194,7 +194,7 @@ impl StringInterner {
     }
 
     #[cfg(not(feature = "multi-threaded"))]
-    pub fn intern(&self, string: impl StringRefImpl) -> StringId {
+    pub fn intern(&self, string: impl Into<String> + AsRef<str>) -> StringId {
         StringId::from(self.0.borrow_mut().get_or_intern(string))
     }
 
@@ -204,6 +204,31 @@ impl StringInterner {
         let string: &str = borrow.resolve(&id.get());
 
         unsafe { core::mem::transmute(string) }
+    }
+
+    /// A **high-level** accessor for the `StringId` associated with the given
+    /// string in the interner, if it exists.
+    ///
+    /// Returns the `StringId` associated with the given string, if it exists.
+    ///
+    /// # Examples
+    /// ```rust
+    /// use leafc_intern::string::StringId;
+    /// use leafc_intern::string::StringInterner;
+    ///
+    /// let interner = StringInterner::new();
+    ///
+    /// let id = interner.intern("hello");
+    ///
+    /// assert_eq!(interner.get("hello"), Some(id));
+    /// assert_eq!(interner.get("world"), None);
+    /// ```
+    #[cfg(not(feature = "multi-threaded"))]
+    pub fn get(&self, string: impl AsRef<str>) -> Option<StringId> {
+        let borrow = self.0.borrow();
+        let id = borrow.get(string.as_ref())?;
+
+        Some(StringId::from(id))
     }
 
     /// Interns a **static** string. This is useful for strings that are
@@ -232,5 +257,48 @@ impl StringInterner {
 impl Default for StringInterner {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+#[cfg(test)]
+mod string_interner_test_suite {
+    use super::*;
+
+    #[test]
+    fn test_intern() {
+        let interner = StringInterner::new();
+
+        let id = interner.intern("hello");
+
+        assert_eq!(interner.lookup(id), "hello");
+    }
+
+    #[test]
+    fn test_intern_static() {
+        let interner = StringInterner::new();
+
+        static HELLO: &str = "hello";
+
+        let id = interner.intern_static(HELLO);
+
+        assert_eq!(interner.lookup(id), HELLO);
+    }
+
+    #[test]
+    fn test_lookup() {
+        let interner = StringInterner::new();
+
+        let id = interner.intern("hello");
+
+        assert_eq!(interner.lookup(id), "hello");
+    }
+
+    #[test]
+    fn test_get() {
+        let interner = StringInterner::new();
+
+        let id = interner.intern("hello");
+
+        assert_eq!(interner.get("hello"), Some(id));
     }
 }

@@ -15,6 +15,8 @@ pub enum TokenKind {
     // #[regex(r"[ \t\f]+", logos::skip)]
     ERROR,
 
+    EOF,
+
     #[doc = GENERAL!("WHITESPACE")]
     #[regex(r"[ \t\f\n]+")]
     WHITESPACE,

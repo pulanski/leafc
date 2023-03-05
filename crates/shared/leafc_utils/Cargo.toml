@@ -49,11 +49,10 @@ hashbrown = { workspace = true }
 owo-colors = { workspace = true }
 pretty_assertions_sorted = { workspace = true }
 rand = { workspace = true }
-rusty_ulid = { workspace = true }
+serde = { workspace = true, features = ["derive"], optional = true }
 smartstring = { workspace = true }
 smol_str = { workspace = true }
 str_sim = { workspace = true }
-serde = { workspace = true, features = ["derive"], optional = true }
 
 rand_regex = { workspace = true }
 regex_generate = "0.2.1"

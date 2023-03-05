@@ -5,7 +5,9 @@ cl = "clean"
 t = "test"
 r = "run"
 rr = "run --release"
-d = "doc --open"
+d = "doc --workspace --no-deps --document-private-items"
+
+parallel-compiler = true
 
 [profile.dev]
 opt-level = 0

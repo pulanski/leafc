@@ -8,65 +8,13 @@ use {
 };
 
 use {
-    leafc_errors::SyntaxError,
+    leafc_diagnostics::SyntaxError,
     leafc_macros::SYNTAX_TREE_FEATURE_USE_DECLS,
 };
 
+use leafc_lexer::token::Token;
+
 use crate::ast::SyntaxKind;
-
-// TODO: create an generic experimental_note macro that prints a note about the
-// feature being experimental
-
-// macro_rules! EXPERIMENTAL_SYNTAX_TREE_NOTE {
-//     ($feature:expr, $method:expr) => {
-//         format!(
-//             "NOTE: The syntax tree feature `{}` is experimental, and the
-// method `{}` may change \              in the future.",
-//             $feature, $method,
-//         );
-//     };
-// }
-
-macro_rules! DOCUMENTATION_REFERENCES {
-    ($syntax_tree_feature:expr) => {
-        format!(
-            "[`{}`]: https://docs.rs/leafc_syntax/{version}/leafc_syntax/{syntax_tree_feature}/struct.{syntax_tree_feature}.html",
-            $syntax_tree_feature,
-            version = env!("CARGO_PKG_VERSION"),
-            syntax_tree_feature = $syntax_tree_feature,
-        );
-    };
-}
-
-// TODO: implement this
-macro_rules! DEFAULT_SYNTAX_TREE_NOTE {
-    ($syntax_tree_feature:expr) => {
-        // format!(
-        //     "NOTE: This is the default type for [`SyntaxNode`] in Leafc and uses
-        // [`rowan`] as the \      underlying syntax tree implementation. If you want to
-        // use a different syntax tree \      implementation, you can use the
-        // [`{syntax_tree_feature}`] feature flag. It is \      important to note that
-        // the [`{syntax_tree_feature}`] feature flag is \      **experimental** and is
-        // not guaranteed to be stable.",     syntax_tree_feature =
-        // $syntax_tree_feature, )
-
-        // **NOTE**: This is the default type for [`SyntaxNode`] in Leafc and uses
-        // [`rowan`] /// as the underlying syntax tree implementation. If you want
-        // to use a different syntax tree /// implementation, you can use the
-        // [`cstree`] feature flag. It is important to note that /// the
-        // [`cstree`] feature flag is **experimental** and is not guaranteed to
-        // be stable.
-    };
-}
-
-// example:
-//
-// EXPERIMENTAL_NOTE!(CSTree, "SyntaxNodeChildren");
-// EXPERIMENTAL_NOTE!(CSTree, "SyntaxNode");
-//
-// pub enum ExperimentalFeature {
-//     CSTree,
-// }
 
 SYNTAX_TREE_FEATURE_USE_DECLS!();
 
@@ -346,9 +294,9 @@ cfg_if! {
 /// # Example
 ///
 /// ```rust,ignore
-/// use leaf_lang::syntax::{SyntaxKind, ConcreteSyntaxTreeBuilder};
+/// use leaf_lang::syntax::{SyntaxKind, SyntaxTreeBuilder};
 ///
-/// let mut builder = ConcreteSyntaxTreeBuilder::default();
+/// let mut builder = SyntaxTreeBuilder::default();
 ///
 /// builder.start_node(SyntaxKind::ROOT);
 /// builder.token(SyntaxKind::INT, "1");
@@ -358,30 +306,64 @@ cfg_if! {
 ///
 /// assert_eq!(tree.root().kind(), SyntaxKind::ROOT);
 /// ```
-pub struct ConcreteSyntaxTreeBuilder {
+#[derive(Debug, Default)]
+pub struct SyntaxTreeBuilder {
     builder: GreenNodeBuilder<'static>,
-    errors:  Vec<SyntaxError>,
 }
 
-impl ConcreteSyntaxTreeBuilder {
-    /// Creates a new tree with the given root node.
-    pub fn start_node(&mut self, kind: SyntaxKind) {
-        let kind = LeafLanguage::kind_to_raw(kind);
-
-        self.builder.start_node(kind);
+impl SyntaxTreeBuilder {
+    /// Creates a new **syntax tree builder**.
+    /// This is useful for creating a syntax tree from a given syntax kind
+    /// during parsing.
+    pub fn new() -> Self {
+        Self { builder: GreenNodeBuilder::new() }
     }
 
-    /// Adds a **token** to the tree.
-    pub fn token(&mut self, kind: SyntaxKind, text: &str) {
-        let kind = LeafLanguage::kind_to_raw(kind);
+    /// Creates a _new_ **syntax tree** with the given **root** node.
+    /// This is useful for creating a syntax tree from a given syntax kind
+    /// during parsing.
+    ///
+    /// # Arguments
+    ///
+    /// * `root` - The root node of the syntax tree.
+    ///
+    /// # Returns
+    ///
+    /// A new syntax tree with the given root node.
+    #[inline]
+    pub fn start_node(&mut self, kind: SyntaxKind) {
+        self.builder.start_node(LeafLanguage::kind_to_raw(kind))
+    }
 
-        self.builder.token(kind, text);
+    /// Adds a **token** to the current node via its **raw components** (_kind_
+    /// and _text_).
+    ///
+    /// # Arguments
+    ///
+    /// * `kind` - The kind of the token.
+    /// * `text` - The text of the token.
+    #[inline]
+    pub fn add_raw_token(&mut self, kind: SyntaxKind, text: &str) {
+        self.builder.token(LeafLanguage::kind_to_raw(kind), text);
+    }
+
+    /// Adds a **token** created from the [`Lexer`] to the current node.
+    /// This is useful for adding tokens to the syntax tree during parsing.
+    ///
+    /// # Arguments
+    ///
+    /// * `token` - The token to add to the syntax tree.
+    #[inline]
+    pub fn add_token(&mut self, token: &Token) {
+        self.builder
+            .token(LeafLanguage::kind_to_raw(SyntaxKind::from(*token.kind())), token.lexeme())
     }
 
     /// Finishes the current node.
     /// This must be called after a call to `start_node`.
+    #[inline]
     pub fn finish_node(&mut self) {
-        self.builder.finish_node();
+        self.builder.finish_node()
     }
 }
 
@@ -393,7 +375,7 @@ mod tests {
         if #[cfg(feature = "cstree")] {
             #[test]
             fn test() {
-                let mut builder = ConcreteSyntaxTreeBuilder::default();
+                let mut builder = SyntaxTreeBuilder::default();
 
                 builder.start_node(SyntaxKind::ROOT);
                 builder.token(SyntaxKind::INT, "1");

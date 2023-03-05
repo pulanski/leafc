@@ -14,15 +14,27 @@ readme.workspace = true
 [lib]
 doctest = true
 
+[features]
+default = []
+all = ["allocative", "serde", "multi-threaded", "no-std"]
+allocative = ["dep:allocative"]
+serde = ["dep:serde"]
+multi-threaded = []
+no-std = []
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 leafc_diagnostics = { path = "../leafc_diagnostics" }
 leafc_intern = { path = "../leafc_intern" }
+leafc_lexer = { path = "../leafc_lexer" }
 leafc_syntax = { path = "../leafc_syntax" }
 
+allocative = { workspace = true, optional = true }
+getset = { workspace = true }
 rowan = { workspace = true }
+serde = { workspace = true, features = ["derive"], optional = true }
 
 [build-dependencies]
-lalrpop = { workspace = true }
 cargo-emit = { workspace = true }
+lalrpop = { workspace = true }

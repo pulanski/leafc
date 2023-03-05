@@ -4,15 +4,19 @@
 // use crate::syntax::ast::*;
 // use crate::
 
-use leafc_intern::StringInterner;
-use leafc_intern::FileId;
+// use leafc_intern::StringInterner;
+// use leafc_intern::FileId;
 
 // errors: &'err mut Vec<ErrorRecovery<usize, Token<'input>, ParseError>>,
 // grammar<'string_interner>(str_interner: &'string_interner mut StringInterner, file_interner: FileInterner);
 
-grammar<'input, 'string_interner, 'err,'er>(
-    src_file: FileId,
-    str_interner: &'string_interner mut StringInterner,
-    errs: &'err mut Vec<ErrorRecovery<usize, Token<'input>, SyntaxError>>,
-    // ast_arena: &mut AstArena<'ar>, // TODO: add arena support
-);
+// grammar<'input, 'string_interner, 'err,'er>(
+//     // src_file: FileId,
+//     // str_interner: &'string_interner mut StringInterner,
+//     // errs: &'err mut Vec<ErrorRecovery<usize, Token<'input>, SyntaxError>>,
+//     // ast_arena: &mut AstArena<'ar>, // TODO: add arena support
+// );
+
+// grammar<'parser>(parser: &'parser mut Parser<'parser>);
+
+

@@ -18,7 +18,7 @@ doctest = true
 
 [dependencies]
 leafc_lexer = { path = "../leafc_lexer" }
-# leafc_macros = { path = "../../shared/leafc_macros" }
+leafc_macros = { path = "../../shared/leafc_macros" }
 # leafc_utils = { path = "../../shared/leafc_utils" }
 leafc_diagnostics = { path = "../leafc_diagnostics" }
 

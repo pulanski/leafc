@@ -13,7 +13,9 @@ readme.workspace = true
 
 [features]
 default = []
-multi-threaded = ["dep:dashmap"]
+all = ["multi-threaded"]
+multi-threaded = []
+# multi-threaded = ["dep:dashmap"]
 # hashbrown = ["hashbrown/hashbrown"]
 # fxhash = ["fxhash/fxhash"]
 # dashmap = ["dashmap/dashmap"]
@@ -26,10 +28,10 @@ dupe = { path = "../../third_party/dupe" }
 
 blake3 = { workspace = true }
 cfg-if = { workspace = true }
-dashmap = { workspace = true, optional = true }
+dashmap = { workspace = true }
 derivative = { workspace = true }
 derive-new = { workspace = true }
 fxhash = { workspace = true }
+getset = { workspace = true }
 hashbrown = { workspace = true }
 typed-builder = { workspace = true }
-getset = { workspace = true }

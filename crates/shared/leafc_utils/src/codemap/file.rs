@@ -1,4 +1,7 @@
-use std::collections::VecDeque;
+use std::{
+    collections::VecDeque,
+    num::NonZeroUsize,
+};
 
 use cfg_if::cfg_if;
 use derive_more::Display;
@@ -9,7 +12,6 @@ use getset::{
     MutGetters,
     Setters,
 };
-use rusty_ulid::Ulid;
 use smartstring::alias::String;
 use smol_str::SmolStr;
 
@@ -46,22 +48,50 @@ cfg_if! {
 // that use it across the compiler.
 
 /// A **unique identifier** for a **file**.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, new, Display)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Display)]
 #[allow(clippy::module_name_repetitions)]
-#[new]
 #[display(fmt = "{_0}")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "allocative", derive(Allocative))]
 #[repr(transparent)]
-pub struct FileId(#[new(value = "Ulid::generate()")] Ulid);
-// TODO: refactor this to be an interned data structure
+pub struct FileId(NonZeroUsize);
+
+/// The **maximum** `FileId` that can be created.
+pub static MAX_FILE_ID: FileId = FileId(unsafe { NonZeroUsize::new_unchecked(usize::MAX) });
+
+impl FileId {
+    /// Creates a new `FileId` from a `usize`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `id` is `0` or greater than or equal to `usize::MAX`.
+    #[inline]
+    #[must_use]
+    pub fn new(id: usize) -> Self {
+        debug_assert!(id > 0 && id < usize::MAX);
+        Self(NonZeroUsize::new(id).unwrap())
+    }
+
+    /// Returns the `usize` representation of the `FileId`.
+    #[inline]
+    #[must_use]
+    pub const fn as_usize(self) -> usize {
+        self.0.get()
+    }
+}
+
+impl From<usize> for FileId {
+    fn from(id: usize) -> Self {
+        Self::new(id)
+    }
+}
 
 /// Internal data structure for a **file**. This is **not** the public API for
 /// a file and should **not** be used directly. Use the [`File`] API instead.
 ///
 /// This is the core data structure used in both the **multi-threaded** and
 /// **single-threaded** contexts.
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, CopyGetters, MutGetters, Setters)]
+#[derive(Debug, Clone, Getters, CopyGetters, MutGetters, Setters)]
 // #[derive(new)]
 #[getset(get_mut = "pub", set = "pub")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -86,12 +116,24 @@ pub struct FileData {
     /// **line/column positions**.
     #[getset(get_mut = "pub")]
     line_starts: VecDeque<TextPosition>,
+
+    /// The **string interner** used to intern the source text.
+    // #[cfg(feature = "multi-threaded")]
+    // string_interner: Arc<Mutex<StringInterner>>,
+    #[getset(get = "pub")]
+    str_interner: StringInterner,
+}
+
+impl PartialEq for FileData {
+    fn eq(&self, other: &Self) -> bool {
+        self.file_id == other.file_id
+    }
 }
 
 #[allow(missing_docs)] // allowed for internal data structures
 impl FileData {
     pub fn new(
-        // file_id: impl Into<FileId>,
+        file_id: impl Into<FileId>,
         abs_path: impl Into<SmolStr> + Clone,
         source_text: impl Into<String>,
     ) -> Self {
@@ -102,14 +144,17 @@ impl FileData {
         line_starts.extend(source_text.match_indices('\n').map(|(i, _)| TextPosition::new(i + 1)));
 
         let path = abs_path.clone().into();
-        let file_id = FileId::new();
+        // let file_id = FileId::new();
         let filename = path.split('/').last().unwrap_or_else(|| path.as_str());
+
+        let string_interner = StringInterner::new();
 
         // let source_text = StringId::intern(source_text);
 
         Self {
-            file_id,
+            file_id: file_id.into(),
             abs_path: abs_path.into(),
+            str_interner: string_interner,
             source_text: StringId::new(0),
             // source_text,
             line_starts,
@@ -153,8 +198,18 @@ pub struct File(Arc<FileData>);
 /// This is the **primary** data structure used in the compiler for
 /// **diagnostics** and **error messages** emitted from the frontend.
 #[cfg(not(feature = "multi-threaded"))]
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct File(FileData);
+
+impl File {
+    /// Returns the **unique identifier** for the file.
+    /// This is used to **efficiently** compare files.
+    #[inline]
+    #[must_use]
+    pub const fn id(&self) -> FileId {
+        self.0.file_id
+    }
+}
 
 impl From<FileData> for File {
     fn from(file_data: FileData) -> Self {
@@ -171,17 +226,6 @@ impl From<FileData> for File {
 //         Self::new(file_id, "", "")
 //     }
 // }
-
-impl From<(&str, &str)> for File {
-    fn from((abs_path, source_text): (&str, &str)) -> Self {
-        // TODO: refactor to intern the entire file.
-        // interner is a singleton exposed by the interner crate
-        // and used within the context of the driver (i.e. the
-        // driver sets up the interner and passes it to the
-        // codemap)
-        Self::new(abs_path, source_text)
-    }
-}
 
 impl File {
     /// Creates a new [`File`] from the given [`FileData`].
@@ -210,12 +254,16 @@ impl File {
     /// assert_eq!(file.source_text(), "bar");
     /// ```
     #[must_use]
-    pub fn new(abs_path: impl Into<SmolStr> + Clone, source_text: impl Into<String>) -> Self {
+    pub fn new(
+        id: impl Into<FileId>,
+        abs_path: impl Into<SmolStr> + Clone,
+        source_text: impl Into<String>,
+    ) -> Self {
         #[cfg(feature = "multi-threaded")]
         return Self(Arc::new(FileData::new(abs_path, source_text)));
 
         #[cfg(not(feature = "multi-threaded"))]
-        Self(FileData::new(abs_path, source_text))
+        Self(FileData::new(id, abs_path, source_text))
     }
 
     /// Returns the **unique identifier** for the file.
@@ -263,6 +311,13 @@ impl File {
     pub fn line_start(&self, line_index: usize) -> Option<TextPosition> {
         self.0.line_start(line_index)
     }
+
+    /// Returns the **string interner** that is used to **intern** the
+    /// **source text** of the file.
+    #[must_use]
+    pub fn str_interner(&self) -> &StringInterner {
+        self.0.str_interner()
+    }
 }
 
 /// A **collection** of [`File`]s. This is used to **store** the **contents**
@@ -278,7 +333,7 @@ impl File {
 /// let file_id = file_set.add_file("foo", "bar");
 /// let file = file_set.get_file(file_id);
 /// ```
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Getters, CopyGetters, MutGetters, Setters)]
+#[derive(Debug, Clone, PartialEq, Getters, CopyGetters, MutGetters, Setters)]
 #[allow(clippy::module_name_repetitions)]
 pub struct FileSet {
     /// The **files** that are **contained** within this [`FileSet`].
@@ -343,12 +398,17 @@ impl FileSet {
     /// Adds a new [`File`] with the given **absolute path** and **source
     /// text** to this [`FileSet`], returning the [`FileId`] of the newly
     /// added file.
+    #[inline]
+    #[allow(unused_must_use)]
     pub fn add_file(
         &mut self,
+        file_id: impl Into<FileId> + Copy,
         abs_path: impl Into<SmolStr> + Clone,
         source_text: impl Into<String>,
     ) -> FileId {
-        File::new(abs_path, source_text).file_id()
+        let file = File::new(file_id, abs_path, source_text);
+        self.files.push_back(file);
+        file_id.into()
     }
 
     /// Returns the [`File`] with the given `file_id` from this [`FileSet`].
@@ -368,7 +428,7 @@ mod file_test_suite {
 
     #[test]
     fn test_file_line_start() {
-        let file_one = File::new("foo", "bar");
+        let file_one = File::new(1, "foo", "bar");
         // let file_one = File::from("foo", "bar");
 
         assert_eq!(file_one.line_start(0), Some(TextPosition::from(0)));
@@ -377,6 +437,7 @@ mod file_test_suite {
         // File::from() will either create a new file or return an existing
         // interned file with the same absolute path and source text.
         let file_two = File::new(
+            1,
             "foo",
             "abcdef
 789
@@ -391,6 +452,7 @@ mod file_test_suite {
         assert_eq!(file_two.line_start(4), None);
 
         let file = File::new(
+            2,
             "foo",
             "bar
 
@@ -424,19 +486,21 @@ mod file_test_suite {
 
         // add a file...
 
-        let file_id = file_set.add_file("foo", "bar");
+        let file_id1 = file_set.add_file(3, "foo", "bar");
 
         // assert_eq!(file_set.files(), &[File::new("foo", "bar")]);
         // assert_eq!(file_set.files(), &[File::from(file_id)]);
-        assert_eq!(file_set.files(), &[File::from(("foo", "bar"))]);
+        assert_eq!(file_set.files(), &[File::new(file_id1, "foo", "bar")]);
         assert_eq!(file_set.cursor(), None);
-        assert_eq!(file_set.get_file(file_id), Some(&File::new("foo", "bar")));
-        // assert_eq!(file_set.get_file(file_id), Some(&File::from("foo", "bar")));
+        assert_eq!(file_set.get_file(file_id1), Some(&File::new(file_id1, "foo", "bar")));
 
         // add another file ...
-        let file_id = file_set.add_file("baz", "qux");
+        let file_id2 = file_set.add_file(8, "baz", "qux");
 
-        assert_eq!(file_set.files(), &[File::new("foo", "bar"), File::new("baz", "qux")]);
+        assert_eq!(file_set.files(), &[
+            File::new(file_id1, "baz", "qux"),
+            File::new(file_id2, "foo", "bar")
+        ]);
     }
 }
 

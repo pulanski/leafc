@@ -5,6 +5,12 @@
 
 use leafc_macros::CRATE_README;
 
+pub use generic::{
+    InternStorage,
+    Internable,
+    Interned,
+};
+
 #[cfg_attr(doc, aquamarine::aquamarine)]
 /// Provides support for **interning strings**. This allows for strings to be
 /// stored in a **single location**, and allows for **fast comparisons** between

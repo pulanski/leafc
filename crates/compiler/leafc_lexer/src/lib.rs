@@ -22,7 +22,10 @@ pub mod lexer;
 
 pub mod token;
 
+pub mod language_check;
+
 pub use {
+    language_check::LanguageChecker,
     lexer::{
         lossless_lex,
         lossy_lex,

@@ -69,6 +69,11 @@ pub mod codemap;
 /// given regular expression.
 pub mod regex_gen;
 
+/// Defines a collection of utilities for working with **symbol tables**.
+/// These utilities are used to **intern** and **lookup** symbols (e.g.
+/// identifiers, keywords, etc.) in the source code.
+pub mod symbol_table;
+
 pub use {
     codemap::{
         FileId,

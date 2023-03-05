@@ -287,6 +287,36 @@ pub enum LanguageKind {
 
     /// The **Swahili** language.
     Swahili,
+
+    /// Any language that is **currently supported** by the compiler.
+    Any,
+}
+
+impl LanguageKind {
+    /// Returns `true` if the language is **spoken** (i.e. it is a **human
+    /// language** rather than `Any`).
+    /// Otherwise, returns `false`.
+    pub fn is_spoken(&self) -> bool {
+        match self {
+            LanguageKind::English |
+            LanguageKind::Spanish |
+            LanguageKind::French |
+            LanguageKind::German |
+            LanguageKind::Portuguese |
+            LanguageKind::Italian |
+            LanguageKind::Dutch |
+            LanguageKind::Swedish |
+            LanguageKind::Danish |
+            LanguageKind::Norwegian |
+            LanguageKind::Finnish |
+            LanguageKind::Russian |
+            LanguageKind::Japanese |
+            LanguageKind::Chinese |
+            LanguageKind::Korean |
+            LanguageKind::Swahili => true,
+            LanguageKind::Any => false,
+        }
+    }
 }
 
 /// Represents the **English** language given the current [**language of

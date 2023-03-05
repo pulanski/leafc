@@ -49,13 +49,15 @@ cfg_if! {
         //     hash_set: DashSet<K, SecureHasher>,
         // }
     } else {
+        use dashmap::DashMap;
         /// A **hash map** that uses the compiler's **insecure** hasher.
         ///
         /// **NOTE**: This is **not** secure, and should **not** be used for anything
         /// other than **internal** compiler data structures. Additionally, this is **not**
         /// thread-safe, and should **not** be used in a multi-threaded context. If you
         /// need a thread-safe hash map, enable the `multi-threaded` feature.
-        pub type HashMap<K, V> = hashbrown::HashMap<K, V, InsecureHasher>;
+        pub type HashMap<K, V> = DashMap<K, V, InsecureHasher>; // TODO: figure out how to get dash-map api of
+        // pub type HashMap<K, V> = hashbrown::HashMap<K, V, InsecureHasher>;
 
         /// A **hash set** that uses the compiler's **insecure** hasher.
         ///
