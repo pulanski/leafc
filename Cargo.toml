@@ -163,7 +163,7 @@ proc-macro2 = "1.0.51"
 quote = "1.0.23"
 rand = "0.8.5"
 rand_regex = "0.15.1"
-rayon = "1.6.1"
+rayon = "1.7.0"
 reedline = { version = "0.16.0", features = ["sqlite"] }
 regex = "1.7.1"
 rowan = "0.15.10"
