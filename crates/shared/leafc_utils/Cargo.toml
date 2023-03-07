@@ -55,4 +55,4 @@ smol_str = { workspace = true }
 str_sim = { workspace = true }
 
 rand_regex = { workspace = true }
-regex_generate = "0.2.1"
+regex_generate = "0.2.3"
