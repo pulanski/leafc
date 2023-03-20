@@ -167,7 +167,7 @@ rayon = "1.7.0"
 reedline = { version = "0.16.0", features = ["sqlite"] }
 regex = "1.7.1"
 rowan = "0.15.10"
-rstest = "0.16.0"
+rstest = "0.17.0"
 rug = "1.19.1"
 rust-i18n = "1.1.1"
 rustc-serialize = "0.3.24"
