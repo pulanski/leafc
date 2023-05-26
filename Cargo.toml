@@ -185,7 +185,7 @@ smol_str = "0.1.24"
 str_sim = "0.1.2"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
-syn = "1.0.109"
+syn = "2.0.17"
 sys-locale = "0.2.3"
 test-context = "0.1.4"
 thiserror = "1.0.38"
