@@ -179,7 +179,7 @@ serde = { version = "1.0", features = ["derive", "rc"] }
 serde_bytes = "0.11.9"
 serde_json = "1.0.93"
 serde_repr = "0.1.10"
-serde_yaml = "0.9.17"
+serde_yaml = "0.9.34"
 smartstring = "1.0.1"
 smol_str = "0.1.24"
 str_sim = "0.1.2"
