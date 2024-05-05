@@ -106,7 +106,7 @@ maintenance = { status = "actively-developed" }
 
 [workspace.dependencies]
 ahash = "0.8.3"
-allocative = "0.2.0"
+allocative = "0.3.0"
 amplify = "3.14.1"
 anyhow = "1.0.69"
 atomic = "0.5"
