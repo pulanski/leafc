@@ -125,7 +125,7 @@ cstree = "0.11.1"
 dashmap = { version = "5.4.0", features = ["serde", "rayon", "raw-api"] }
 derivative = "2.2.0"
 derive_more = "0.99.17"
-derive-new = "0.5.9"
+derive-new = "0.6.0"
 dirs-next = "2.0.0"
 doc-comment = "0.3.3"
 cargo-emit = "0.2.1"
