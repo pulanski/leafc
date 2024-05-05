@@ -119,7 +119,7 @@ cfg-if = "1.0.0"
 chrono = "0.4"
 clap = { version = "4.1.8", features = ["derive"] }
 codespan-reporting = "0.11.1"
-config = "0.13.3"
+config = "0.14.0"
 crossterm = "0.26.1"
 cstree = "0.11.1"
 dashmap = { version = "5.4.0", features = ["serde", "rayon", "raw-api"] }
